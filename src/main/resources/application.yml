@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/myfinance
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: ${OPENAI_API_KEY}
+      model-name: gpt-4o-mini
+      temperature: 0.7
+    embedding-model:
+      api-key: ${OPENAI_API_KEY}
+      model-name: text-embedding-3-small
+  pgvector:
+    embedding-store:
+      host: ${DB_HOST:localhost}
+      port: ${DB_PORT:5432}
+      database: ${DB_NAME:myfinance}
+      user: ${DB_USERNAME:postgres}
+      password: ${DB_PASSWORD:postgres}
+      table: embeddings
+      dimension: 1536
+      create-table: true
+      drop-table-first: false

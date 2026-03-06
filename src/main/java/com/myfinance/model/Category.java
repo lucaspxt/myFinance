@@ -16,6 +16,8 @@ public class Category {
 
     private String name;
 
+    private boolean archived;
+
     public Category() {
     }
 
@@ -37,5 +39,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 }

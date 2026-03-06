@@ -10,13 +10,16 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final UserService userService;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, UserService userService) {
         this.categoryRepository = categoryRepository;
+        this.userService = userService;
     }
 
     public Category create(String name) {
-        Category category = new Category(name);
+        Long userId = userService.getCurrentUserId();
+        Category category = new Category(name, userId);
         return categoryRepository.save(category);
     }
 
@@ -26,11 +29,16 @@ public class CategoryService {
     }
 
     public List<Category> getAll() {
-        return categoryRepository.findAll();
+        Long userId = userService.getCurrentUserId();
+        return categoryRepository.findByUserId(userId);
     }
 
     public Category update(Long id, String name, boolean archived) {
+        Long userId = userService.getCurrentUserId();
         Category category = get(id);
+        if (!userId.equals(category.getUserId())) {
+            throw new RuntimeException("Category not found with id: " + id);
+        }
         category.setName(name);
         category.setArchived(archived);
         return categoryRepository.save(category);

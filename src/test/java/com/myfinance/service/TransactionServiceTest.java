@@ -49,7 +49,7 @@ class TransactionServiceTest {
         User user = new User("Test User");
         user.setId(1L);
 
-        category = new Category("Food");
+        category = new Category("Food", 1L);
         category.setId(1L);
 
         bankAccount = new BankAccount("Test Account", user);

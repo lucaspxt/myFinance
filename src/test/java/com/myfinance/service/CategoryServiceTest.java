@@ -26,6 +26,9 @@ class CategoryServiceTest {
     @Mock
     private CategoryRepository categoryRepository;
 
+    @Mock
+    private UserService userService;
+
     @InjectMocks
     private CategoryService categoryService;
 
@@ -33,18 +36,20 @@ class CategoryServiceTest {
 
     @BeforeEach
     void setUp() {
-        category = new Category("Food");
+        category = new Category("Food", 1L);
         category.setId(1L);
     }
 
     @Test
     void create_success() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
         when(categoryRepository.save(any(Category.class))).thenReturn(category);
 
         Category result = categoryService.create("Food");
 
         assertNotNull(result);
         assertEquals("Food", result.getName());
+        assertEquals(1L, result.getUserId());
         verify(categoryRepository).save(any(Category.class));
     }
 
@@ -67,7 +72,8 @@ class CategoryServiceTest {
 
     @Test
     void getAll_success() {
-        when(categoryRepository.findAll()).thenReturn(List.of(category));
+        when(userService.getCurrentUserId()).thenReturn(1L);
+        when(categoryRepository.findByUserId(1L)).thenReturn(List.of(category));
 
         List<Category> result = categoryService.getAll();
 
@@ -76,6 +82,7 @@ class CategoryServiceTest {
 
     @Test
     void update_success() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(categoryRepository.save(any(Category.class))).thenAnswer(inv -> inv.getArgument(0));
 
@@ -87,6 +94,7 @@ class CategoryServiceTest {
 
     @Test
     void update_archived_success() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(categoryRepository.save(any(Category.class))).thenAnswer(inv -> inv.getArgument(0));
 
@@ -98,7 +106,16 @@ class CategoryServiceTest {
 
     @Test
     void update_notFound_throwsException() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
         when(categoryRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> categoryService.update(1L, "Food", false));
+    }
+
+    @Test
+    void update_wrongUser_throwsException() {
+        when(userService.getCurrentUserId()).thenReturn(2L);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
 
         assertThrows(RuntimeException.class, () -> categoryService.update(1L, "Food", false));
     }

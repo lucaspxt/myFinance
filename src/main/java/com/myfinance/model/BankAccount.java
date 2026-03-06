@@ -1,5 +1,6 @@
 package com.myfinance.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +22,11 @@ public class BankAccount {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Column(name = "default_account")
+    private boolean defaultAccount;
+
+    private boolean archived;
 
     public BankAccount() {
     }
@@ -52,5 +58,21 @@ public class BankAccount {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isDefaultAccount() {
+        return defaultAccount;
+    }
+
+    public void setDefaultAccount(boolean defaultAccount) {
+        this.defaultAccount = defaultAccount;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 }

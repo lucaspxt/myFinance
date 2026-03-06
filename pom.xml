@@ -70,6 +70,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Flyway Database Migrations -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
         <!-- H2 in-memory database for tests -->
         <dependency>
             <groupId>com.h2database</groupId>

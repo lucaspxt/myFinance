@@ -7,30 +7,29 @@ import com.myfinance.model.TransactionType;
 import com.myfinance.repository.BankAccountRepository;
 import com.myfinance.repository.CategoryRepository;
 import com.myfinance.repository.TransactionRepository;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final BankAccountRepository bankAccountRepository;
     private final CategoryRepository categoryRepository;
-
-    public TransactionService(TransactionRepository transactionRepository,
-                              BankAccountRepository bankAccountRepository,
-                              CategoryRepository categoryRepository) {
-        this.transactionRepository = transactionRepository;
-        this.bankAccountRepository = bankAccountRepository;
-        this.categoryRepository = categoryRepository;
-    }
+    private final UserService userService;
 
     public Transaction create(TransactionType type, Long categoryId, Long bankAccountId, Double value) {
+        Long userId = userService.getCurrentUserId();
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
         BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
-                .orElseThrow(() -> new RuntimeException("BankAccount not found with id: " + bankAccountId));
+                .orElse(bankAccountRepository.findByUserIdAndDefaultAccountTrue(userId)
+                        .orElseThrow(() -> new RuntimeException("Default bank account not found for user: " + userId)));
         Transaction transaction = new Transaction(type, category, bankAccount, value);
         return transactionRepository.save(transaction);
     }
@@ -41,7 +40,8 @@ public class TransactionService {
     }
 
     public List<Transaction> getAll() {
-        return transactionRepository.findAll();
+        Long userId = userService.getCurrentUserId();
+        return transactionRepository.findByUserId(userId);
     }
 
     public Transaction update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value) {

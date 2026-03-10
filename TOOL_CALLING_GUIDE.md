@@ -14,10 +14,11 @@ Class that exposes 8 tools to the AI assistant:
   - Accepts names (not IDs!) for category and bank account
   - Automatically validates if the category and account exist
   - Uses the default account if none is specified
+  - Optional `description` parameter to document what the transaction represents (e.g., "Lunch at restaurant", "Monthly rent payment")
   - Returns user-friendly success or error messages
 
 - **`updateTransaction()`**: Updates an existing transaction
-  - Parameters: transactionId, type, categoryName, bankAccountName, value
+  - Parameters: transactionId, type, categoryName, bankAccountName, value, description (optional)
   - Validates user ownership before updating
   - Returns confirmation with updated details
 
@@ -26,7 +27,7 @@ Class that exposes 8 tools to the AI assistant:
   - Returns deletion confirmation
 
 - **`getTransactionHistory()`**: Lists all user transactions
-  - Returns formatted list with ID, Type, Category, Account, Amount
+  - Returns formatted list with ID, Type, Category, Account, Amount, and Description (if present)
   - Automatically filtered by current user
 
 #### Category Management
@@ -51,6 +52,30 @@ Updated `@SystemMessage` to the `chat()` method listing all available tools and 
 
 ### 3. **TransactionService.java** (modified)
 Fixed `getAll()` method to filter transactions by current user ID for security.
+
+### 4. **Transaction.java** (modified)
+Added `description` field to the Transaction entity to store contextual information about each transaction:
+- New field: `private String description;`
+- Updated constructors to support optional description parameter
+- Description appears in transaction history when present
+
+### 5. **V5__add_description_to_transactions.sql** (new)
+Flyway database migration to add the description column:
+```sql
+ALTER TABLE transactions ADD COLUMN description VARCHAR(500);
+```
+
+### 6. **BalanceService.java** (new)
+Service layer for balance calculations:
+- `getTotalBalance()` - calculates net balance (income - expenses)
+- `getBalanceByBankAccount()` - balance grouped by account
+- `getBalanceByCategory()` - balance grouped by category
+
+### 7. **BalanceTools.java** (new)
+Class that exposes 3 balance query tools to the AI assistant:
+- `getTotalBalance()` - returns formatted total balance with emoji indicator
+- `getBalanceByBankAccount()` - lists balance per account
+- `getBalanceByCategory()` - lists balance per category with CREDIT/DEBIT indicators
 
 ## How It Works
 
@@ -89,16 +114,19 @@ Fixed `getAll()` method to filter transactions by current user ID for security.
 **Assistant:** *[calls createTransaction automatically]* "✅ Transaction created! Your salary of $5000 has been registered as income."
 
 **User:** "I paid $150 for the electricity bill"
-**Assistant:** *[calls createTransaction]* "✅ Transaction created! Expense of $150 registered in the Bills category."
+**Assistant:** *[calls createTransaction with description]* "✅ Transaction created! Expense of $150 registered in the Bills category. Description: Electricity bill"
 
-**User:** "Update transaction 42 to $175 in the Utilities category"
-**Assistant:** *[calls updateTransaction]* "✅ Transaction updated successfully! ID: 42, Amount: $175, Category: Utilities"
+**User:** "I spent $45.50 at Starbucks for coffee and snacks"
+**Assistant:** *[calls createTransaction]* "✅ Transaction created successfully!\nType: Expense\nCategory: Food\nAccount: Wallet\nAmount: $45.50\nDescription: Coffee and snacks at Starbucks"
+
+**User:** "Update transaction 42 to $175 in the Utilities category with description Monthly internet service"
+**Assistant:** *[calls updateTransaction]* "✅ Transaction updated successfully! ID: 42, Amount: $175, Category: Utilities, Description: Monthly internet service"
 
 **User:** "Delete transaction 15"
 **Assistant:** *[calls deleteTransaction]* "✅ Transaction #15 deleted successfully!"
 
 **User:** "Show my transaction history"
-**Assistant:** *[calls getTransactionHistory]* "Transaction History:\n\nID: 1 | Income | Salary | Main Account | $5000.00\nID: 2 | Expense | Food | Wallet | $50.00..."
+**Assistant:** *[calls getTransactionHistory]* "Transaction History:\n\nID: 1 | Income | Salary | Main Account | $5000.00\nID: 2 | Expense | Food | Wallet | $45.50 | Coffee and snacks at Starbucks..."
 
 ### Category Management:
 
@@ -129,14 +157,17 @@ Fixed `getAll()` method to filter transactions by current user ID for security.
 
 | Tool | Purpose | Parameters |
 |------|---------|------------|
-| `createTransaction` | Create new transaction | type, categoryName, bankAccountName, value |
-| `updateTransaction` | Update existing transaction | transactionId, type, categoryName, bankAccountName, value |
+| `createTransaction` | Create new transaction | type, categoryName, bankAccountName, value, description (optional) |
+| `updateTransaction` | Update existing transaction | transactionId, type, categoryName, bankAccountName, value, description (optional) |
 | `deleteTransaction` | Delete transaction | transactionId |
 | `getTransactionHistory` | List all transactions | none |
 | `listCategories` | List all categories | none |
 | `createCategory` | Create new category | categoryName |
 | `listBankAccounts` | List all bank accounts | none |
 | `createBankAccount` | Create new account | accountName, setAsDefault |
+| `getTotalBalance` | Get total balance | none |
+| `getBalanceByBankAccount` | Get balance per account | none |
+| `getBalanceByCategory` | Get balance per category | none |
 
 ## Next Steps (Optional)
 

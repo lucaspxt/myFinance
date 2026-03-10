@@ -36,19 +36,22 @@ public class TransactionTools {
             - categoryName: category name (use listCategories to see available ones)
             - bankAccountName: bank account name (use listBankAccounts to see available ones). Leave blank to use default account.
             - value: transaction amount
+            - description: optional description of what the transaction represents
              Example usage:
              createTransaction(
                 type="DEBIT",
                 categoryName="Food",
                 bankAccountName="Wallet",
-                value=50.75
+                value=50.75,
+                description="Lunch at restaurant"
              )
              """)
     public String createTransaction(
             String type,
             String categoryName,
             String bankAccountName,
-            Double value) {
+            Double value,
+            String description) {
         try {
             Long userId = userService.getCurrentUserId();
 
@@ -85,14 +88,21 @@ public class TransactionTools {
                     transactionType,
                     category.get().getId(),
                     bankAccount.get().getId(),
-                    value
+                    value,
+                    description
             );
 
-            return String.format("✅ Transaction created successfully!\nType: %s\nCategory: %s\nAccount: %s\nAmount: $ %.2f",
+            String result = String.format("✅ Transaction created successfully!\nType: %s\nCategory: %s\nAccount: %s\nAmount: $ %.2f",
                     transactionType == TransactionType.CREDIT ? "Income" : "Expense",
                     category.get().getName(),
                     bankAccount.get().getName(),
                     value);
+            
+            if (description != null && !description.isBlank()) {
+                result += "\nDescription: " + description;
+            }
+            
+            return result;
         } catch (Exception e) {
             return "❌ Error creating transaction: " + e.getMessage();
         }
@@ -147,13 +157,15 @@ public class TransactionTools {
             - categoryName: new category name
             - bankAccountName: new bank account name
             - value: new transaction amount
+            - description: optional description of what the transaction represents
             """)
     public String updateTransaction(
             Long transactionId,
             String type,
             String categoryName,
             String bankAccountName,
-            Double value) {
+            Double value,
+            String description) {
         try {
             Long userId = userService.getCurrentUserId();
 
@@ -189,15 +201,22 @@ public class TransactionTools {
                     transactionType,
                     category.get().getId(),
                     bankAccount.get().getId(),
-                    value
+                    value,
+                    description
             );
 
-            return String.format("✅ Transaction updated successfully!\nID: %d\nType: %s\nCategory: %s\nAccount: %s\nAmount: $ %.2f",
+            String result = String.format("✅ Transaction updated successfully!\nID: %d\nType: %s\nCategory: %s\nAccount: %s\nAmount: $ %.2f",
                     transactionId,
                     transactionType == TransactionType.CREDIT ? "Income" : "Expense",
                     category.get().getName(),
                     bankAccount.get().getName(),
                     value);
+            
+            if (description != null && !description.isBlank()) {
+                result += "\nDescription: " + description;
+            }
+            
+            return result;
         } catch (Exception e) {
             return "❌ Error updating transaction: " + e.getMessage();
         }
@@ -239,12 +258,18 @@ public class TransactionTools {
 
             StringBuilder history = new StringBuilder("Transaction History:\n\n");
             for (Transaction t : transactions) {
-                history.append(String.format("ID: %d | %s | %s | %s | $ %.2f\n",
+                history.append(String.format("ID: %d | %s | %s | %s | $ %.2f",
                         t.getId(),
                         t.getType() == TransactionType.CREDIT ? "Income" : "Expense",
                         t.getCategory().getName(),
                         t.getBankAccount().getName(),
                         t.getValue()));
+                
+                if (t.getDescription() != null && !t.getDescription().isBlank()) {
+                    history.append(String.format(" | %s", t.getDescription()));
+                }
+                
+                history.append("\n");
             }
 
             return history.toString();

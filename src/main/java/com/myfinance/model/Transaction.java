@@ -37,10 +37,20 @@ public class Transaction {
 
     private Double value;
 
+    private String description;
+
     public Transaction(TransactionType type, Category category, BankAccount bankAccount, Double value) {
         this.type = type;
         this.category = category;
         this.bankAccount = bankAccount;
         this.value = value;
+    }
+
+    public Transaction(TransactionType type, Category category, BankAccount bankAccount, Double value, String description) {
+        this.type = type;
+        this.category = category;
+        this.bankAccount = bankAccount;
+        this.value = value;
+        this.description = description;
     }
 }

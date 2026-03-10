@@ -12,6 +12,7 @@ import com.myfinance.service.TransactionService;
 import com.myfinance.service.UserService;
 import dev.langchain4j.agent.tool.Tool;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @AllArgsConstructor
 @Component
 public class TransactionTools {
@@ -52,6 +54,8 @@ public class TransactionTools {
             String bankAccountName,
             Double value,
             String description) {
+        log.debug("[TOOL] createTransaction called - type: {}, categoryName: {}, bankAccountName: {}, value: {}, description: {}",
+                type, categoryName, bankAccountName, value, description);
         try {
             Long userId = userService.getCurrentUserId();
 
@@ -110,6 +114,7 @@ public class TransactionTools {
 
     @Tool("Lists all categories available to the user")
     public String listCategories() {
+        log.debug("[TOOL] listCategories called");
         try {
             Long userId = userService.getCurrentUserId();
             List<Category> categories = categoryRepository.findByUserId(userId);
@@ -130,6 +135,7 @@ public class TransactionTools {
 
     @Tool("Lists all bank accounts available to the user")
     public String listBankAccounts() {
+        log.debug("[TOOL] listBankAccounts called");
         try {
             Long userId = userService.getCurrentUserId();
             List<BankAccount> accounts = bankAccountRepository.findByUserId(userId);
@@ -166,6 +172,8 @@ public class TransactionTools {
             String bankAccountName,
             Double value,
             String description) {
+        log.debug("[TOOL] updateTransaction called - transactionId: {}, type: {}, categoryName: {}, bankAccountName: {}, value: {}, description: {}",
+                transactionId, type, categoryName, bankAccountName, value, description);
         try {
             Long userId = userService.getCurrentUserId();
 
@@ -227,6 +235,7 @@ public class TransactionTools {
             - transactionId: ID of the transaction to delete
             """)
     public String deleteTransaction(Long transactionId) {
+        log.debug("[TOOL] deleteTransaction called - transactionId: {}", transactionId);
         try {
             Long userId = userService.getCurrentUserId();
 
@@ -249,6 +258,7 @@ public class TransactionTools {
             Returns a formatted list with transaction details.
             """)
     public String getTransactionHistory() {
+        log.debug("[TOOL] getTransactionHistory called");
         try {
             List<Transaction> transactions = transactionService.getAll();
 
@@ -283,6 +293,7 @@ public class TransactionTools {
             - categoryName: name of the category to create
             """)
     public String createCategory(String categoryName) {
+        log.debug("[TOOL] createCategory called - categoryName: {}", categoryName);
         try {
             Category category = categoryService.create(categoryName);
 
@@ -300,6 +311,7 @@ public class TransactionTools {
             - setAsDefault: true to set this as the default account, false otherwise
             """)
     public String createBankAccount(String accountName, boolean setAsDefault) {
+        log.debug("[TOOL] createBankAccount called - accountName: {}, setAsDefault: {}", accountName, setAsDefault);
         try {
             BankAccount account = bankAccountService.create(accountName, setAsDefault);
 

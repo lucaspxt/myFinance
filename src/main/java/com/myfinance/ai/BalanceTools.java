@@ -7,10 +7,12 @@ import com.myfinance.service.BalanceService;
 import com.myfinance.service.UserService;
 import dev.langchain4j.agent.tool.Tool;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Slf4j
 @AllArgsConstructor
 @Component
 public class BalanceTools {
@@ -23,6 +25,7 @@ public class BalanceTools {
             Returns total balance (income - expenses), total income, and total expenses.
             """)
     public String getTotalBalance() {
+        log.debug("[TOOL] getTotalBalance called");
         try {
             Long userId = userService.getCurrentUserId();
             TotalBalanceDTO balance = balanceService.getTotalBalance(userId);
@@ -47,6 +50,7 @@ public class BalanceTools {
             Shows how much money is in each account (income - expenses per account).
             """)
     public String getBalanceByBankAccount() {
+        log.debug("[TOOL] getBalanceByBankAccount called");
         try {
             Long userId = userService.getCurrentUserId();
             List<BankAccountBalanceDTO> balances = balanceService.getBalanceByBankAccount(userId);
@@ -74,6 +78,7 @@ public class BalanceTools {
             Useful to see spending/earning patterns by category.
             """)
     public String getBalanceByCategory() {
+        log.debug("[TOOL] getBalanceByCategory called");
         try {
             Long userId = userService.getCurrentUserId();
             List<CategoryBalanceDTO> balances = balanceService.getBalanceByCategory(userId);

@@ -12,6 +12,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+logging:
+  level:
+    com.myfinance.ai: DEBUG
+
 langchain4j:
   open-ai:
     chat-model:

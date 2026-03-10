@@ -1,0 +1,15 @@
+package com.myfinance.controller.dto;
+
+import com.myfinance.model.TransactionType;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class TransactionRequest {
+
+    private TransactionType type;
+    private Long categoryId;
+    private Long bankAccountId;
+    private Double value;
+}

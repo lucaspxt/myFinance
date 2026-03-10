@@ -61,15 +61,25 @@ public class ChatService {
             if (extraction == null
                     || extraction.type() == null
                     || extraction.categoryName() == null
-                    || extraction.bankAccountName() == null
                     || extraction.value() == null) {
                 return;
             }
 
             Optional<Category> category = categoryRepository.findByUserIdAndNameIgnoreCase(userId, extraction.categoryName());
-            Optional<BankAccount> bankAccount = bankAccountRepository.findByUserIdAndNameIgnoreCase(userId, extraction.bankAccountName());
+            if (category.isEmpty()) {
+                return;
+            }
 
-            if (category.isEmpty() || bankAccount.isEmpty()) {
+            // Use default bank account if not specified
+            Optional<BankAccount> bankAccount;
+            if (extraction.bankAccountName() == null || extraction.bankAccountName().isBlank()) {
+                bankAccount = bankAccountRepository.findByUserIdAndDefaultAccountTrue(userId);
+            } else {
+                bankAccount = bankAccountRepository.findByUserIdAndNameIgnoreCase(userId, extraction.bankAccountName());
+            }
+
+            if (bankAccount.isEmpty()) {
+                log.warn("Bank account not found for extraction: {}", extraction);
                 return;
             }
 

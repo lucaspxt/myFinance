@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -24,17 +25,21 @@ public class TransactionService {
     private final UserService userService;
 
     public Transaction create(TransactionType type, Long categoryId, Long bankAccountId, Double value) {
-        return create(type, categoryId, bankAccountId, value, null);
+        return create(type, categoryId, bankAccountId, value, null, null);
     }
 
     public Transaction create(TransactionType type, Long categoryId, Long bankAccountId, Double value, String description) {
+        return create(type, categoryId, bankAccountId, value, description, null);
+    }
+
+    public Transaction create(TransactionType type, Long categoryId, Long bankAccountId, Double value, String description, LocalDateTime createdAt) {
         Long userId = userService.getCurrentUserId();
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
         BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
                 .orElse(bankAccountRepository.findByUserIdAndDefaultAccountTrue(userId)
                         .orElseThrow(() -> new RuntimeException("Default bank account not found for user: " + userId)));
-        Transaction transaction = new Transaction(type, category, bankAccount, value, description);
+        Transaction transaction = new Transaction(type, category, bankAccount, value, description, createdAt);
         return transactionRepository.save(transaction);
     }
 
@@ -49,10 +54,14 @@ public class TransactionService {
     }
 
     public Transaction update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value) {
-        return update(id, type, categoryId, bankAccountId, value, null);
+        return update(id, type, categoryId, bankAccountId, value, null, null);
     }
 
     public Transaction update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value, String description) {
+        return update(id, type, categoryId, bankAccountId, value, description, null);
+    }
+
+    public Transaction update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value, String description, LocalDateTime createdAt) {
         Transaction transaction = get(id);
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
@@ -63,6 +72,9 @@ public class TransactionService {
         transaction.setBankAccount(bankAccount);
         transaction.setValue(value);
         transaction.setDescription(description);
+        if (createdAt != null) {
+            transaction.setCreatedAt(createdAt);
+        }
         return transactionRepository.save(transaction);
     }
 

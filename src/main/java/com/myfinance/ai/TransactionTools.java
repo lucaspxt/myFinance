@@ -16,6 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,13 +43,15 @@ public class TransactionTools {
             - bankAccountName: bank account name (use listBankAccounts to see available ones). Leave blank to use default account.
             - value: transaction amount
             - description: optional description of what the transaction represents
+            - transactionDate: optional date of the transaction in format yyyy-MM-dd (e.g., "2026-03-10") or yyyy-MM-ddTHH:mm:ss. Default is today.
              Example usage:
              createTransaction(
                 type="DEBIT",
                 categoryName="Food",
                 bankAccountName="Wallet",
                 value=50.75,
-                description="Lunch at restaurant"
+                description="Lunch at restaurant",
+                transactionDate="2026-03-10"
              )
              """)
     public String createTransaction(
@@ -53,9 +59,10 @@ public class TransactionTools {
             String categoryName,
             String bankAccountName,
             Double value,
-            String description) {
-        log.debug("[TOOL] createTransaction called - type: {}, categoryName: {}, bankAccountName: {}, value: {}, description: {}",
-                type, categoryName, bankAccountName, value, description);
+            String description,
+            String transactionDate) {
+        log.debug("[TOOL] createTransaction called - type: {}, categoryName: {}, bankAccountName: {}, value: {}, description: {}, transactionDate: {}",
+                type, categoryName, bankAccountName, value, description, transactionDate);
         try {
             Long userId = userService.getCurrentUserId();
 
@@ -87,13 +94,30 @@ public class TransactionTools {
                 }
             }
 
+            // Parse transaction date
+            LocalDateTime createdAt = null;
+            if (transactionDate != null && !transactionDate.isBlank()) {
+                try {
+                    // Try parsing as LocalDateTime first (yyyy-MM-ddTHH:mm:ss)
+                    createdAt = LocalDateTime.parse(transactionDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                } catch (DateTimeParseException e1) {
+                    try {
+                        // Try parsing as LocalDate (yyyy-MM-dd) and convert to LocalDateTime at start of day
+                        createdAt = LocalDate.parse(transactionDate, DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay();
+                    } catch (DateTimeParseException e2) {
+                        return "Invalid date format. Use yyyy-MM-dd (e.g., 2026-03-10) or yyyy-MM-ddTHH:mm:ss (e.g., 2026-03-10T14:30:00).";
+                    }
+                }
+            }
+
             // Create transaction
             transactionService.create(
                     transactionType,
                     category.get().getId(),
                     bankAccount.get().getId(),
                     value,
-                    description
+                    description,
+                    createdAt
             );
 
             String result = String.format("✅ Transaction created successfully!\nType: %s\nCategory: %s\nAccount: %s\nAmount: $ %.2f",
@@ -104,6 +128,10 @@ public class TransactionTools {
             
             if (description != null && !description.isBlank()) {
                 result += "\nDescription: " + description;
+            }
+            
+            if (createdAt != null) {
+                result += "\nDate: " + createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             }
             
             return result;
@@ -164,6 +192,7 @@ public class TransactionTools {
             - bankAccountName: new bank account name
             - value: new transaction amount
             - description: optional description of what the transaction represents
+            - transactionDate: optional date of the transaction in format yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss
             """)
     public String updateTransaction(
             Long transactionId,
@@ -171,9 +200,10 @@ public class TransactionTools {
             String categoryName,
             String bankAccountName,
             Double value,
-            String description) {
-        log.debug("[TOOL] updateTransaction called - transactionId: {}, type: {}, categoryName: {}, bankAccountName: {}, value: {}, description: {}",
-                transactionId, type, categoryName, bankAccountName, value, description);
+            String description,
+            String transactionDate) {
+        log.debug("[TOOL] updateTransaction called - transactionId: {}, type: {}, categoryName: {}, bankAccountName: {}, value: {}, description: {}, transactionDate: {}",
+                transactionId, type, categoryName, bankAccountName, value, description, transactionDate);
         try {
             Long userId = userService.getCurrentUserId();
 
@@ -203,6 +233,20 @@ public class TransactionTools {
                 return "Bank account not found: " + bankAccountName;
             }
 
+            // Parse transaction date
+            LocalDateTime createdAt = null;
+            if (transactionDate != null && !transactionDate.isBlank()) {
+                try {
+                    createdAt = LocalDateTime.parse(transactionDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                } catch (DateTimeParseException e1) {
+                    try {
+                        createdAt = LocalDate.parse(transactionDate, DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay();
+                    } catch (DateTimeParseException e2) {
+                        return "Invalid date format. Use yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss.";
+                    }
+                }
+            }
+
             // Update transaction
             transactionService.update(
                     transactionId,
@@ -210,7 +254,8 @@ public class TransactionTools {
                     category.get().getId(),
                     bankAccount.get().getId(),
                     value,
-                    description
+                    description,
+                    createdAt
             );
 
             String result = String.format("✅ Transaction updated successfully!\nID: %d\nType: %s\nCategory: %s\nAccount: %s\nAmount: $ %.2f",
@@ -222,6 +267,10 @@ public class TransactionTools {
             
             if (description != null && !description.isBlank()) {
                 result += "\nDescription: " + description;
+            }
+            
+            if (createdAt != null) {
+                result += "\nDate: " + createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             }
             
             return result;
@@ -267,9 +316,11 @@ public class TransactionTools {
             }
 
             StringBuilder history = new StringBuilder("Transaction History:\n\n");
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             for (Transaction t : transactions) {
-                history.append(String.format("ID: %d | %s | %s | %s | $ %.2f",
+                history.append(String.format("ID: %d | %s | %s | %s | %s | $ %.2f",
                         t.getId(),
+                        t.getCreatedAt() != null ? t.getCreatedAt().format(dateFormatter) : "N/A",
                         t.getType() == TransactionType.CREDIT ? "Income" : "Expense",
                         t.getCategory().getName(),
                         t.getBankAccount().getName(),

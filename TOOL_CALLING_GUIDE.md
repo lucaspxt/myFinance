@@ -15,10 +15,11 @@ Class that exposes 8 tools to the AI assistant:
   - Automatically validates if the category and account exist
   - Uses the default account if none is specified
   - Optional `description` parameter to document what the transaction represents (e.g., "Lunch at restaurant", "Monthly rent payment")
+  - Optional `transactionDate` parameter in format yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss (default: today)
   - Returns user-friendly success or error messages
 
 - **`updateTransaction()`**: Updates an existing transaction
-  - Parameters: transactionId, type, categoryName, bankAccountName, value, description (optional)
+  - Parameters: transactionId, type, categoryName, bankAccountName, value, description (optional), transactionDate (optional)
   - Validates user ownership before updating
   - Returns confirmation with updated details
 
@@ -27,7 +28,7 @@ Class that exposes 8 tools to the AI assistant:
   - Returns deletion confirmation
 
 - **`getTransactionHistory()`**: Lists all user transactions
-  - Returns formatted list with ID, Type, Category, Account, Amount, and Description (if present)
+  - Returns formatted list with ID, Date, Type, Category, Account, Amount, and Description (if present)
   - Automatically filtered by current user
 
 #### Category Management
@@ -59,19 +60,30 @@ Added `description` field to the Transaction entity to store contextual informat
 - Updated constructors to support optional description parameter
 - Description appears in transaction history when present
 
+Added `createdAt` field to the Transaction entity to store the transaction date:
+- New field: `private LocalDateTime createdAt;`
+- Updated constructors to support optional createdAt parameter (defaults to LocalDateTime.now())
+- Transaction date appears in transaction history and confirmation messages
+
 ### 5. **V5__add_description_to_transactions.sql** (new)
 Flyway database migration to add the description column:
 ```sql
 ALTER TABLE transactions ADD COLUMN description VARCHAR(500);
 ```
 
-### 6. **BalanceService.java** (new)
+### 6. **V6__add_created_at_to_transactions.sql** (new)
+Flyway database migration to add the created_at column:
+```sql
+ALTER TABLE transactions ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+```
+
+### 7. **BalanceService.java** (new)
 Service layer for balance calculations:
 - `getTotalBalance()` - calculates net balance (income - expenses)
 - `getBalanceByBankAccount()` - balance grouped by account
 - `getBalanceByCategory()` - balance grouped by category
 
-### 7. **BalanceTools.java** (new)
+### 8. **BalanceTools.java** (new)
 Class that exposes 3 balance query tools to the AI assistant:
 - `getTotalBalance()` - returns formatted total balance with emoji indicator
 - `getBalanceByBankAccount()` - lists balance per account
@@ -113,11 +125,11 @@ Class that exposes 3 balance query tools to the AI assistant:
 **User:** "I received my salary of $5000"
 **Assistant:** *[calls createTransaction automatically]* "✅ Transaction created! Your salary of $5000 has been registered as income."
 
-**User:** "I paid $150 for the electricity bill"
-**Assistant:** *[calls createTransaction with description]* "✅ Transaction created! Expense of $150 registered in the Bills category. Description: Electricity bill"
+**User:** "I paid $150 for the electricity bill on March 5th"
+**Assistant:** *[calls createTransaction with description and date]* "✅ Transaction created successfully!\nType: Expense\nCategory: Bills\nAccount: Main Account\nAmount: $150.00\nDescription: Electricity bill\nDate: 2026-03-05 00:00"
 
-**User:** "I spent $45.50 at Starbucks for coffee and snacks"
-**Assistant:** *[calls createTransaction]* "✅ Transaction created successfully!\nType: Expense\nCategory: Food\nAccount: Wallet\nAmount: $45.50\nDescription: Coffee and snacks at Starbucks"
+**User:** "I spent $45.50 at Starbucks for coffee and snacks yesterday"
+**Assistant:** *[calls createTransaction with date]* "✅ Transaction created successfully!\nType: Expense\nCategory: Food\nAccount: Wallet\nAmount: $45.50\nDescription: Coffee and snacks at Starbucks\nDate: 2026-03-09 00:00"
 
 **User:** "Update transaction 42 to $175 in the Utilities category with description Monthly internet service"
 **Assistant:** *[calls updateTransaction]* "✅ Transaction updated successfully! ID: 42, Amount: $175, Category: Utilities, Description: Monthly internet service"
@@ -126,7 +138,7 @@ Class that exposes 3 balance query tools to the AI assistant:
 **Assistant:** *[calls deleteTransaction]* "✅ Transaction #15 deleted successfully!"
 
 **User:** "Show my transaction history"
-**Assistant:** *[calls getTransactionHistory]* "Transaction History:\n\nID: 1 | Income | Salary | Main Account | $5000.00\nID: 2 | Expense | Food | Wallet | $45.50 | Coffee and snacks at Starbucks..."
+**Assistant:** *[calls getTransactionHistory]* "Transaction History:\n\nID: 1 | 2026-03-10 14:30 | Income | Salary | Main Account | $5000.00\nID: 2 | 2026-03-09 00:00 | Expense | Food | Wallet | $45.50 | Coffee and snacks at Starbucks..."
 
 ### Category Management:
 
@@ -157,8 +169,8 @@ Class that exposes 3 balance query tools to the AI assistant:
 
 | Tool | Purpose | Parameters |
 |------|---------|------------|
-| `createTransaction` | Create new transaction | type, categoryName, bankAccountName, value, description (optional) |
-| `updateTransaction` | Update existing transaction | transactionId, type, categoryName, bankAccountName, value, description (optional) |
+| `createTransaction` | Create new transaction | type, categoryName, bankAccountName, value, description (optional), transactionDate (optional) |
+| `updateTransaction` | Update existing transaction | transactionId, type, categoryName, bankAccountName, value, description (optional), transactionDate (optional) |
 | `deleteTransaction` | Delete transaction | transactionId |
 | `getTransactionHistory` | List all transactions | none |
 | `listCategories` | List all categories | none |

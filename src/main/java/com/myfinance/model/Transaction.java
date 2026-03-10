@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "transactions")
 @Getter
@@ -39,18 +41,22 @@ public class Transaction {
 
     private String description;
 
+    private LocalDateTime createdAt;
+
     public Transaction(TransactionType type, Category category, BankAccount bankAccount, Double value) {
-        this.type = type;
-        this.category = category;
-        this.bankAccount = bankAccount;
-        this.value = value;
+        this(type, category, bankAccount, value, null, LocalDateTime.now());
     }
 
     public Transaction(TransactionType type, Category category, BankAccount bankAccount, Double value, String description) {
+        this(type, category, bankAccount, value, description, LocalDateTime.now());
+    }
+
+    public Transaction(TransactionType type, Category category, BankAccount bankAccount, Double value, String description, LocalDateTime createdAt) {
         this.type = type;
         this.category = category;
         this.bankAccount = bankAccount;
         this.value = value;
         this.description = description;
+        this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
     }
 }

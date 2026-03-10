@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5433/myfinance
     username: postgres
-    password: ${DATASOURCE_PASSWORD:changeme}
+    password: ${DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -31,7 +31,7 @@ langchain4j:
       port: ${DB_PORT:5433}
       database: ${DB_NAME:myfinance}
       user: ${DB_USERNAME:postgres}
-      password: ${DB_PASSWORD:changeme}
+      password: ${DB_PASSWORD:postgres}
       table: embeddings
       dimension: 1536
       create-table: true

@@ -1,0 +1,106 @@
+<header class="navbar navbar-expand-lg">
+  <div class="container">
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand" [attr.href]="homeLink">
+                <img src="logo-white.png" alt="Logo" class="header-logo">
+            </a>
+        </div>
+    <div *ngIf="showSteps" class="steps d-flex justify-content-between">
+        <div 
+            class="step d-flex flex-column align-items-center"
+            [ngClass]="{
+                'done': $any(appStatus) === 'chat' || $any(appStatus) === 'contact' || $any(appStatus) === 'done', 
+                'active': $any(appStatus) === 'chat',
+                'd-none': $any(appStatus) === 'error',
+                'hide-step': ['done', 'contact'].includes($any(appStatus))
+            }">
+            <div class="icon d-flex align-items-center justify-content-center">
+                <i class="fa-solid fa-comment"></i>
+            </div>
+            <p>{{ 'HEADER.STEPS.QUESTIONS' | translate }}</p>
+        </div>
+        <div
+            class="arrow d-flex flex-column align-items-center justify-content-center"
+            [ngClass]="{'hide-step': ['done', 'contact'].includes($any(appStatus)), 'd-none': $any(appStatus) === 'error'}">
+            <i class="fa-solid fa-angle-right"></i>
+            <p></p>
+        </div>
+        <div class="step d-flex flex-column align-items-center"
+                 [ngClass]="{
+                     'done': $any(appStatus) === 'done',
+                     'active': $any(appStatus) === 'contact',
+                     'd-none': $any(appStatus) === 'error',
+                     'hide-step': $any(appStatus) === 'done'
+                 }">
+            <div class="icon d-flex align-items-center justify-content-center">
+                <i class="fa-solid fa-at"></i>
+            </div>
+            <p>{{ 'HEADER.STEPS.CONTACT' | translate }}</p>
+        </div>
+        <div class="arrow d-flex flex-column align-items-center justify-content-center"
+            [ngClass]="{'hide-step': ['chat', 'done'].includes($any(appStatus)), 'd-none': $any(appStatus) === 'error'}">
+            <i class="fa-solid fa-angle-right"></i>
+            <p></p>
+        </div>
+        <div class="step d-flex flex-column align-items-center"
+                 [ngClass]="{
+                     'active': $any(appStatus) === 'done',
+                     'hide-step': $any(appStatus) === 'chat',
+                     'd-none': $any(appStatus) === 'error',
+                     'highlight-step': $any(appStatus) === 'done'
+                 }">
+            <div class="icon d-flex align-items-center justify-content-center">
+                <i class="fas fa-check"></i>
+            </div>
+            <p>{{ 'HEADER.STEPS.DONE' | translate }}</p>
+        </div>
+    </div>
+        <div class="d-flex align-items-center gap-3">
+            <div class="menu-wrapper">
+                <button class="hamburger btn btn-link" (click)="toggleMenu()"
+                        [attr.aria-label]="menuOpen ? 'Close menu' : 'Toggle menu'"
+                        [attr.aria-expanded]="menuOpen">
+                    <span class="hamburger-icon" aria-hidden="true">
+                        <i [ngClass]="menuOpen ? 'fa-solid fa-xmark fa-lg' : 'fa-solid fa-bars fa-lg'"></i>
+                    </span>
+                    <!-- Visually-hidden text for screen readers to announce state changes -->
+                    <span class="visually-hidden" aria-live="polite">{{ menuOpen ? 'Menu aberto' : 'Menu fechado' }}</span>
+                </button>
+
+                <!-- Simple hamburger menu dropdown -->
+                <div class="hamburger-menu" *ngIf="menuOpen">
+                    <!-- Close button for mobile full-screen menu -->
+                    <button class="hamburger close-btn d-md-none" (click)="toggleMenu()" aria-label="Close menu">
+                        <span class="hamburger-icon" aria-hidden="true">
+                            <i class="fa-solid fa-xmark fa-lg"></i>
+                        </span>
+                    </button>
+                    <div class="mb-md-3 mb-4">
+                        <a class="btn call-to-action" href="https://quasterai.com/" target="_blank">
+                            <span>{{ 'HEADER.VISIT_SITE' | translate }}</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square ms-2"></i>
+                        </a>
+                    </div>
+                    <div class="mb-md-3 mb-4">
+                        <label for="langSelect">{{ 'LANGUAGE.LABEL' | translate }}</label>
+                        <select id="langSelect" class="form-select" [value]="currentLang" (change)="onLanguageChange($any($event.target).value)">
+                            <option value="en">{{ 'LANGUAGE.ENGLISH' | translate }}</option>
+                            <option value="pt">{{ 'LANGUAGE.PORTUGUESE' | translate }}</option>
+                            <option value="es">{{ 'LANGUAGE.SPANISH' | translate }}</option>
+                            <option value="it">{{ 'LANGUAGE.ITALIAN' | translate }}</option>
+                            <option value="de">{{ 'LANGUAGE.GERMAN' | translate }}</option>
+                            <option value="fr">{{ 'LANGUAGE.FRENCH' | translate }}</option>
+                        </select>
+                    </div>
+                    <div class="division"></div>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="/">{{ 'HEADER.MENU.HOME' | translate }}</a></li>
+                        <li><a href="/privacy">{{ 'HEADER.MENU.PRIVACY' | translate }}</a></li>
+                        <li><a href="/terms">{{ 'HEADER.MENU.TERMS' | translate }}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+  </div>
+</header>
+<div class="space"></div>

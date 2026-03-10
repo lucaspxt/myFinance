@@ -1,0 +1,47 @@
+<div class="chat-container">
+    <app-header
+    [showSteps]="true"></app-header>
+    <div class="container container-content">
+        <div class="container-box">
+            <div class="container-header">
+                <span>{{ 'CHAT.HEADER' | translate }}</span>
+            </div>
+
+            <div class="container-body">
+                <div *ngIf="initialLoading" class="initial-spinner-overlay full-screen-overlay">
+                    <div class="overlay-center">
+                        <img src="/logo-white.png" alt="logo" class="overlay-logo" />
+                    </div>
+                </div>
+                <div class="chat-messages" [ngClass]="{'with-suggested-questions': shouldShowSuggestedQuestions()}" #chatMessagesContainer>
+                    <app-message *ngFor="let message of messages" [message]="message"></app-message>
+                    <div *ngIf="messages.length === 0" class="empty-chat">
+                        <p>{{ 'CHAT.LOADING' | translate }}</p>
+                    </div>
+                    <div class="suggested-questions" *ngIf="shouldShowSuggestedQuestions()">
+                        <div class="row">
+                            <div class="col-12 mb-1">
+                                <h6>{{ 'CHAT.SUGGESTED_TITLE' | translate }}</h6>
+                            </div>
+                            <div class="suggested-questions-scroll">
+                                <div class="question-card" *ngFor="let question of suggestedQuestions" (click)="sendMessage(question)">
+                                    <p>{{ question }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" class="form-control" 
+                           [(ngModel)]="newMessage" 
+                           placeholder="{{ 'CHAT.PLACEHOLDER' | translate }}" 
+                           (keyup.enter)="sendMessage()"
+                           [disabled]="isLoading">
+                    <button class="btn" (click)="sendMessage()" [disabled]="isLoading">
+                        <i class="fas" [ngClass]="{'fa-paper-plane': !isLoading, 'fa-spinner fa-spin': isLoading}"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

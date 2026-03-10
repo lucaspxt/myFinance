@@ -1,0 +1,86 @@
+{
+  "APP": {
+    "TITLE": "Quaster AI - Chat"
+  },
+  "HEADER": {
+    "VISIT_SITE": "visita sito",
+    "STEPS": {
+      "QUESTIONS": "Chat",
+      "CONTACT": "Email",
+      "DONE": "Fine"
+    },
+    "MENU": {
+      "HOME": "Home",
+      "PRIVACY": "Informativa sulla privacy",
+      "TERMS": "Termini di utilizzo"
+    }
+  },
+  "CHAT": {
+    "HEADER": "Chiedi, impara e richiedi un preventivo con il nostro assistente IA.",
+    "PLACEHOLDER": "Digita il tuo messaggio qui...",
+    "SEND": "Invia",
+    "START_CONVERSATION": "Inizia una conversazione con la nostra IA",
+    "LOADING": "Caricamento...",
+    "CONTINUE_BUTTON": "Continua",
+    "WELCOME_MESSAGE": "Ciao! Hai delle domande? Invia le tue domande qui!",
+    "ERROR_MESSAGE": "Spiacenti, abbiamo avuto un problema nell'elaborare la tua domanda. Riprova più tardi.",
+    "SUGGESTED_TITLE": "Domande suggerite:",
+    "SUGGESTED_QUESTIONS": {
+      "SERVICES": "Quali servizi offre Quaster AI?",
+      "BUSINESS": "Come può l'IA rendere la mia azienda più redditizia?",
+      "EXAMPLES": "Come le aziende del mio settore utilizzano l'IA oggi?"
+    },
+    "DONE": {
+      "SITE": "Visita sito",
+      "LINKEDIN": "LinkedIn",
+      "INSTAGRAM": "Instagram"
+    }
+  ,
+  "RETRY_BUTTON": "Riprova"
+  },
+  "LANGUAGE": {
+    "LABEL": "Lingua",
+    "ENGLISH": "English",
+    "PORTUGUESE": "Português",
+    "SPANISH": "Español",
+    "ITALIAN": "Italiano",
+    "GERMAN": "Deutsch",
+    "FRENCH": "Français"
+  },
+  "PRIVACY": {
+    "TITLE": "Informativa sulla privacy",
+    "INTRO": "Questa Informativa descrive come Quaster AI ('noi') raccoglie, usa, divulga e protegge le informazioni personali quando visiti o usi i nostri servizi.",
+    "SCOPE_TITLE": "Ambito",
+    "SCOPE_BODY": "Questa politica si applica alle informazioni raccolte tramite il nostro sito web, API, applicazioni e altri servizi online forniti da Quaster AI.",
+    "DATA_COLLECTION_TITLE": "Informazioni che raccogliamo",
+    "DATA_COLLECTION_BODY": "Possiamo raccogliere informazioni che fornisci direttamente (ad esempio, messaggi inviati alla chat, invii di moduli di contatto e dati di registrazione). Raccogliamo anche informazioni tecniche automaticamente (come indirizzo IP, dispositivo e browser e dati sull'uso) per aiutare a gestire e migliorare il servizio.",
+    "DATA_USE_TITLE": "Come utilizziamo le informazioni",
+    "DATA_USE_BODY": "Utilizziamo le informazioni raccolte per fornire e mantenere il servizio, rispondere alle richieste, migliorare i prodotti, rilevare e prevenire frodi e adempiere agli obblighi legali. I dati aggregati e anonimizzati possono essere utilizzati per analisi e ricerca.",
+    "SHARING_TITLE": "Condivisione e divulgazione",
+    "SHARING_BODY": "Non vendiamo dati personali. Possiamo condividere informazioni con fornitori di servizi che agiscono per nostro conto, con le nostre affiliate e quando richiesto dalla legge o per proteggere diritti legali. I servizi di terze parti integrati potrebbero avere proprie prassi di privacy."
+  },
+  "TERMS": {
+    "TITLE": "Termini di utilizzo",
+    "INTRO": "Questi Termini regolano il tuo accesso e utilizzo dei servizi Quaster AI. Utilizzando i nostri servizi accetti questi termini.",
+    "ACCEPTANCE_TITLE": "Accettazione dei termini",
+    "ACCEPTANCE_BODY": "Accedendo o utilizzando i nostri servizi, accetti di essere vincolato da questi Termini. Se non sei d'accordo, non utilizzare i servizi.",
+    "PERMITTED_USE_TITLE": "Uso consentito",
+    "PERMITTED_USE_BODY": "Accetti di utilizzare i servizi conformemente alla legge applicabile e di non abusare dei servizi (incluso tentare ingegneria inversa, sondare la sicurezza o inviare contenuti abusivi).",
+    "INTELLECTUAL_PROPERTY_TITLE": "Proprietà intellettuale",
+    "INTELLECTUAL_PROPERTY_BODY": "Il contenuto e la tecnologia forniti dai nostri servizi sono di proprietà o concessi in licenza a Quaster AI. Non puoi copiare, riprodurre o distribuire il nostro contenuto salvo che espressamente consentito.",
+    "LIMITATION_TITLE": "Limitazione di responsabilità",
+    "LIMITATION_BODY": "Nella misura massima consentita dalla legge, Quaster AI non sarà responsabile per danni indiretti, incidentali, speciali o consequenziali derivanti dall'uso dei servizi.",
+    "GOVERNING_LAW_TITLE": "Legge applicabile",
+    "GOVERNING_LAW_BODY": "Questi Termini sono regolati e interpretati in conformità con le leggi applicabili alla sede principale di Quaster AI.",
+    "CHANGES_TITLE": "Modifiche",
+    "CHANGES_BODY": "Potremmo aggiornare questi Termini di volta in volta. Pubblicheremo i Termini aggiornati e indicheremo la data di entrata in vigore; l'uso continuato dopo le modifiche costituisce accettazione.",
+    "CONTACT_TITLE": "Contatto",
+    "CONTACT_BODY": "Per domande relative a questi Termini, contattaci a contact@quasterai.com."
+  },
+  "COOKIES": {
+    "TITLE": "Usiamo cookie",
+    "DESCRIPTION": "Utilizziamo cookie e tecnologie simili per fornire, analizzare e migliorare i nostri servizi. Cliccando Accetta acconsenti all'uso dei cookie.",
+    "ACCEPT": "Accetta",
+    "DECLINE": "Rifiuta"
+  }
+}

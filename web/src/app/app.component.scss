@@ -1,0 +1,327 @@
+/* Confetti animation */
+.confetti-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 9999;
+  perspective: 700px;
+}
+
+.confetti {
+  position: absolute;
+  display: block;
+  width: 8px;
+  height: 16px;
+  top: -10px;
+  opacity: 0;
+  
+  &.square {
+    width: 12px;
+    height: 12px;
+  }
+  
+  &:nth-child(1) {
+    left: 3%;
+    background-color: #ffff00; /* yellow */
+    animation: confetti-fall 2.8s linear forwards, confetti-shake 2.2s ease-in-out forwards;
+    animation-delay: 0s;
+  }
+  &:nth-child(2) {
+    left: 12%;
+    background-color: #ff69b4; /* pink */
+    animation: confetti-fall 3s linear forwards, confetti-shake 2.5s ease-in-out forwards;
+    animation-delay: 0.1s;
+  }
+  &:nth-child(3) {
+    left: 23%;
+    background-color: #00bfff; /* blue */
+    animation: confetti-fall 2.7s linear forwards, confetti-shake 2.1s ease-in-out forwards;
+    animation-delay: 0.2s;
+  }
+  &:nth-child(4) {
+    left: 33%;
+    background-color: #ff4500; /* orange */
+    animation: confetti-fall 2.6s linear forwards, confetti-shake 2.0s ease-in-out forwards;
+    animation-delay: 0.15s;
+  }
+  &:nth-child(5) {
+    left: 45%;
+    background-color: #32cd32; /* green */
+    animation: confetti-fall 2.9s linear forwards, confetti-shake 2.3s ease-in-out forwards;
+    animation-delay: 0.25s;
+  }
+  &:nth-child(6) {
+    left: 57%;
+    background-color: #9932cc; /* purple */
+    animation: confetti-fall 3.2s linear forwards, confetti-shake 2.6s ease-in-out forwards;
+    animation-delay: 0.3s;
+  }
+  &:nth-child(7) {
+    left: 69%;
+    background-color: #ffff00; /* yellow */
+    animation: confetti-fall 2.6s linear forwards, confetti-shake 2.0s ease-in-out forwards;
+    animation-delay: 0.22s;
+  }
+  &:nth-child(8) {
+    left: 79%;
+    background-color: #ff69b4; /* pink */
+    animation: confetti-fall 3.1s linear forwards, confetti-shake 2.5s ease-in-out forwards;
+    animation-delay: 0.18s;
+  }
+  &:nth-child(9) {
+    left: 88%;
+    background-color: #00bfff; /* blue */
+    animation: confetti-fall 2.9s linear forwards, confetti-shake 2.3s ease-in-out forwards;
+    animation-delay: 0.27s;
+  }
+  &:nth-child(10) {
+    left: 97%;
+    background-color: #ff4500; /* orange */
+    animation: confetti-fall 2.7s linear forwards, confetti-shake 2.1s ease-in-out forwards;
+    animation-delay: 0.12s;
+  }
+  &:nth-child(11) {
+    left: 6%;
+    background-color: #32cd32; /* green */
+    animation: confetti-fall 2.8s linear forwards, confetti-shake 2.2s ease-in-out forwards;
+    animation-delay: 0.29s;
+  }
+  &:nth-child(12) {
+    left: 18%;
+    background-color: #9932cc; /* purple */
+    animation: confetti-fall 3s linear forwards, confetti-shake 2.4s ease-in-out forwards;
+    animation-delay: 0.19s;
+  }
+  &:nth-child(13) {
+    left: 29%;
+    background-color: #ffff00; /* yellow */
+    animation: confetti-fall 2.5s linear forwards, confetti-shake 1.9s ease-in-out forwards;
+    animation-delay: 0.24s;
+  }
+  &:nth-child(14) {
+    left: 39%;
+    background-color: #ff69b4; /* pink */
+    animation: confetti-fall 3.2s linear forwards, confetti-shake 2.6s ease-in-out forwards;
+    animation-delay: 0.16s;
+  }
+  &:nth-child(15) {
+    left: 52%;
+    background-color: #00bfff; /* blue */
+    animation: confetti-fall 2.7s linear forwards, confetti-shake 2.1s ease-in-out forwards;
+    animation-delay: 0.21s;
+  }
+  &:nth-child(16) {
+    left: 63%;
+    background-color: #ff4500; /* orange */
+    animation: confetti-fall 3.1s linear forwards, confetti-shake 2.5s ease-in-out forwards;
+    animation-delay: 0.14s;
+  }
+  &:nth-child(17) {
+    left: 72%;
+    background-color: #32cd32; /* green */
+    animation: confetti-fall 2.9s linear forwards, confetti-shake 2.3s ease-in-out forwards;
+    animation-delay: 0.23s;
+  }
+  &:nth-child(18) {
+    left: 83%;
+    background-color: #9932cc; /* purple */
+    animation: confetti-fall 2.6s linear forwards, confetti-shake 2s ease-in-out forwards;
+    animation-delay: 0.17s;
+  }
+  &:nth-child(19) {
+    left: 92%;
+    background-color: #ffff00; /* yellow */
+    animation: confetti-fall 3s linear forwards, confetti-shake 2.4s ease-in-out forwards;
+    animation-delay: 0.26s;
+  }
+  &:nth-child(20) {
+    left: 9%;
+    background-color: #ff69b4; /* pink */
+    animation: confetti-fall 2.7s linear forwards, confetti-shake 2.1s ease-in-out forwards;
+    animation-delay: 0.13s;
+  }
+  &:nth-child(21) {
+    left: 15%;
+    background-color: #ff4500; /* orange */
+    animation: confetti-fall 3s linear forwards, confetti-shake 2.4s ease-in-out forwards;
+    animation-delay: 0.08s;
+  }
+  &:nth-child(22) {
+    left: 27%;
+    background-color: #32cd32; /* green */
+    animation: confetti-fall 2.6s linear forwards, confetti-shake 2.0s ease-in-out forwards;
+    animation-delay: 0.31s;
+  }
+  &:nth-child(23) {
+    left: 42%;
+    background-color: #00bfff; /* blue */
+    animation: confetti-fall 2.8s linear forwards, confetti-shake 2.2s ease-in-out forwards;
+    animation-delay: 0.28s;
+  }
+  &:nth-child(24) {
+    left: 55%;
+    background-color: #ffff00; /* yellow */
+    animation: confetti-fall 2.7s linear forwards, confetti-shake 2.1s ease-in-out forwards;
+    animation-delay: 0.11s;
+  }
+  &:nth-child(25) {
+    left: 68%;
+    background-color: #ff69b4; /* pink */
+    animation: confetti-fall 3.1s linear forwards, confetti-shake 2.5s ease-in-out forwards;
+    animation-delay: 0.32s;
+  }
+  &:nth-child(26) {
+    left: 80%;
+    background-color: #9932cc; /* purple */
+    animation: confetti-fall 2.5s linear forwards, confetti-shake 1.9s ease-in-out forwards;
+    animation-delay: 0.05s;
+  }
+  &:nth-child(27) {
+    left: 95%;
+    background-color: #ff4500; /* orange */
+    animation: confetti-fall 2.9s linear forwards, confetti-shake 2.3s ease-in-out forwards;
+    animation-delay: 0.19s;
+  }
+  &:nth-child(28) {
+    left: 5%;
+    background-color: #00bfff; /* blue */
+    animation: confetti-fall 3.2s linear forwards, confetti-shake 2.6s ease-in-out forwards;
+    animation-delay: 0.33s;
+  }
+  &:nth-child(29) {
+    left: 20%;
+    background-color: #32cd32; /* green */
+    animation: confetti-fall 2.8s linear forwards, confetti-shake 2.2s ease-in-out forwards;
+    animation-delay: 0.27s;
+  }
+  &:nth-child(30) {
+    left: 36%;
+    background-color: #ffff00; /* yellow */
+    animation: confetti-fall 2.6s linear forwards, confetti-shake 2.0s ease-in-out forwards;
+    animation-delay: 0.08s;
+  }
+  &:nth-child(31) {
+    left: 48%;
+    background-color: #ff69b4; /* pink */
+    animation: confetti-fall 3s linear forwards, confetti-shake 2.4s ease-in-out forwards;
+    animation-delay: 0.21s;
+  }
+  &:nth-child(32) {
+    left: 61%;
+    background-color: #9932cc; /* purple */
+    animation: confetti-fall 2.7s linear forwards, confetti-shake 2.1s ease-in-out forwards;
+    animation-delay: 0.09s;
+  }
+  &:nth-child(33) {
+    left: 74%;
+    background-color: #ff4500; /* orange */
+    animation: confetti-fall 3.1s linear forwards, confetti-shake 2.5s ease-in-out forwards;
+    animation-delay: 0.26s;
+  }
+  &:nth-child(34) {
+    left: 87%;
+    background-color: #00bfff; /* blue */
+    animation: confetti-fall 2.6s linear forwards, confetti-shake 2.0s ease-in-out forwards;
+    animation-delay: 0.14s;
+  }
+  &:nth-child(35) {
+    left: 2%;
+    background-color: #32cd32; /* green */
+    animation: confetti-fall 2.8s linear forwards, confetti-shake 2.2s ease-in-out forwards;
+    animation-delay: 0.29s;
+  }
+  &:nth-child(36) {
+    left: 16%;
+    background-color: #ffff00; /* yellow */
+    animation: confetti-fall 3s linear forwards, confetti-shake 2.4s ease-in-out forwards;
+    animation-delay: 0.22s;
+    width: 12px;
+    height: 12px;
+  }
+  &:nth-child(37) {
+    left: 32%;
+    background-color: #ff69b4; /* pink */
+    animation: confetti-fall 2.7s linear forwards, confetti-shake 2.1s ease-in-out forwards;
+    animation-delay: 0.07s;
+    width: 12px;
+    height: 12px;
+  }
+  &:nth-child(38) {
+    left: 53%;
+    background-color: #9932cc; /* purple */
+    animation: confetti-fall 2.9s linear forwards, confetti-shake 2.3s ease-in-out forwards;
+    animation-delay: 0.25s;
+    width: 12px;
+    height: 12px;
+  }
+  &:nth-child(39) {
+    left: 71%;
+    background-color: #ff4500; /* orange */
+    animation: confetti-fall 2.6s linear forwards, confetti-shake 2s ease-in-out forwards;
+    animation-delay: 0.17s;
+    width: 12px;
+    height: 12px;
+  }
+  &:nth-child(40) {
+    left: 90%;
+    background-color: #00bfff; /* blue */
+    animation: confetti-fall 3.1s linear forwards, confetti-shake 2.5s ease-in-out forwards;
+    animation-delay: 0.35s;
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@keyframes confetti-fall {
+  0% {
+    top: -10px;
+    opacity: 0;
+    transform: rotateZ(0) scale(1);
+  }
+  5% {
+    opacity: 0.8;
+  }
+  10% {
+    opacity: 1;
+    transform: rotateZ(45deg) scale(1);
+  }
+  30% {
+    opacity: 0.8;
+    transform: rotateZ(120deg) scale(0.8);
+  }
+  50% {
+    opacity: 0.6;
+    transform: rotateZ(220deg) scale(0.6);
+  }
+  70% {
+    opacity: 0.3;
+    transform: rotateZ(300deg) scale(0.4);
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+    transform: rotateZ(360deg) scale(0.1);
+  }
+}
+
+@keyframes confetti-shake {
+  0% {
+    transform: translateX(0) rotateZ(0);
+  }
+  25% {
+    transform: translateX(20px) rotateZ(20deg);
+  }
+  50% {
+    transform: translateX(-15px) rotateZ(-15deg);
+  }
+  75% {
+    transform: translateX(10px) rotateZ(10deg);
+  }
+  100% {
+    transform: translateX(0) rotateZ(0);
+  }
+}

@@ -1,0 +1,342 @@
+@use 'bootstrap/scss/bootstrap';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+/* Import Nunito Sans font */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Global styles */
+:root {
+  --primary-color: #004B5A;
+  --black: #151513;
+  --white: #ffffff;
+  --white-30: rgba(255, 255, 255, 0.3);
+  --white-80: rgba(255, 255, 255, 0.8);
+  --background-gray: #f6f5f2;
+  --background-disabled: #efefef;
+  --border-color: #d2d2d2;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Nunito Sans', sans-serif;
+  background-color: var(--white);
+  color: var(--black);
+}
+
+p {
+  margin: 0;
+  color: var(--black);
+}
+
+main {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: inherit;
+  position: relative;
+}
+
+.content {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 3rem;
+}
+
+.content h1 {
+  margin-top: 1.75rem;
+}
+
+.content p {
+  margin-top: 1.5rem;
+}
+
+.container-content {
+  margin-top: -6rem;
+
+  &.internal-page {
+    .container-box {
+      background: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .container-body {
+      padding: 3rem;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  }
+}
+
+.container-box {
+  border-radius: 1rem;
+  background: var(--background-gray);
+  border: 1px solid var(--border-color);
+  min-height: calc(100dvh - 10rem);
+
+  .container-header {
+    background: var(--white);
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .container-body {
+    padding: 0;
+    padding-bottom: 2rem;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--black);
+  }
+  
+  p {
+    color: var(--black);
+    margin-bottom: 0.5rem;
+  }
+}
+
+.internal-page {
+  .container-box {
+    p {
+      margin-bottom: 1.5rem;
+    }
+  }
+}
+
+.btn-primary {
+  color: var(--white);
+  background: var(--black);
+  border: none;
+  font-weight: bold;
+
+  &:hover {
+    background: var(--border-color);
+    background: var(--white-30);
+    font-weight: bold;
+  }
+}
+
+.message-btn {
+  display:inline-flex;
+  align-items:center;
+  padding:0.45rem 0.75rem;
+  color: var(--black);
+  border-radius:0.5rem; 
+  font-weight:600;
+  text-decoration:none;
+  border-color: var(--border-color);
+  min-width: max-content;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: socialFadeIn 2s cubic-bezier(.2,.9,.3,1) forwards;
+
+  &:hover {
+      border-color: var(--black);
+      color: var(--black);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@keyframes socialFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* -----------------------------------------
+   CUSTOM RESPONSIVE STYLES
+   ----------------------------------------- */
+
+// Breakpoints (used only for our custom mixin)
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+// Mixin for custom Media Queries
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint not found: #{$breakpoint}";
+  }
+}
+
+/* App container styles */
+.app-container {
+  width: 100%;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Main content styles */
+.main-content {
+  min-height: calc(100dvh - 60px);
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+html {
+  font-size: 16px;
+}
+
+/* Large screens (desktops) */
+@media screen and (min-width: 992px) {
+  .app-container {
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: 60px 1fr;
+    grid-template-areas:
+      "header header"
+      "sidebar main";
+    min-height: 100dvh;
+  }
+  
+  .main-content {
+    padding: 20px;
+    overflow-y: auto;
+  }
+}
+
+/* Medium screens (tablets) */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .app-container {
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 60px 1fr;
+    grid-template-areas:
+      "header header"
+      "sidebar main";
+    min-height: 100dvh;
+  }
+
+  .container-header {
+    font-size: 0.85rem;
+  }
+
+  .main-content {
+    padding: 15px;
+    overflow-y: auto;
+  }
+  
+  .content {
+    max-width: 600px;
+  }
+}
+
+/* Small screens (mobile devices) */
+@media screen and (max-width: 767px) {
+  .app-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 60px auto 1fr;
+    grid-template-areas:
+      "header"
+      "menu"
+      "main";
+    min-height: 100dvh;
+  }
+
+  .container-box {
+    .container-header {
+      display: none;
+    }
+    .container-body {
+      padding-bottom: 1rem;
+
+      .container-input {
+        padding: 0 1.25rem;
+      }
+    }
+  }
+  
+  .main-content {
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  .content {
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  html {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .container-content {
+    &.internal-page {
+      .container-body {
+        padding: 2rem 1.5rem;
+      }
+    }
+  }
+}
+
+/* Extra small screens */
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 14px;
+  }
+  
+  .main-content {
+    padding: 8px;
+  }
+}
+
+/* Extra large screens */
+@media screen and (min-width: 1400px) {
+  .content {
+    max-width: 1200px;
+  }
+  
+  html {
+    font-size: 18px;
+  }
+}
+
+/* Device orientation */
+@media (orientation: landscape) and (max-height: 500px) {
+  .app-container {
+    height: auto;
+  }
+}
+
+/* Print behavior */
+@media print {
+  header, nav, aside {
+    display: none !important;
+  }
+  
+  .main-content {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+}

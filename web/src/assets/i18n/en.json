@@ -1,0 +1,98 @@
+{
+  "APP": {
+    "TITLE": "Quaster AI - Chat"
+  },
+  "HEADER": {
+    "VISIT_SITE": "visit site",
+    "STEPS": {
+      "QUESTIONS": "Chat",
+      "CONTACT": "Email",
+      "DONE": "Done"
+    }
+    ,"MENU": {
+      "HOME": "Home",
+      "PRIVACY": "Privacy policy",
+      "TERMS": "Terms of use"
+    }
+  },
+  "CHAT": {
+    "HEADER": "Ask, learn, and request a quote with our AI assistant.",
+    "PLACEHOLDER": "Type your message here...",
+    "SEND": "Send",
+    "START_CONVERSATION": "Start a conversation with our AI",
+    "LOADING": "Loading...",
+    "CONTINUE_BUTTON": "Continue",
+    "WELCOME_MESSAGE": "Hello! Do you have any questions? Send your questions here!",
+    "ERROR_MESSAGE": "Sorry, we had a problem processing your question. Please try again later.",
+    "SUGGESTED_TITLE": "Suggested questions:",
+    "SUGGESTED_QUESTIONS": {
+      "SERVICES": "What services does Quaster AI offer?",
+      "BUSINESS": "How can AI make my business more profitable?",
+      "EXAMPLES": "How are companies in my industry using AI today?"
+    },
+    "DONE": {
+      "SITE": "Visit site",
+      "LINKEDIN": "LinkedIn",
+      "INSTAGRAM": "Instagram"
+    }
+  ,
+  "RETRY_BUTTON": "Try again"
+  },
+  "LANGUAGE": {
+    "LABEL": "Language",
+    "ENGLISH": "English",
+    "PORTUGUESE": "Português",
+    "SPANISH": "Español",
+    "ITALIAN": "Italiano",
+    "GERMAN": "Deutsch",
+    "FRENCH": "Français"
+  }
+  ,
+  "PRIVACY": {
+  "TITLE": "Privacy Policy",
+  "INTRO": "This Privacy Policy describes how Quaster AI ('we', 'our' or 'us') collects, uses, discloses, and protects personal information when you visit or use our services.",
+  "SCOPE_TITLE": "Scope",
+  "SCOPE_BODY": "This policy applies to information collected through our website, APIs, applications, and other online services provided by Quaster AI.",
+  "DATA_COLLECTION_TITLE": "Information We Collect",
+  "DATA_COLLECTION_BODY": "We may collect information you provide directly (for example, messages you send to the chat, contact form submissions, and account registration data). We also collect technical information automatically (such as IP address, device and browser information, and usage data) to help operate and improve the service.",
+  "DATA_USE_TITLE": "How We Use Information",
+  "DATA_USE_BODY": "We use collected information to provide and maintain the service, respond to requests, improve products, detect and prevent fraud, and comply with legal obligations. Aggregated and anonymized data may be used for analytics and research.",
+  "SHARING_TITLE": "Sharing and Disclosure",
+  "SHARING_BODY": "We do not sell personal data. We may share information with service providers who perform services on our behalf, with our affiliates, and when required by law or to protect legal rights. Third-party services integrated into the product may have their own privacy practices.",
+  "SECURITY_TITLE": "Security",
+  "SECURITY_BODY": "We implement reasonable administrative, technical, and physical safeguards designed to protect personal information. However, no internet transmission or storage system is completely secure; we cannot guarantee absolute security.",
+  "USER_RIGHTS_TITLE": "Your Choices and Rights",
+  "USER_RIGHTS_BODY": "Depending on your jurisdiction, you may have rights to access, correct, or delete your personal information, or to object to or restrict certain processing. To exercise these rights, contact us using the details below.",
+  "DATA_RETENTION_TITLE": "Data Retention",
+  "DATA_RETENTION_BODY": "We retain personal information for as long as necessary to provide services, comply with legal obligations, resolve disputes, and enforce agreements.",
+  "CHILDREN_TITLE": "Children's Privacy",
+  "CHILDREN_BODY": "Our services are not directed to children under 13 (or higher minimum age where required). We do not knowingly collect personal information from children; if we learn we have, we will take steps to delete it.",
+  "CONTACT_TITLE": "Contact Us",
+  "CONTACT_BODY": "If you have questions about this Privacy Policy or our data practices, please contact us at contact@quasterai.com."
+  },
+  "TERMS": {
+  "TITLE": "Terms of Use",
+  "INTRO": "These Terms of Use govern your access to and use of Quaster AI's services. By using our services you agree to these terms.",
+  "ACCEPTANCE_TITLE": "Acceptance of Terms",
+  "ACCEPTANCE_BODY": "By accessing or using our services, you agree to be bound by these Terms. If you do not agree, do not use the services.",
+  "PERMITTED_USE_TITLE": "Permitted Use",
+  "PERMITTED_USE_BODY": "You agree to use the services in compliance with applicable law and not to misuse the services (including attempting to reverse engineer, probe security, or send abusive content).",
+  "INTELLECTUAL_PROPERTY_TITLE": "Intellectual Property",
+  "INTELLECTUAL_PROPERTY_BODY": "The content and technology provided through our services are owned or licensed by Quaster AI. You may not copy, reproduce or distribute our content except as expressly permitted.",
+  "LIMITATION_TITLE": "Limitation of Liability",
+  "LIMITATION_BODY": "To the maximum extent permitted by law, Quaster AI will not be liable for indirect, incidental, special or consequential damages arising out of your use of the services.",
+  "GOVERNING_LAW_TITLE": "Governing Law",
+  "GOVERNING_LAW_BODY": "These Terms are governed by and construed in accordance with the laws applicable to Quaster AI's principal place of business.",
+  "CHANGES_TITLE": "Changes",
+  "CHANGES_BODY": "We may update these Terms from time to time. We will post the updated Terms and indicate the effective date; continued use after changes constitutes acceptance.",
+  "CONTACT_TITLE": "Contact",
+  "CONTACT_BODY": "For questions regarding these Terms, contact contact@quasterai.com."
+  }
+  ,
+  "COOKIES": {
+    "TITLE": "We use cookies",
+    "DESCRIPTION": "We use cookies and similar technologies to provide, analyze and improve our services. By clicking Accept you consent to the use of cookies.",
+    "ACCEPT": "Accept",
+    "DECLINE": "Decline"
+  }
+}

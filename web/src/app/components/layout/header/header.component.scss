@@ -1,0 +1,278 @@
+.navbar {
+  height: 7rem;
+  background-color: var(--primary-color);
+}
+
+.header-logo {
+  width: 10rem;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--black);
+}
+
+.nav-link {
+  font-weight: 500;
+  color: var(--black);
+  
+  &.active {
+    color: #007bff;
+  }
+  
+  &:hover {
+    color: #0056b3;
+  }
+}
+
+.steps {
+  gap: 0.4rem;
+  position: relative;
+
+    .step {
+      &.active {
+        .icon {
+          background: var(--white);
+          animation: border-flash 2.5s alternate infinite ease-in-out;
+
+            @keyframes border-flash {
+              0% {
+                border-color: var(--white-30);
+              }
+              50% {
+                border-color: var(--white-80);
+              }
+            }
+        }
+      }
+      &.done {
+        .icon {
+          background: var(--white);
+          border-color: var(--white-30);
+        }
+      }
+
+      .icon {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 100px;
+            background: var(--white-30);
+            border: 5px solid var(--white-30);
+          
+          i {
+              font-size: 0.725rem;
+              color: var(--black);
+          }
+      }
+    }
+    
+    p {
+        color: var(--white);
+        margin-top: 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    .arrow {
+      color: var(--white-30);
+      width: 0.75rem;
+    }
+}
+
+.space {
+    background-color: var(--primary-color);
+    height: 6rem;
+}
+
+.hamburger {
+    color: var(--white) !important;
+    border: 2px solid var(--white) !important;
+    border-radius: 100rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+
+    i {
+      font-size: 1rem;
+    }
+}
+
+.menu-wrapper {
+  position: relative;
+  min-width: 5rem;
+  justify-content: end;
+  display: flex;
+
+  .hamburger-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    width: 250px;
+    right: 0;
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    background: var(--white);
+    border-radius: 1rem;
+    z-index: 2000;
+
+    label {
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+    }
+
+    select {
+      height: 2.5rem;
+      border: 1px solid var(--border-color);
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+        border: initial;
+        border: 2px solid var(--black);
+      }
+    }
+
+    .call-to-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--white);
+      background: var(--black);
+      text-decoration: none;
+      padding: 0.5rem;
+      border-radius: 100px;
+
+      &:hover {
+        background: var(--white-30);
+        color: var(--white);
+        font-weight: bold;
+        transition: background 0.3s ease;
+      }
+    }
+
+    .division {
+      height: 1px;
+      background: var(--border-color);
+      max-width: 3rem;
+      margin: 0.5rem 0;
+    }
+
+    a {
+      color: var(--white-30);
+      text-decoration: none;
+      display: block;
+      font-weight: bold;
+      padding: 0.25rem 0;
+
+      &:hover {
+        color: var(--black);
+      }
+    }
+  }
+}
+
+
+
+/* Small screens (mobile devices) */
+@media screen and (max-width: 767px) {
+  .navbar {
+    padding: 0 0.85rem;
+    height: 6rem;
+  }
+  .navbar-brand {
+    margin: 0;
+  }
+  .header-logo {
+    width: 7rem !important;
+  }
+  .hide-step {
+    display: none !important;
+  }
+  .call-to-action {
+    a {
+      padding: 0.3rem 0.625rem;
+    }
+  }
+  .steps {
+    .step {
+      .icon {
+        border-width: 4px;
+      }
+      &.highlight-step {
+        .icon {
+          width: 2.5rem;
+          height: 2.5rem;
+          border-width: 5px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .menu-wrapper {
+    min-width: 3rem;
+  }
+}
+
+/* Mobile: make hamburger menu full-screen and add a close button */
+@media screen and (max-width: 767px) {
+  .menu-wrapper {
+    label {
+      font-size: 1.15rem !important;
+    }
+
+    select {
+      height: 3.5rem !important;
+      font-size: 1.15rem !important;
+    }
+
+    .hamburger-menu {
+      position: fixed;
+      inset: 0; /* top:0; right:0; bottom:0; left:0 */
+      width: 100%;
+      height: 100%;
+      padding: 2rem;
+      font-size: 18px;
+      padding-top: 5.5rem;
+      display: flex;
+      flex-direction: column;
+      border-radius: 0;
+      z-index: 3000;
+    }
+
+    .call-to-action {
+      font-size: 16px;
+      padding: 0.85rem !important;
+    }
+
+    ul a {
+      margin-bottom: 0.25rem;
+      font-size: 1.20rem;
+    }
+
+    /* Close button inside the menu, styled similar to .hamburger */
+    .close-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      color: var(--black) !important;
+      border: 2px solid var(--border-color) !important;
+      background: none !important;
+      border-radius: 100rem;
+      width: 2.75rem;
+      height: 2.75rem;
+      display: flex;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+
+      i {
+        font-size: 1rem;
+      }
+    }
+  }
+}

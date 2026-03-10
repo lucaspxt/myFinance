@@ -1,0 +1,237 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.initial-spinner-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+.initial-spinner-overlay .spinner {
+  text-align: center;
+  color: var(--primary);
+}
+
+/* Full screen black overlay */
+.full-screen-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.full-screen-overlay .overlay-center {
+  text-align: center;
+}
+
+.overlay-logo {
+  width: 160px;
+  height: auto;
+  filter: brightness(1) invert(0);
+}
+
+.full-screen-overlay .text-light {
+  color: #fff;
+  font-weight: 600;
+}
+
+.chat-messages {
+  height: calc(100dvh - 17rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 0.5rem;
+  padding: 1rem 3rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+
+  &.with-suggested-questions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    border: 2px solid transparent;
+  }
+  
+  .empty-chat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    opacity: 0.6;
+    font-style: italic;
+  }
+}
+
+.message-text {
+    p:last-child {
+      margin-bottom: 0.5rem !important;
+    }
+}
+
+.chat-input {
+  display: flex;
+  gap: 1rem;
+  padding: 0 2rem;
+  
+  .form-control {
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    
+    &:focus {
+      box-shadow: none;
+      border-color: var(--black);
+    }
+
+    &:disabled {
+      background-color: var(--background-disabled);
+    }
+  }
+  
+  .btn {
+    border-radius: 100px;
+    width: 3rem;
+    height: 3rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding-left: 0.65em;
+    padding-top: 0.65rem;
+
+    i {
+      font-size: 1.15rem;
+    }
+
+    &:disabled {
+      background-color: var(--black);
+      opacity: 1 !important;
+    }
+  }
+}
+
+.suggested-questions {
+  h6 {
+    font-weight: normal;
+    margin-bottom: 0.5rem;
+    color: var(--black);
+  }
+
+  .suggested-questions-scroll {
+    display: flex;
+    justify-content: space-between;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+    gap: 1rem;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* for smooth scrolling on iOS */
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 20px;
+      border: 2px solid transparent;
+    }
+  }
+  
+  .question-card {
+    width: inherit;
+    background-color: var(--background-gray);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    
+    &:hover {
+      background-color: var(--white);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-right: 0.5rem;
+      line-height: 1.25rem;
+      flex-grow: 1;
+    }
+    
+    i {
+      color: var(--black);
+      font-size: 0.85rem;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+    
+    &:hover i {
+      opacity: 1;
+    }
+  }
+}
+/* Small screens (mobile devices) */
+@media screen and (max-width: 767px) {
+  .suggested-questions {
+    h6 {
+      padding: 0 0.75rem;
+      margin-bottom: 0;
+    }
+    .suggested-questions-scroll {
+      margin: 0 1rem;
+      padding-right: 1.5rem;
+    }
+  }
+  .chat-messages {
+    height: calc(100dvh - 12rem);
+    padding: 1rem !important;
+  }
+
+  .suggested-questions-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 1rem;
+    margin-bottom: -1rem; /* to compensate for the added padding */
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+
+    &::-webkit-scrollbar {
+      display: none; /* for Chrome, Safari, and Opera */
+    }
+
+    .question-card {
+      flex: 0 0 auto;
+      width: 15rem;
+      min-width: 15rem; /* ensure fixed width */
+      scroll-snap-align: start; /* snap to the start of each card */
+      white-space: normal; /* ensure text wraps within cards */
+      margin-bottom: 0.5rem; /* add some bottom margin */
+    }
+  }
+}

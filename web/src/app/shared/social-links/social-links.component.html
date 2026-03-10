@@ -1,0 +1,12 @@
+<div class="social-links">
+  <div class="social-buttons">
+    <a *ngFor="let s of translatedLinks" 
+    [href]="s.url" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    class="btn message-btn">
+      <i *ngIf="s.icon" class="me-2" [ngClass]="s.icon"></i>
+      {{ s.label }}
+    </a>
+  </div>
+</div>

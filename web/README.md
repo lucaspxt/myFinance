@@ -1,68 +1,59 @@
-# MyFinance - Web Application (Angular)
+# LeadWeb
 
-This directory will contain the Angular frontend application for MyFinance.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.1
 
-## Getting Started
+## Development server
 
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
-- Angular CLI
-
-### Install Angular CLI
-```bash
-npm install -g @angular/cli
-```
-
-### Create Angular Application
-To initialize the Angular application in this directory, run:
+To start a local development server, run:
 
 ```bash
-# From the web directory
-ng new myfinance-web --directory . --routing --style=scss
-
-# Or if the above doesn't work, run from parent directory:
-cd web
-ng new myfinance-web --routing --style=scss
-# Then move contents from myfinance-web to current directory
-```
-
-### Development Server
-Once the Angular application is created, run:
-
-```bash
-npm install
 ng serve
 ```
 
-Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Project Structure
-```
-web/
-  ├── src/
-  │   ├── app/              # Application components
-  │   ├── assets/           # Static assets
-  │   ├── environments/     # Environment configurations
-  │   └── index.html        # Main HTML file
-  ├── angular.json          # Angular CLI configuration
-  ├── package.json          # npm dependencies
-  └── tsconfig.json         # TypeScript configuration
+## Code scaffolding
+
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+
+```bash
+ng generate component component-name
 ```
 
-## API Integration
-The Angular application will connect to the Java backend API running on:
-- **API Base URL**: `http://localhost:8080`
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-## Available Scripts
-- `ng serve` - Start development server
-- `ng build` - Build the project
-- `ng test` - Run unit tests
-- `ng e2e` - Run end-to-end tests
+```bash
+ng generate --help
+```
 
-## Next Steps
-1. Create Angular application using the commands above
-2. Set up HTTP client to connect to the backend API
-3. Create authentication service
-4. Build UI components for transactions, categories, and accounts
-5. Implement chat interface for the AI assistant
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

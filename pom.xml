@@ -76,6 +76,12 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 
+        <!-- Flyway PostgreSQL Support -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+
         <!-- H2 in-memory database for tests -->
         <dependency>
             <groupId>com.h2database</groupId>

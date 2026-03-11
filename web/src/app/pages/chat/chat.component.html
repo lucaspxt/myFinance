@@ -2,17 +2,65 @@
     <app-header></app-header>
     <div class="container container-content">
         <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-lg-3 sidebar-column">
                 <div class="sidebar">
                     <div class="sidebar-header">
-                        
+                        <div class="sidebar-tabs">
+                            <button 
+                                class="tab-button" 
+                                [class.active]="activeTab === 'categories'"
+                                (click)="switchTab('categories')">
+                                {{ 'CHAT.SIDEBAR.CATEGORIES' | translate }}
+                            </button>
+                            <button 
+                                class="tab-button" 
+                                [class.active]="activeTab === 'accounts'"
+                                (click)="switchTab('accounts')">
+                                {{ 'CHAT.SIDEBAR.ACCOUNTS' | translate }}
+                            </button>
+                        </div>
                     </div>
                     <div class="sidebar-body">
+                        <div *ngIf="sidebarLoading" class="sidebar-loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
                         
+                        <!-- Categories Tab -->
+                        <div *ngIf="!sidebarLoading && activeTab === 'categories'">
+                            <div *ngIf="categories.length === 0" class="sidebar-empty">
+                                <p>{{ 'CHAT.SIDEBAR.NO_CATEGORIES' | translate }}</p>
+                            </div>
+                            <div *ngIf="categories.length > 0" class="item-list">
+                                <div class="list-item" *ngFor="let category of categories" (click)="openCategoryModal(category)">
+                                    <div class="item-name">{{ category.name }}</div>
+                                    <div class="item-balance" [ngClass]="getBalanceClass(category.id)">
+                                        {{ getCategoryBalance(category.id) | currencyFormat }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Bank Accounts Tab -->
+                        <div *ngIf="!sidebarLoading && activeTab === 'accounts'">
+                            <div *ngIf="bankAccounts.length === 0" class="sidebar-empty">
+                                <p>{{ 'CHAT.SIDEBAR.NO_ACCOUNTS' | translate }}</p>
+                            </div>
+                            <div *ngIf="bankAccounts.length > 0" class="item-list">
+                                <div class="list-item" *ngFor="let account of bankAccounts" (click)="openAccountModal(account)">
+                                    <div class="item-name">
+                                        {{ account.name }}
+                                        <i *ngIf="account.defaultAccount" class="fas fa-star default-icon" title="Default account"></i>
+                                    </div>
+                                    <div class="item-balance" [ngClass]="getAccountBalanceClass(account.id)">
+                                        {{ getBankAccountBalance(account.id) | currencyFormat }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-9">
+            <div class="col-12 col-lg-9">
                 <div class="container-box">
                     <div class="container-header">
                         <span>{{ 'CHAT.HEADER' | translate }}</span>
@@ -52,6 +100,41 @@
                                 <i class="fas" [ngClass]="{'fa-paper-plane': !isLoading, 'fa-spinner fa-spin': isLoading}"></i>
                             </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Transaction Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h5>{{ modalTitle }}</h5>
+            <button class="modal-close" (click)="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="modalLoading" class="modal-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <div *ngIf="!modalLoading && modalTransactions.length === 0" class="modal-empty">
+                <p>{{ 'CHAT.MODAL.NO_TRANSACTIONS' | translate }}</p>
+            </div>
+            <div *ngIf="!modalLoading && modalTransactions.length > 0" class="transaction-list">
+                <div class="transaction-item" *ngFor="let transaction of modalTransactions">
+                    <div class="transaction-info">
+                        <div class="transaction-description">
+                            <strong>{{ transaction.description || transaction.category.name }}</strong>
+                        </div>
+                        <div class="transaction-meta">
+                            <span class="transaction-date">{{ formatDate(transaction.createdAt) }}</span>
+                        </div>
+                    </div>
+                    <div class="transaction-value" [ngClass]="getTransactionTypeClass(transaction.type)">
+                        {{ transaction.type === 'INCOME' ? '+' : '-' }}{{ transaction.value | currencyFormat }}
                     </div>
                 </div>
             </div>

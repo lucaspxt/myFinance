@@ -17,8 +17,7 @@ export interface BankAccountBalanceDTO {
 export interface CategoryBalanceDTO {
   categoryId: number;
   categoryName: string;
-  totalExpense: number;
-  transactionCount: number;
+  balance: number;
 }
 
 @Injectable({

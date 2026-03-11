@@ -24,7 +24,16 @@
       "QUESTION2": "Qual è il mio saldo per categoria?",
       "QUESTION3": "Analizza le mie spese attuali e suggerisci miglioramenti."
     },
-    "RETRY_BUTTON": "Riprova"
+    "RETRY_BUTTON": "Riprova",
+    "SIDEBAR": {
+      "CATEGORIES": "Categorie",
+      "NO_CATEGORIES": "Nessuna categoria trovata",
+      "ACCOUNTS": "Conti",
+      "NO_ACCOUNTS": "Nessun conto trovato"
+    },
+    "MODAL": {
+      "NO_TRANSACTIONS": "Nessuna transazione trovata"
+    }
   },
   "LANGUAGE": {
     "LABEL": "Lingua",

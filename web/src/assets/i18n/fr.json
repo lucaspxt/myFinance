@@ -24,7 +24,16 @@
       "QUESTION2": "Quel est mon solde par catégorie ?",
       "QUESTION3": "Analysez mes dépenses actuelles et suggérez des améliorations."
     },
-    "RETRY_BUTTON": "Réessayer"
+    "RETRY_BUTTON": "Réessayer",
+    "SIDEBAR": {
+      "CATEGORIES": "Catégories",
+      "NO_CATEGORIES": "Aucune catégorie trouvée",
+      "ACCOUNTS": "Comptes",
+      "NO_ACCOUNTS": "Aucun compte trouvé"
+    },
+    "MODAL": {
+      "NO_TRANSACTIONS": "Aucune transaction trouvée"
+    }
   },
   "LANGUAGE": {
     "LABEL": "Langue",

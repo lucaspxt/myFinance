@@ -5,8 +5,13 @@ import { HeaderComponent } from '../../components/layout/header/header.component
 import { MessageComponent, MessageData } from '../../shared/message/message.component';
 import { ChatService } from '../../services/chat.service';
 import { BalanceRefreshService } from '../../services/balance-refresh.service';
+import { CategoryService, Category } from '../../services/category.service';
+import { BankAccountService, BankAccount } from '../../services/bank-account.service';
+import { BalanceService, CategoryBalanceDTO, BankAccountBalanceDTO } from '../../services/balance.service';
+import { TransactionService, Transaction } from '../../services/transaction.service';
+import { CurrencyFormatPipe } from '../../shared/pipes/currency-format.pipe';
 import { finalize, catchError, takeUntil } from 'rxjs/operators';
-import { of, Subject, firstValueFrom } from 'rxjs';
+import { of, Subject, firstValueFrom, forkJoin } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 import { AppService, AppStatus } from '../../services/app.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -16,7 +21,7 @@ import { RepeatButtonComponent } from '../../shared/repeat-button/repeat-button.
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, MessageComponent, FormsModule, TranslateModule],
+  imports: [CommonModule, HeaderComponent, MessageComponent, FormsModule, TranslateModule, CurrencyFormatPipe],
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
@@ -33,6 +38,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   userId?: number;
 
   suggestedQuestions: string[] = [];
+  categories: Category[] = [];
+  categoryBalances: CategoryBalanceDTO[] = [];
+  bankAccounts: BankAccount[] = [];
+  bankAccountBalances: BankAccountBalanceDTO[] = [];
+  sidebarLoading: boolean = true;
+  activeTab: 'categories' | 'accounts' = 'categories';
+  showModal: boolean = false;
+  modalTitle: string = '';
+  modalTransactions: Transaction[] = [];
+  modalLoading: boolean = false;
 
   // Subject used to signal teardown for active subscriptions (takeUntil)
   private destroy$ = new Subject<void>();
@@ -42,7 +57,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     private appService: AppService,
     private translateService: TranslateService,
     private router: Router,
-    private balanceRefreshService: BalanceRefreshService
+    private balanceRefreshService: BalanceRefreshService,
+    private categoryService: CategoryService,
+    private bankAccountService: BankAccountService,
+    private balanceService: BalanceService,
+    private transactionService: TransactionService
   ) {}
 
   ngOnInit(): void {
@@ -119,6 +138,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       if (status === AppStatus.DONE) {
         this.addSocialLinksOnce();
       }
+    });
+
+    // Load sidebar data (categories and balances)
+    this.loadSidebarData();
+
+    // Subscribe to balance refresh to reload sidebar data
+    this.balanceRefreshService.balanceRefresh$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.loadSidebarData();
     });
   }
 
@@ -343,6 +370,106 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.destroy$.next();
       this.destroy$.complete();
     }
+
+    private loadSidebarData(): void {
+      this.sidebarLoading = true;
+      forkJoin({
+        categories: this.categoryService.getAll(),
+        categoryBalances: this.balanceService.getBalanceByCategory(),
+        bankAccounts: this.bankAccountService.getAll(),
+        bankAccountBalances: this.balanceService.getBalanceByBankAccount()
+      }).pipe(
+        catchError(error => {
+          console.error('Error loading sidebar data:', error);
+          return of({ categories: [], categoryBalances: [], bankAccounts: [], bankAccountBalances: [] });
+        })
+      ).subscribe(({ categories, categoryBalances, bankAccounts, bankAccountBalances }) => {
+        this.categories = categories.filter(c => !c.archived);
+        this.categoryBalances = categoryBalances;
+        this.bankAccounts = bankAccounts.filter(a => !a.archived);
+        this.bankAccountBalances = bankAccountBalances;
+        this.sidebarLoading = false;
+      });
+    }
+
+    switchTab(tab: 'categories' | 'accounts'): void {
+      this.activeTab = tab;
+    }
+
+    getCategoryBalance(categoryId: number): number {
+      const balance = this.categoryBalances.find(b => b.categoryId === categoryId);
+      return balance ? balance.balance : 0;
+    }
+
+    getBalanceClass(categoryId: number): string {
+      const balance = this.getCategoryBalance(categoryId);
+      if (balance > 0) return 'positive';
+      if (balance < 0) return 'negative';
+      return 'zero';
+    }
+
+    getBankAccountBalance(accountId: number): number {
+      const balance = this.bankAccountBalances.find(b => b.bankAccountId === accountId);
+      return balance ? balance.balance : 0;
+    }
+
+    getAccountBalanceClass(accountId: number): string {
+      const balance = this.getBankAccountBalance(accountId);
+      if (balance > 0) return 'positive';
+      if (balance < 0) return 'negative';
+      return 'zero';
+    }
+
+    openCategoryModal(category: Category): void {
+      this.modalTitle = category.name;
+      this.showModal = true;
+      this.modalLoading = true;
+      this.modalTransactions = [];
+
+      this.transactionService.getAll().subscribe({
+        next: (transactions) => {
+          this.modalTransactions = transactions.filter(t => t.category.id === category.id);
+          this.modalLoading = false;
+        },
+        error: (error) => {
+          console.error('Error loading transactions:', error);
+          this.modalLoading = false;
+        }
+      });
+    }
+
+    openAccountModal(account: BankAccount): void {
+      this.modalTitle = account.name;
+      this.showModal = true;
+      this.modalLoading = true;
+      this.modalTransactions = [];
+
+      this.transactionService.getAll().subscribe({
+        next: (transactions) => {
+          this.modalTransactions = transactions.filter(t => t.bankAccount.id === account.id);
+          this.modalLoading = false;
+        },
+        error: (error) => {
+          console.error('Error loading transactions:', error);
+          this.modalLoading = false;
+        }
+      });
+    }
+
+    closeModal(): void {
+      this.showModal = false;
+      this.modalTransactions = [];
+      this.modalTitle = '';
+    }
+
+    getTransactionTypeClass(type: string): string {
+    return type === 'INCOME' ? 'positive' : 'negative';
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR');
+  }
 
     /** Extract a 2-letter language code from the first path segment of a URL. */
     private extractLangFromUrl(url: string): string | null {

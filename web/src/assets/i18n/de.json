@@ -24,7 +24,16 @@
       "QUESTION2": "Was ist mein Saldo nach Kategorie?",
       "QUESTION3": "Analysieren Sie meine aktuellen Ausgaben und schlagen Sie Verbesserungen vor."
     },
-    "RETRY_BUTTON": "Erneut versuchen"
+    "RETRY_BUTTON": "Erneut versuchen",
+    "SIDEBAR": {
+      "CATEGORIES": "Kategorien",
+      "NO_CATEGORIES": "Keine Kategorien gefunden",
+      "ACCOUNTS": "Konten",
+      "NO_ACCOUNTS": "Keine Konten gefunden"
+    },
+    "MODAL": {
+      "NO_TRANSACTIONS": "Keine Transaktionen gefunden"
+    }
   },
   "LANGUAGE": {
     "LABEL": "Sprache",

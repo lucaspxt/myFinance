@@ -37,6 +37,9 @@ class TransactionServiceTest {
     @Mock
     private CategoryRepository categoryRepository;
 
+    @Mock
+    private UserService userService;
+
     @InjectMocks
     private TransactionService transactionService;
 
@@ -61,8 +64,10 @@ class TransactionServiceTest {
 
     @Test
     void create_success() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(bankAccount));
+        when(bankAccountRepository.findByUserIdAndDefaultAccountTrue(1L)).thenReturn(Optional.of(bankAccount));
         when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
         Transaction result = transactionService.create(TransactionType.DEBIT, 1L, 1L, 100.0);
@@ -75,6 +80,7 @@ class TransactionServiceTest {
 
     @Test
     void create_categoryNotFound_throwsException() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
         when(categoryRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class,
@@ -83,8 +89,10 @@ class TransactionServiceTest {
 
     @Test
     void create_bankAccountNotFound_throwsException() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(bankAccountRepository.findById(1L)).thenReturn(Optional.empty());
+        when(bankAccountRepository.findByUserIdAndDefaultAccountTrue(1L)).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class,
                 () -> transactionService.create(TransactionType.DEBIT, 1L, 1L, 100.0));
@@ -109,7 +117,8 @@ class TransactionServiceTest {
 
     @Test
     void getAll_success() {
-        when(transactionRepository.findAll()).thenReturn(List.of(transaction));
+        when(userService.getCurrentUserId()).thenReturn(1L);
+        when(transactionRepository.findByUserId(1L)).thenReturn(List.of(transaction));
 
         List<Transaction> result = transactionService.getAll();
 

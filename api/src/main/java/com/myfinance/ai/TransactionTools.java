@@ -1,5 +1,15 @@
 package com.myfinance.ai;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
 import com.myfinance.model.BankAccount;
 import com.myfinance.model.Category;
 import com.myfinance.model.Transaction;
@@ -10,19 +20,10 @@ import com.myfinance.service.BankAccountService;
 import com.myfinance.service.CategoryService;
 import com.myfinance.service.TransactionService;
 import com.myfinance.service.UserService;
+
 import dev.langchain4j.agent.tool.Tool;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor

@@ -1,9 +1,13 @@
 package com.myfinance.controller;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.myfinance.controller.dto.ChatRequest;
 import com.myfinance.controller.dto.ChatResponseDTO;
 import com.myfinance.service.ChatService;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/chat")

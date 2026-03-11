@@ -1,11 +1,12 @@
 package com.myfinance.service;
 
+import org.springframework.stereotype.Service;
+
 import com.myfinance.ai.FinanceAssistant;
 import com.myfinance.controller.dto.ChatResponseDTO;
 import com.myfinance.model.Message;
 import com.myfinance.model.MessageType;
 import com.myfinance.repository.MessageRepository;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ChatService {

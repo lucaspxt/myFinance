@@ -1,6 +1,5 @@
 <div class="chat-container">
-    <app-header
-    [showSteps]="true"></app-header>
+    <app-header></app-header>
     <div class="container container-content">
         <div class="container-box">
             <div class="container-header">
@@ -32,9 +31,9 @@
                     </div>
                 </div>
                 <div class="chat-input">
-                    <input type="text" class="form-control" 
-                           [(ngModel)]="newMessage" 
-                           placeholder="{{ 'CHAT.PLACEHOLDER' | translate }}" 
+                    <input type="text" class="form-control"
+                           [(ngModel)]="newMessage"
+                           placeholder="{{ 'CHAT.PLACEHOLDER' | translate }}"
                            (keyup.enter)="sendMessage()"
                            [disabled]="isLoading">
                     <button class="btn" (click)="sendMessage()" [disabled]="isLoading">

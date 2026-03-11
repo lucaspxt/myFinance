@@ -4,12 +4,13 @@
   },
   "HEADER": {
     "VISIT_SITE": "visitar site",
+    "TOTAL_BALANCE": "Saldo geral",
     "MENU": {
       "HOME": "Início"
     }
   },
   "CHAT": {
-    "HEADER": "Lance gastos e receitas e controle suas finanças com a ajuda da IA",
+    "HEADER": "Informe gastos e receitas e controle suas finanças com a ajuda da IA",
     "PLACEHOLDER": "Digite sua mensagem aqui...",
     "SEND": "Enviar",
     "START_CONVERSATION": "Inicie uma conversa com nossa IA",

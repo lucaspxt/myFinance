@@ -11,6 +11,8 @@
   --white: #ffffff;
   --white-30: rgba(255, 255, 255, 0.3);
   --white-80: rgba(255, 255, 255, 0.8);
+  --green: #129E3F;
+  --red: #FF0000;
   --background-gray: #f6f5f2;
   --background-disabled: #efefef;
   --border-color: #d2d2d2;
@@ -93,14 +95,14 @@ main {
     padding: 0;
     padding-bottom: 2rem;
   }
-  
+
   h1 {
     font-size: 1.8rem;
     font-weight: 700;
     margin-bottom: 1rem;
     color: var(--black);
   }
-  
+
   p {
     color: var(--black);
     margin-bottom: 0.5rem;
@@ -133,7 +135,7 @@ main {
   align-items:center;
   padding:0.45rem 0.75rem;
   color: var(--black);
-  border-radius:0.5rem; 
+  border-radius:0.5rem;
   font-weight:600;
   text-decoration:none;
   border-color: var(--border-color);
@@ -210,7 +212,7 @@ html {
       "sidebar main";
     min-height: 100dvh;
   }
-  
+
   .main-content {
     padding: 20px;
     overflow-y: auto;
@@ -236,7 +238,7 @@ html {
     padding: 15px;
     overflow-y: auto;
   }
-  
+
   .content {
     max-width: 600px;
   }
@@ -266,26 +268,26 @@ html {
       }
     }
   }
-  
+
   .main-content {
     padding: 10px;
     overflow-y: auto;
   }
-  
+
   .content {
     flex-direction: column;
     width: 100%;
     max-width: 100%;
   }
-  
+
   html {
     font-size: 14px;
   }
-  
+
   h1 {
     font-size: 1.8rem;
   }
-  
+
   h2 {
     font-size: 1.5rem;
   }
@@ -304,7 +306,7 @@ html {
   html {
     font-size: 14px;
   }
-  
+
   .main-content {
     padding: 8px;
   }
@@ -315,7 +317,7 @@ html {
   .content {
     max-width: 1200px;
   }
-  
+
   html {
     font-size: 18px;
   }
@@ -333,7 +335,7 @@ html {
   header, nav, aside {
     display: none !important;
   }
-  
+
   .main-content {
     padding: 0;
     margin: 0;

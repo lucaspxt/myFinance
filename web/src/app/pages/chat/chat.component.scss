@@ -21,7 +21,7 @@
 .full-screen-overlay {
   position: fixed;
   inset: 0;
-  background: #000;
+  background: var(--primary-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,21 +57,21 @@
     flex-direction: column;
     justify-content: space-between;
   }
-  
+
   &::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     border: 2px solid transparent;
   }
-  
+
   .empty-chat {
     display: flex;
     align-items: center;
@@ -92,12 +92,12 @@
   display: flex;
   gap: 1rem;
   padding: 0 2rem;
-  
+
   .form-control {
     border: 1px solid var(--border-color);
     border-radius: 0.5rem;
     padding: 0.75rem 1rem;
-    
+
     &:focus {
       box-shadow: none;
       border-color: var(--black);
@@ -107,7 +107,7 @@
       background-color: var(--background-disabled);
     }
   }
-  
+
   .btn {
     border-radius: 100px;
     width: 3rem;
@@ -154,7 +154,7 @@
       border: 2px solid transparent;
     }
   }
-  
+
   .question-card {
     width: inherit;
     background-color: var(--background-gray);
@@ -166,13 +166,13 @@
     align-items: center;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-    
+
     &:hover {
       background-color: var(--white);
       transform: translateY(-3px);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    
+
     p {
       margin: 0;
       font-size: 0.9rem;
@@ -181,14 +181,14 @@
       line-height: 1.25rem;
       flex-grow: 1;
     }
-    
+
     i {
       color: var(--black);
       font-size: 0.85rem;
       opacity: 0.6;
       transition: opacity 0.2s ease;
     }
-    
+
     &:hover i {
       opacity: 1;
     }

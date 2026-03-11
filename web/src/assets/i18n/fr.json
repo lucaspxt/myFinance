@@ -1,9 +1,10 @@
-﻿{
+﻿﻿{
   "APP": {
     "TITLE": "My Finance"
   },
   "HEADER": {
     "VISIT_SITE": "visiter le site",
+    "TOTAL_BALANCE": "Solde total",
     "MENU": {
       "HOME": "Accueil"
     }

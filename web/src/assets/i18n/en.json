@@ -1,9 +1,10 @@
-﻿{
+﻿﻿{
   "APP": {
     "TITLE": "My Finance"
   },
   "HEADER": {
     "VISIT_SITE": "visit site",
+    "TOTAL_BALANCE": "Total balance",
     "MENU": {
       "HOME": "Home"
     }

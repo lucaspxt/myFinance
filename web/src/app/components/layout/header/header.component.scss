@@ -16,67 +16,51 @@
 .nav-link {
   font-weight: 500;
   color: var(--black);
-  
+
   &.active {
     color: #007bff;
   }
-  
+
   &:hover {
     color: #0056b3;
   }
 }
 
-.steps {
+.balance {
   gap: 0.4rem;
   position: relative;
+  color: white;
 
-    .step {
-      &.active {
-        .icon {
-          background: var(--white);
-          animation: border-flash 2.5s alternate infinite ease-in-out;
+  i {
+    font-size: 0.5rem;
+    height: 1.5rem;
+    color: var(--white-30) !important;
 
-            @keyframes border-flash {
-              0% {
-                border-color: var(--white-30);
-              }
-              50% {
-                border-color: var(--white-80);
-              }
-            }
-        }
-      }
-      &.done {
-        .icon {
-          background: var(--white);
-          border-color: var(--white-30);
-        }
-      }
-
-      .icon {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 100px;
-            background: var(--white-30);
-            border: 5px solid var(--white-30);
-          
-          i {
-              font-size: 0.725rem;
-              color: var(--black);
-          }
-      }
+    &.positive {
+      color: var(--green) !important;
     }
-    
-    p {
-        color: var(--white);
-        margin-top: 0.5rem;
-        font-size: 0.7rem;
+    &.negative {
+      color: var(--red) !important;
     }
+  }
 
-    .arrow {
-      color: var(--white-30);
-      width: 0.75rem;
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+
+    .dolar-sign {
+      font-weight: normal;
+      color: var(--white-80);
+      font-size: 0.85rem;
     }
+  }
+
+  .description {
+    font-size: 0.75rem;
+    font-weight: normal;
+    color: var(--white-80);
+  }
 }
 
 .space {
@@ -134,25 +118,6 @@
       }
     }
 
-    .call-to-action {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      color: var(--white);
-      background: var(--black);
-      text-decoration: none;
-      padding: 0.5rem;
-      border-radius: 100px;
-
-      &:hover {
-        background: var(--white-30);
-        color: var(--white);
-        font-weight: bold;
-        transition: background 0.3s ease;
-      }
-    }
-
     .division {
       height: 1px;
       background: var(--border-color);
@@ -161,14 +126,15 @@
     }
 
     a {
-      color: var(--white-30);
+      color: var(--black);
       text-decoration: none;
-      display: block;
       font-weight: bold;
+      display: block;
       padding: 0.25rem 0;
 
       &:hover {
         color: var(--black);
+        text-decoration: underline;
       }
     }
   }
@@ -196,18 +162,9 @@
       padding: 0.3rem 0.625rem;
     }
   }
-  .steps {
-    .step {
-      .icon {
-        border-width: 4px;
-      }
-      &.highlight-step {
-        .icon {
-          width: 2.5rem;
-          height: 2.5rem;
-          border-width: 5px;
-        }
-      }
+  .balance {
+    .icon {
+      border-width: 4px;
     }
   }
 }

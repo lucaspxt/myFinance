@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AppService, AppStatus } from '../../../services/app.service';
 import { LanguageService, SupportedLanguages } from '../../../services/i18n/language.service';
+import { BalanceService, TotalBalanceDTO } from '../../../services/balance.service';
 
 import { Subject, fromEvent, takeUntil } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,11 +23,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   // hamburger menu state
   protected menuOpen = false;
   protected currentLang: SupportedLanguages = 'en';
-  // Você pode adicionar propriedades e métodos do componente aqui
+  public totalBalance: TotalBalanceDTO | null = null;
+  public balanceLoading: boolean = true;
+  public balanceError: boolean = false;
 
   protected homeLink: string = '/';
 
-  constructor(private appService: AppService, private languageService: LanguageService, private el: ElementRef) {}
+  constructor(
+    private appService: AppService,
+    private languageService: LanguageService,
+    private balanceService: BalanceService,
+    private el: ElementRef
+  ) {}
 
   ngOnInit(): void {
     this.appService.appStatus$
@@ -34,6 +42,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     .subscribe(status => {
       this.appStatus = status;
     });
+
+    // Load total balance
+    this.balanceLoading = true;
+    this.balanceService.getTotalBalance()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (balance) => {
+          this.totalBalance = balance;
+          this.balanceLoading = false;
+          this.balanceError = false;
+        },
+        error: (error) => {
+          console.error('Error loading balance:', error);
+          this.balanceLoading = false;
+          this.balanceError = true;
+          this.totalBalance = { totalBalance: 0, totalIncome: 0, totalExpense: 0 };
+        }
+      });
 
     // Subscribe to language changes to update local state only
     this.languageService.currentLang$

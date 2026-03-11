@@ -1,0 +1,53 @@
+﻿{
+  "APP": {
+    "TITLE": "My Finance"
+  },
+  "HEADER": {
+    "VISIT_SITE": "visit site",
+    "TOTAL_BALANCE": "Total balance",
+    "MENU": {
+      "HOME": "Home"
+    }
+  },
+  "CHAT": {
+    "HEADER": "Track expenses and income and control your finances with AI help",
+    "PLACEHOLDER": "Type your message here...",
+    "SEND": "Send",
+    "START_CONVERSATION": "Start a conversation with our AI",
+    "LOADING": "Loading...",
+    "CONTINUE_BUTTON": "Continue",
+    "WELCOME_MESSAGE": "Hello! Report your expenses and income to get started!",
+    "ERROR_MESSAGE": "Sorry, we had a problem processing your question. Please try again later.",
+    "SUGGESTED_TITLE": "Suggested questions:",
+    "SUGGESTED_QUESTIONS": {
+      "QUESTION1": "What is my current balance?",
+      "QUESTION2": "What is my balance by category?",
+      "QUESTION3": "Analyze my current expenses and suggest improvements."
+    },
+    "RETRY_BUTTON": "Try again",
+    "SIDEBAR": {
+      "CATEGORIES": "Categories",
+      "NO_CATEGORIES": "No categories found",
+      "ACCOUNTS": "Accounts",
+      "NO_ACCOUNTS": "No accounts found"
+    },
+    "MODAL": {
+      "NO_TRANSACTIONS": "No transactions found"
+    }
+  },
+  "LANGUAGE": {
+    "LABEL": "Language",
+    "ENGLISH": "English",
+    "PORTUGUESE": "Português",
+    "SPANISH": "Español",
+    "ITALIAN": "Italiano",
+    "GERMAN": "Deutsch",
+    "FRENCH": "Français"
+  },
+  "COOKIES": {
+    "TITLE": "We use cookies",
+    "DESCRIPTION": "We use cookies and similar technologies to provide, analyze and improve our services. By clicking Accept you consent to the use of cookies.",
+    "ACCEPT": "Accept",
+    "DECLINE": "Decline"
+  }
+}

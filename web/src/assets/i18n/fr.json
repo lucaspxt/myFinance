@@ -1,0 +1,53 @@
+﻿{
+  "APP": {
+    "TITLE": "My Finance"
+  },
+  "HEADER": {
+    "VISIT_SITE": "visiter le site",
+    "TOTAL_BALANCE": "Solde total",
+    "MENU": {
+      "HOME": "Accueil"
+    }
+  },
+  "CHAT": {
+    "HEADER": "Enregistrez les dépenses et les revenus et contrôlez vos finances avec l'aide de l'IA",
+    "PLACEHOLDER": "Tapez votre message ici...",
+    "SEND": "Envoyer",
+    "START_CONVERSATION": "Commencez une conversation avec notre IA",
+    "LOADING": "Chargement...",
+    "CONTINUE_BUTTON": "Continuer",
+    "WELCOME_MESSAGE": "Bonjour ! Indiquez vos dépenses et revenus pour commencer !",
+    "ERROR_MESSAGE": "Désolé, nous avons rencontré un problème en traitant votre question. Veuillez réessayer plus tard.",
+    "SUGGESTED_TITLE": "Questions suggérées:",
+    "SUGGESTED_QUESTIONS": {
+      "QUESTION1": "Quel est mon solde actuel ?",
+      "QUESTION2": "Quel est mon solde par catégorie ?",
+      "QUESTION3": "Analysez mes dépenses actuelles et suggérez des améliorations."
+    },
+    "RETRY_BUTTON": "Réessayer",
+    "SIDEBAR": {
+      "CATEGORIES": "Catégories",
+      "NO_CATEGORIES": "Aucune catégorie trouvée",
+      "ACCOUNTS": "Comptes",
+      "NO_ACCOUNTS": "Aucun compte trouvé"
+    },
+    "MODAL": {
+      "NO_TRANSACTIONS": "Aucune transaction trouvée"
+    }
+  },
+  "LANGUAGE": {
+    "LABEL": "Langue",
+    "ENGLISH": "English",
+    "PORTUGUESE": "Português",
+    "SPANISH": "Español",
+    "ITALIAN": "Italiano",
+    "GERMAN": "Deutsch",
+    "FRENCH": "Français"
+  },
+  "COOKIES": {
+    "TITLE": "Nous utilisons des cookies",
+    "DESCRIPTION": "Nous utilisons des cookies et des technologies similaires pour fournir, analyser et améliorer nos services. En cliquant sur Accepter, vous consentez à l'utilisation des cookies.",
+    "ACCEPT": "Accepter",
+    "DECLINE": "Refuser"
+  }
+}

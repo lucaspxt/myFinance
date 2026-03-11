@@ -1,0 +1,53 @@
+{
+  "APP": {
+    "TITLE": "My Finance"
+  },
+  "HEADER": {
+    "VISIT_SITE": "Website besuchen",
+    "TOTAL_BALANCE": "Gesamtsaldo",
+    "MENU": {
+      "HOME": "Startseite"
+    }
+  },
+  "CHAT": {
+    "HEADER": "Erfassen Sie Ausgaben und Einnahmen und kontrollieren Sie Ihre Finanzen mit KI-Hilfe",
+    "PLACEHOLDER": "Geben Sie Ihre Nachricht hier ein...",
+    "SEND": "Senden",
+    "START_CONVERSATION": "Beginnen Sie ein Gespräch mit unserer KI",
+    "LOADING": "Lädt...",
+    "CONTINUE_BUTTON": "Weiter",
+    "WELCOME_MESSAGE": "Hallo! Geben Sie Ihre Ausgaben und Einnahmen an, um loszulegen!",
+    "ERROR_MESSAGE": "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
+    "SUGGESTED_TITLE": "Vorgeschlagene Fragen:",
+    "SUGGESTED_QUESTIONS": {
+      "QUESTION1": "Was ist mein aktueller Saldo?",
+      "QUESTION2": "Was ist mein Saldo nach Kategorie?",
+      "QUESTION3": "Analysieren Sie meine aktuellen Ausgaben und schlagen Sie Verbesserungen vor."
+    },
+    "RETRY_BUTTON": "Erneut versuchen",
+    "SIDEBAR": {
+      "CATEGORIES": "Kategorien",
+      "NO_CATEGORIES": "Keine Kategorien gefunden",
+      "ACCOUNTS": "Konten",
+      "NO_ACCOUNTS": "Keine Konten gefunden"
+    },
+    "MODAL": {
+      "NO_TRANSACTIONS": "Keine Transaktionen gefunden"
+    }
+  },
+  "LANGUAGE": {
+    "LABEL": "Sprache",
+    "ENGLISH": "English",
+    "PORTUGUESE": "Português",
+    "SPANISH": "Español",
+    "ITALIAN": "Italiano",
+    "GERMAN": "Deutsch",
+    "FRENCH": "Français"
+  },
+  "COOKIES": {
+    "TITLE": "Wir verwenden Cookies",
+    "DESCRIPTION": "Wir verwenden Cookies und ähnliche Technologien, um unsere Dienste bereitzustellen, zu analysieren und zu verbessern. Durch Klicken auf Akzeptieren stimmen Sie der Verwendung von Cookies zu.",
+    "ACCEPT": "Akzeptieren",
+    "DECLINE": "Ablehnen"
+  }
+}

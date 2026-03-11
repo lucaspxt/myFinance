@@ -1,0 +1,152 @@
+<div class="chat-container">
+    <app-header></app-header>
+    <div class="container container-content">
+        <div class="row">
+            <div class="col-12 col-lg-3 sidebar-column">
+                <div class="sidebar">
+                    <div class="sidebar-header">
+                        <div class="sidebar-tabs">
+                            <button 
+                                class="tab-button" 
+                                [class.active]="activeTab === 'categories'"
+                                (click)="switchTab('categories')">
+                                {{ 'CHAT.SIDEBAR.CATEGORIES' | translate }}
+                            </button>
+                            <button 
+                                class="tab-button" 
+                                [class.active]="activeTab === 'accounts'"
+                                (click)="switchTab('accounts')">
+                                {{ 'CHAT.SIDEBAR.ACCOUNTS' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="sidebar-body">
+                        <div *ngIf="sidebarLoading" class="skeleton-list">
+                            <div class="skeleton-item" *ngFor="let item of [1,2,3,4,5]">
+                                <div class="skeleton-line skeleton-name"></div>
+                                <div class="skeleton-line skeleton-balance"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Categories Tab -->
+                        <div *ngIf="!sidebarLoading && activeTab === 'categories'">
+                            <div *ngIf="categories.length === 0" class="sidebar-empty">
+                                <p>{{ 'CHAT.SIDEBAR.NO_CATEGORIES' | translate }}</p>
+                            </div>
+                            <div *ngIf="categories.length > 0" class="item-list">
+                                <div class="list-item" *ngFor="let category of categories" (click)="openCategoryModal(category)">
+                                    <div class="item-name">{{ category.name }}</div>
+                                    <div class="item-balance" [ngClass]="getBalanceClass(category.id)">
+                                        {{ getCategoryBalance(category.id) | currencyFormat }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Bank Accounts Tab -->
+                        <div *ngIf="!sidebarLoading && activeTab === 'accounts'">
+                            <div *ngIf="bankAccounts.length === 0" class="sidebar-empty">
+                                <p>{{ 'CHAT.SIDEBAR.NO_ACCOUNTS' | translate }}</p>
+                            </div>
+                            <div *ngIf="bankAccounts.length > 0" class="item-list">
+                                <div class="list-item" *ngFor="let account of bankAccounts" (click)="openAccountModal(account)">
+                                    <div class="item-name">
+                                        {{ account.name }}
+                                        <i *ngIf="account.defaultAccount" class="fas fa-star default-icon" title="Default account"></i>
+                                    </div>
+                                    <div class="item-balance" [ngClass]="getAccountBalanceClass(account.id)">
+                                        {{ getBankAccountBalance(account.id) | currencyFormat }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-9">
+                <div class="container-box">
+                    <div class="container-header">
+                        <span>{{ 'CHAT.HEADER' | translate }}</span>
+                    </div>
+
+                    <div class="container-body">
+                        <div *ngIf="initialLoading" class="initial-spinner-overlay full-screen-overlay">
+                            <div class="overlay-center">
+                                <img src="/logo-white.png" alt="logo" class="overlay-logo" />
+                            </div>
+                        </div>
+                        <div class="chat-messages" [ngClass]="{'with-suggested-questions': shouldShowSuggestedQuestions()}" #chatMessagesContainer>
+                            <app-message *ngFor="let message of messages" [message]="message"></app-message>
+                            <div *ngIf="messages.length === 0" class="empty-chat">
+                                <p>{{ 'CHAT.LOADING' | translate }}</p>
+                            </div>
+                            <div class="suggested-questions" *ngIf="shouldShowSuggestedQuestions()">
+                                <div class="row">
+                                    <div class="col-12 mb-1">
+                                        <h6>{{ 'CHAT.SUGGESTED_TITLE' | translate }}</h6>
+                                    </div>
+                                    <div class="suggested-questions-scroll">
+                                        <div class="question-card" *ngFor="let question of suggestedQuestions" (click)="sendMessage(question)">
+                                            <p>{{ question }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" class="form-control"
+                                [(ngModel)]="newMessage"
+                                placeholder="{{ 'CHAT.PLACEHOLDER' | translate }}"
+                                (keyup.enter)="sendMessage()"
+                                [disabled]="isLoading">
+                            <button class="btn" (click)="sendMessage()" [disabled]="isLoading">
+                                <i class="fas" [ngClass]="{'fa-paper-plane': !isLoading, 'fa-spinner fa-spin': isLoading}"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Transaction Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h5>{{ modalTitle }}</h5>
+            <button class="modal-close" (click)="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="modalLoading" class="skeleton-transaction-list">
+                <div class="skeleton-transaction-item" *ngFor="let item of [1,2,3,4]">
+                    <div class="skeleton-transaction-info">
+                        <div class="skeleton-line skeleton-description"></div>
+                        <div class="skeleton-line skeleton-date"></div>
+                    </div>
+                    <div class="skeleton-line skeleton-value"></div>
+                </div>
+            </div>
+            <div *ngIf="!modalLoading && modalTransactions.length === 0" class="modal-empty">
+                <p>{{ 'CHAT.MODAL.NO_TRANSACTIONS' | translate }}</p>
+            </div>
+            <div *ngIf="!modalLoading && modalTransactions.length > 0" class="transaction-list">
+                <div class="transaction-item" *ngFor="let transaction of modalTransactions">
+                    <div class="transaction-info">
+                        <div class="transaction-description">
+                            <strong>{{ transaction.description || transaction.category.name }}</strong>
+                        </div>
+                        <div class="transaction-meta">
+                            <span class="transaction-date">{{ formatDate(transaction.createdAt) }}</span>
+                        </div>
+                    </div>
+                    <div class="transaction-value" [ngClass]="getTransactionTypeClass(transaction.type)">
+                        {{ transaction.type === 'CREDIT' ? '+' : '-' }}{{ transaction.value | currencyFormat }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

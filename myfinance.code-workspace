@@ -1,0 +1,40 @@
+{
+  "folders": [
+    {
+      "name": "MyFinance (Root)",
+      "path": "."
+    },
+    {
+      "name": "API (Backend)",
+      "path": "api"
+    },
+    {
+      "name": "Web (Frontend)",
+      "path": "web"
+    }
+  ],
+  "settings": {
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.debug.settings.onBuildFailureProceed": true,
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/target": true,
+      "**/.angular": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/target": true,
+      "**/.angular": true,
+      "**/dist": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "vscjava.vscode-java-pack",
+      "vmware.vscode-spring-boot",
+      "angular.ng-template",
+      "johnpapa.angular2",
+      "ms-vscode.vscode-typescript-next"
+    ]
+  }
+}

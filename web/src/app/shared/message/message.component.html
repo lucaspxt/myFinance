@@ -1,0 +1,28 @@
+<div class="message" 
+[ngClass]="{'user-message': message.isUser, 
+'system-message': !message.isUser,
+'component-message': message.type === 'component'}">
+  <div class="message-content">
+    <div class="message-text">
+      <!-- Mensagens do sistema com efeito de digitação -->
+      <div *ngIf="!message.isUser">
+        <div *ngIf="message.type !== 'component'">
+          <div [innerHTML]="convertMarkdownToHtml(displayText)"></div>
+        </div>
+
+        <!-- Render a dynamic standalone component when message.type === 'component' -->
+        <ng-container *ngIf="message.type === 'component' && message.component">
+          <!-- If the component is the SocialLinksComponent, render it statically to avoid ngComponentOutlet issues -->
+          <app-social-links *ngIf="message.component === SocialLinksComponentRef || (message.component && message.component.name && message.component.name.indexOf('SocialLinks') > -1)" [links]="message.componentInputs?.['links']"></app-social-links>
+
+          <app-repeat-button *ngIf="message.component === RepeatButtonComponentRef"
+            [label]="message.componentInputs?.['label']"
+            [onRepeat]="message.componentInputs?.['onRepeat']"></app-repeat-button>
+        </ng-container>
+      </div>
+      
+      <!-- Mensagens do usuário sem efeito -->
+      <span *ngIf="message.isUser">{{ message.text }}</span>
+    </div>
+  </div>
+</div>

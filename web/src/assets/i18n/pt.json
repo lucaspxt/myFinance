@@ -1,0 +1,53 @@
+{
+  "APP": {
+    "TITLE": "My Finance"
+  },
+  "HEADER": {
+    "VISIT_SITE": "visitar site",
+    "TOTAL_BALANCE": "Saldo geral",
+    "MENU": {
+      "HOME": "Início"
+    }
+  },
+  "CHAT": {
+    "HEADER": "Informe gastos e receitas e controle suas finanças com a ajuda da IA",
+    "PLACEHOLDER": "Digite sua mensagem aqui...",
+    "SEND": "Enviar",
+    "START_CONVERSATION": "Inicie uma conversa com nossa IA",
+    "LOADING": "Carregando...",
+    "CONTINUE_BUTTON": "Continuar",
+    "WELCOME_MESSAGE": "Olá! Informe seus gastos e receitas para começar!",
+    "ERROR_MESSAGE": "Desculpe, tivemos um problema ao processar sua pergunta. Por favor, tente novamente mais tarde.",
+    "SUGGESTED_TITLE": "Perguntas sugeridas:",
+    "SUGGESTED_QUESTIONS": {
+      "QUESTION1": "Qual meu saldo atual?",
+      "QUESTION2": "Qual meu saldo por categoria?",
+      "QUESTION3": "Analise meus gastos atuais e sugira melhorias."
+    },
+    "RETRY_BUTTON": "Tentar novamente",
+    "SIDEBAR": {
+      "CATEGORIES": "Categorias",
+      "NO_CATEGORIES": "Nenhuma categoria encontrada",
+      "ACCOUNTS": "Contas",
+      "NO_ACCOUNTS": "Nenhuma conta encontrada"
+    },
+    "MODAL": {
+      "NO_TRANSACTIONS": "Nenhuma transação encontrada"
+    }
+  },
+  "LANGUAGE": {
+    "LABEL": "Idioma",
+    "ENGLISH": "English",
+    "PORTUGUESE": "Português",
+    "SPANISH": "Español",
+    "ITALIAN": "Italiano",
+    "GERMAN": "Deutsch",
+    "FRENCH": "Français"
+  },
+  "COOKIES": {
+    "TITLE": "Usamos cookies",
+    "DESCRIPTION": "Usamos cookies e tecnologias semelhantes para fornecer, analisar e melhorar nossos serviços. Ao clicar em Aceitar você consente o uso de cookies.",
+    "ACCEPT": "Aceitar",
+    "DECLINE": "Recusar"
+  }
+}

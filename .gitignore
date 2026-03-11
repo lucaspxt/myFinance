@@ -32,5 +32,24 @@ build/
 ### VS Code ###
 .vscode/
 
+### Local Configuration ###
+**/application-local.yml
+
 ### Mac OS ###
 .DS_Store
+
+### Node & Angular (Frontend) ###
+node_modules/
+npm-debug.log
+yarn-error.log
+.angular/
+dist/
+tmp/
+out-tsc/
+*.log
+
+### Environment files ###
+.env
+.env.local
+.env.*.local
+

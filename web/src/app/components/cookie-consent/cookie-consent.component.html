@@ -1,0 +1,12 @@
+<div *ngIf="visible" class="cookie-consent" role="dialog" aria-live="polite">
+  <div class="cookie-content">
+    <div class="cookie-text">
+      <strong>{{ 'COOKIES.TITLE' | translate }}</strong>
+      <p>{{ 'COOKIES.DESCRIPTION' | translate }}</p>
+    </div>
+    <div class="cookie-actions">
+      <button class="btn btn-outline" (click)="decline()">{{ 'COOKIES.DECLINE' | translate }}</button>
+      <button class="btn btn-primary" (click)="accept()">{{ 'COOKIES.ACCEPT' | translate }}</button>
+    </div>
+  </div>
+</div>

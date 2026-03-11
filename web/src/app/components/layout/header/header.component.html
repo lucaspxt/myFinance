@@ -1,0 +1,64 @@
+<header class="navbar navbar-expand-lg">
+  <div class="container">
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand" [attr.href]="homeLink">
+                <img src="logo-white.png" alt="Logo" class="header-logo">
+            </a>
+        </div>
+        <div class="balance d-flex align-items-start">
+          <div class="d-flex align-items-start gap-2">
+            <i class="fa-solid fa-circle d-flex align-items-center"
+               [ngClass]="totalBalance && totalBalance.totalBalance >= 0 ? 'positive' : 'negative'"></i>
+            <div class="d-flex flex-column">
+              <h3 class="d-flex align-items-center gap-1">
+                <span class="dolar-sign">$</span>
+                <ng-container *ngIf="balanceLoading">
+                  <span class="skeleton-loader"></span>
+                </ng-container>
+                <ng-container *ngIf="!balanceLoading">{{ totalBalance?.totalBalance || 0 | currencyFormat }}</ng-container>
+              </h3>
+              <span class="description">{{ 'HEADER.TOTAL_BALANCE' | translate }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <div class="menu-wrapper">
+                <button class="hamburger btn btn-link" (click)="toggleMenu()"
+                        [attr.aria-label]="menuOpen ? 'Close menu' : 'Toggle menu'"
+                        [attr.aria-expanded]="menuOpen">
+                    <span class="hamburger-icon" aria-hidden="true">
+                        <i [ngClass]="menuOpen ? 'fa-solid fa-xmark fa-lg' : 'fa-solid fa-bars fa-lg'"></i>
+                    </span>
+                    <!-- Visually-hidden text for screen readers to announce state changes -->
+                    <span class="visually-hidden" aria-live="polite">{{ menuOpen ? 'Menu aberto' : 'Menu fechado' }}</span>
+                </button>
+
+                <!-- Simple hamburger menu dropdown -->
+                <div class="hamburger-menu" *ngIf="menuOpen">
+                    <!-- Close button for mobile full-screen menu -->
+                    <button class="hamburger close-btn d-md-none" (click)="toggleMenu()" aria-label="Close menu">
+                        <span class="hamburger-icon" aria-hidden="true">
+                            <i class="fa-solid fa-xmark fa-lg"></i>
+                        </span>
+                    </button>
+                    <div class="mb-md-3 mb-4">
+                        <label for="langSelect">{{ 'LANGUAGE.LABEL' | translate }}</label>
+                        <select id="langSelect" class="form-select" [value]="currentLang" (change)="onLanguageChange($any($event.target).value)">
+                            <option value="en">{{ 'LANGUAGE.ENGLISH' | translate }}</option>
+                            <option value="pt">{{ 'LANGUAGE.PORTUGUESE' | translate }}</option>
+                            <option value="es">{{ 'LANGUAGE.SPANISH' | translate }}</option>
+                            <option value="it">{{ 'LANGUAGE.ITALIAN' | translate }}</option>
+                            <option value="de">{{ 'LANGUAGE.GERMAN' | translate }}</option>
+                            <option value="fr">{{ 'LANGUAGE.FRENCH' | translate }}</option>
+                        </select>
+                    </div>
+                    <div class="division"></div>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="/">{{ 'HEADER.MENU.HOME' | translate }}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+  </div>
+</header>
+<div class="space"></div>

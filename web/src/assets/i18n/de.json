@@ -1,39 +1,27 @@
-{
+﻿{
   "APP": {
-    "TITLE": "Quaster AI - Chat"
+    "TITLE": "My Finance"
   },
   "HEADER": {
     "VISIT_SITE": "Website besuchen",
-    "STEPS": {
-      "QUESTIONS": "Chat",
-      "CONTACT": "E-Mail",
-      "DONE": "Fertig"
-    },
     "MENU": {
-      "HOME": "Startseite",
-      "PRIVACY": "Datenschutzrichtlinie",
-      "TERMS": "Nutzungsbedingungen"
+      "HOME": "Startseite"
     }
   },
   "CHAT": {
-    "HEADER": "Fragen Sie, lernen Sie und fordern Sie ein Angebot mit unserem KI-Assistenten an.",
+    "HEADER": "Erfassen Sie Ausgaben und Einnahmen und kontrollieren Sie Ihre Finanzen mit KI-Hilfe",
     "PLACEHOLDER": "Geben Sie Ihre Nachricht hier ein...",
     "SEND": "Senden",
     "START_CONVERSATION": "Beginnen Sie ein Gespräch mit unserer KI",
     "LOADING": "Lädt...",
     "CONTINUE_BUTTON": "Weiter",
-    "WELCOME_MESSAGE": "Hallo! Haben Sie Fragen? Senden Sie Ihre Fragen hier!",
+    "WELCOME_MESSAGE": "Hallo! Geben Sie Ihre Ausgaben und Einnahmen an, um loszulegen!",
     "ERROR_MESSAGE": "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
     "SUGGESTED_TITLE": "Vorgeschlagene Fragen:",
     "SUGGESTED_QUESTIONS": {
-      "SERVICES": "Welche Dienstleistungen bietet Quaster AI an?",
-      "BUSINESS": "Wie kann KI mein Unternehmen profitabler machen?",
-      "EXAMPLES": "Wie nutzen Unternehmen in meiner Branche heute KI?"
-    },
-    "DONE": {
-      "SITE": "Website besuchen",
-      "LINKEDIN": "LinkedIn",
-      "INSTAGRAM": "Instagram"
+      "SERVICES": "Was ist mein aktueller Saldo?",
+      "BUSINESS": "Was ist mein Saldo nach Kategorie?",
+      "EXAMPLES": "Was ist mein Saldo nach Bankkonto?"
     }
   ,
   "RETRY_BUTTON": "Erneut versuchen"
@@ -46,46 +34,6 @@
     "ITALIAN": "Italiano",
     "GERMAN": "Deutsch",
     "FRENCH": "Français"
-  },
-  "PRIVACY": {
-    "TITLE": "Datenschutzerklärung",
-    "INTRO": "Diese Datenschutzerklärung beschreibt, wie Quaster AI ('wir') personenbezogene Daten sammelt, verwendet, offenlegt und schützt, wenn Sie unsere Dienste besuchen oder nutzen.",
-    "SCOPE_TITLE": "Geltungsbereich",
-    "SCOPE_BODY": "Diese Richtlinie gilt für Informationen, die über unsere Website, APIs, Anwendungen und andere Online-Dienste, die von Quaster AI bereitgestellt werden, gesammelt werden.",
-    "DATA_COLLECTION_TITLE": "Informationen, die wir sammeln",
-    "DATA_COLLECTION_BODY": "Wir können Informationen sammeln, die Sie uns direkt zur Verfügung stellen (z. B. Nachrichten, die Sie an den Chat senden, Kontaktformularübermittlungen und Registrierungsdaten). Wir sammeln auch automatisch technische Informationen (z. B. IP-Adresse, Gerät und Browserinformationen sowie Nutzungsdaten), um den Dienst zu betreiben und zu verbessern.",
-    "DATA_USE_TITLE": "Wie wir Informationen verwenden",
-    "DATA_USE_BODY": "Wir verwenden gesammelte Informationen, um den Dienst bereitzustellen und aufrechtzuerhalten, auf Anfragen zu reagieren, Produkte zu verbessern, Betrug zu erkennen und zu verhindern und gesetzlichen Verpflichtungen nachzukommen. Aggregierte und anonymisierte Daten können für Analysen und Forschung verwendet werden.",
-    "SHARING_TITLE": "Weitergabe und Offenlegung",
-    "SHARING_BODY": "Wir verkaufen keine personenbezogenen Daten. Wir können Informationen an Dienstleister weitergeben, die in unserem Auftrag handeln, an unsere verbundenen Unternehmen und wenn dies gesetzlich vorgeschrieben ist oder um rechtliche Ansprüche zu schützen. Drittanbieterdienste, die in das Produkt integriert sind, können eigene Datenschutzpraktiken haben.",
-    "SECURITY_TITLE": "Sicherheit",
-    "SECURITY_BODY": "Wir implementieren angemessene administrative, technische und physische Schutzmaßnahmen zum Schutz personenbezogener Daten. Allerdings ist keine Internetübertragung oder Speicherung vollständig sicher; wir können keine absolute Sicherheit garantieren.",
-    "USER_RIGHTS_TITLE": "Ihre Rechte und Optionen",
-    "USER_RIGHTS_BODY": "Abhängig von Ihrer Gerichtsbarkeit haben Sie möglicherweise Rechte auf Zugriff, Berichtigung oder Löschung Ihrer personenbezogenen Daten oder das Recht, bestimmten Verarbeitungen zu widersprechen oder diese einzuschränken. Um diese Rechte auszuüben, kontaktieren Sie uns mit den unten angegebenen Details.",
-    "DATA_RETENTION_TITLE": "Datenaufbewahrung",
-    "DATA_RETENTION_BODY": "Wir bewahren personenbezogene Daten so lange auf, wie es zur Bereitstellung der Dienste, zur Erfüllung gesetzlicher Verpflichtungen, zur Beilegung von Streitigkeiten und zur Durchsetzung von Vereinbarungen erforderlich ist.",
-    "CHILDREN_TITLE": "Datenschutz für Kinder",
-    "CHILDREN_BODY": "Unsere Dienste richten sich nicht an Kinder unter 13 Jahren (oder einem höheren Mindestalter, wenn erforderlich). Wir sammeln nicht wissentlich personenbezogene Daten von Kindern; wenn wir feststellen, dass wir dies getan haben, werden wir Maßnahmen ergreifen, um sie zu löschen.",
-    "CONTACT_TITLE": "Kontakt",
-    "CONTACT_BODY": "Wenn Sie Fragen zu dieser Datenschutzerklärung oder unseren Datenpraktiken haben, kontaktieren Sie uns unter contact@quasterai.com."
-  },
-  "TERMS": {
-    "TITLE": "Nutzungsbedingungen",
-    "INTRO": "Diese Nutzungsbedingungen regeln Ihren Zugriff auf und die Nutzung der Quaster AI-Dienste. Durch die Nutzung unserer Dienste stimmen Sie diesen Bedingungen zu.",
-    "ACCEPTANCE_TITLE": "Akzeptanz der Bedingungen",
-    "ACCEPTANCE_BODY": "Durch den Zugriff auf oder die Nutzung unserer Dienste stimmen Sie zu, an diese Bedingungen gebunden zu sein. Wenn Sie nicht zustimmen, verwenden Sie die Dienste nicht.",
-    "PERMITTED_USE_TITLE": "Erlaubte Nutzung",
-    "PERMITTED_USE_BODY": "Sie stimmen zu, die Dienste im Einklang mit den anwendbaren Gesetzen zu nutzen und die Dienste nicht zu missbrauchen (einschließlich des Versuchs, Reverse Engineering durchzuführen, Sicherheitslücken auszunutzen oder missbräuchliche Inhalte zu senden).",
-    "INTELLECTUAL_PROPERTY_TITLE": "Geistiges Eigentum",
-    "INTELLECTUAL_PROPERTY_BODY": "Die über unsere Dienste bereitgestellten Inhalte und Technologien sind im Eigentum von Quaster AI oder lizenziert. Sie dürfen unsere Inhalte nicht kopieren, reproduzieren oder verteilen, es sei denn, dies ist ausdrücklich gestattet.",
-    "LIMITATION_TITLE": "Haftungsbeschränkung",
-    "LIMITATION_BODY": "Soweit gesetzlich zulässig, haftet Quaster AI nicht für indirekte, beiläufige, spezielle oder Folgeschäden, die sich aus Ihrer Nutzung der Dienste ergeben.",
-    "GOVERNING_LAW_TITLE": "Anwendbares Recht",
-    "GOVERNING_LAW_BODY": "Diese Bedingungen unterliegen den Gesetzen, die für den Hauptgeschäftssitz von Quaster AI gelten, und sind in Übereinstimmung mit diesen auszulegen.",
-    "CHANGES_TITLE": "Änderungen",
-    "CHANGES_BODY": "Wir können diese Bedingungen von Zeit zu Zeit aktualisieren. Wir werden die aktualisierten Bedingungen veröffentlichen und das Wirksamkeitsdatum angeben; die fortgesetzte Nutzung nach Änderungen gilt als Zustimmung.",
-    "CONTACT_TITLE": "Kontakt",
-    "CONTACT_BODY": "Bei Fragen zu diesen Bedingungen kontaktieren Sie uns unter contact@quasterai.com."
   },
   "COOKIES": {
     "TITLE": "Wir verwenden Cookies",

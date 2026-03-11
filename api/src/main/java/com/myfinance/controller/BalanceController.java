@@ -5,9 +5,7 @@ import com.myfinance.controller.dto.CategoryBalanceDTO;
 import com.myfinance.controller.dto.TotalBalanceDTO;
 import com.myfinance.service.BalanceService;
 import com.myfinance.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 

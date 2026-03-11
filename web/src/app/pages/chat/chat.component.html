@@ -21,8 +21,11 @@
                         </div>
                     </div>
                     <div class="sidebar-body">
-                        <div *ngIf="sidebarLoading" class="sidebar-loading">
-                            <i class="fas fa-spinner fa-spin"></i>
+                        <div *ngIf="sidebarLoading" class="skeleton-list">
+                            <div class="skeleton-item" *ngFor="let item of [1,2,3,4,5]">
+                                <div class="skeleton-line skeleton-name"></div>
+                                <div class="skeleton-line skeleton-balance"></div>
+                            </div>
                         </div>
                         
                         <!-- Categories Tab -->
@@ -117,8 +120,14 @@
             </button>
         </div>
         <div class="modal-body">
-            <div *ngIf="modalLoading" class="modal-loading">
-                <i class="fas fa-spinner fa-spin"></i>
+            <div *ngIf="modalLoading" class="skeleton-transaction-list">
+                <div class="skeleton-transaction-item" *ngFor="let item of [1,2,3,4]">
+                    <div class="skeleton-transaction-info">
+                        <div class="skeleton-line skeleton-description"></div>
+                        <div class="skeleton-line skeleton-date"></div>
+                    </div>
+                    <div class="skeleton-line skeleton-value"></div>
+                </div>
             </div>
             <div *ngIf="!modalLoading && modalTransactions.length === 0" class="modal-empty">
                 <p>{{ 'CHAT.MODAL.NO_TRANSACTIONS' | translate }}</p>
@@ -134,7 +143,7 @@
                         </div>
                     </div>
                     <div class="transaction-value" [ngClass]="getTransactionTypeClass(transaction.type)">
-                        {{ transaction.type === 'INCOME' ? '+' : '-' }}{{ transaction.value | currencyFormat }}
+                        {{ transaction.type === 'CREDIT' ? '+' : '-' }}{{ transaction.value | currencyFormat }}
                     </div>
                 </div>
             </div>

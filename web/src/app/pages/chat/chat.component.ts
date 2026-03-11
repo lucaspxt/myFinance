@@ -463,7 +463,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     }
 
     getTransactionTypeClass(type: string): string {
-    return type === 'INCOME' ? 'positive' : 'negative';
+    return type === 'CREDIT' ? 'positive' : 'negative';
   }
 
   formatDate(dateString: string): string {

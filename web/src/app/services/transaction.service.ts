@@ -5,7 +5,7 @@ import { BalanceRefreshService } from './balance-refresh.service';
 
 export interface Transaction {
   id: number;
-  type: 'INCOME' | 'EXPENSE';
+  type: 'CREDIT' | 'DEBIT';
   category: {
     id: number;
     name: string;
@@ -20,7 +20,7 @@ export interface Transaction {
 }
 
 export interface TransactionRequest {
-  type: 'INCOME' | 'EXPENSE';
+  type: 'CREDIT' | 'DEBIT';
   categoryId: number;
   bankAccountId: number;
   value: number;

@@ -32,6 +32,12 @@ public interface FinanceAssistant {
             - getBalanceByBankAccount: Show balance breakdown by bank account
             - getBalanceByCategory: Show balance breakdown by category
             
+            IMPORTANT - Date Handling:
+            - When creating transactions, if the user does NOT specify a date, leave the transactionDate parameter empty (null or empty string)
+            - The system will automatically use today's date as default
+            - NEVER assume old dates like 2023 or 2024 unless explicitly mentioned by the user
+            - Only provide a transactionDate value if the user explicitly mentions a specific date
+            
             When the user asks about financial operations, balances, or reports, use the appropriate tool automatically.
             Always confirm actions to the user and provide clear feedback.
             """)

@@ -44,15 +44,26 @@ public class TransactionTools {
             - bankAccountName: bank account name (use listBankAccounts to see available ones). Leave blank to use default account.
             - value: transaction amount
             - description: optional description of what the transaction represents
-            - transactionDate: optional date of the transaction in format yyyy-MM-dd (e.g., "2026-03-10") or yyyy-MM-ddTHH:mm:ss. Default is today.
-             Example usage:
+            - transactionDate: OPTIONAL date parameter. Leave empty/null to use TODAY's date (2026-03-11). Only provide if user explicitly mentions a different date. Format: yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss.
+             
+             Example for today's date (DO NOT provide transactionDate):
              createTransaction(
                 type="DEBIT",
                 categoryName="Food",
                 bankAccountName="Wallet",
                 value=50.75,
                 description="Lunch at restaurant",
-                transactionDate="2026-03-10"
+                transactionDate=null
+             )
+             
+             Example for specific past date:
+             createTransaction(
+                type="CREDIT",
+                categoryName="Salary",
+                bankAccountName="Bank",
+                value=5000.00,
+                description="March salary",
+                transactionDate="2026-03-01"
              )
              """)
     public String createTransaction(
@@ -196,7 +207,7 @@ public class TransactionTools {
             - bankAccountName: new bank account name
             - value: new transaction amount
             - description: optional description of what the transaction represents
-            - transactionDate: optional date of the transaction in format yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss
+            - transactionDate: OPTIONAL - leave empty/null to keep the original transaction date. Only provide if changing the date. Format: yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss
             """)
     public String updateTransaction(
             Long transactionId,

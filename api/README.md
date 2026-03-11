@@ -93,6 +93,57 @@ The AI assistant has access to 11 tools for natural language interaction:
 
 See [TOOL_CALLING_GUIDE.md](TOOL_CALLING_GUIDE.md) for detailed documentation.
 
+## Smart Transaction Detection
+
+The backend uses `TransactionContext` (ThreadLocal) to intelligently detect when transactions are created, updated, or deleted through AI tool calls.
+
+### How It Works
+
+1. **TransactionContext.java**: ThreadLocal storage for tracking transaction operations
+   ```java
+   public static void markTransactionOccurred()
+   public static boolean hasTransactionOccurred()
+   public static void clear()
+   ```
+
+2. **TransactionTools.java**: Marks context after successful operations
+   - `createTransaction()` - Marks after creation
+   - `updateTransaction()` - Marks after update
+   - `deleteTransaction()` - Marks after deletion
+
+3. **ChatService.java**: Checks context and sets response flag
+   ```java
+   try {
+       // AI processes message
+       response = assistant.chat(userId, message);
+   } finally {
+       // Check if transaction occurred
+       if (TransactionContext.hasTransactionOccurred()) {
+           response.setTransaction(true);
+       }
+       TransactionContext.clear();
+   }
+   ```
+
+4. **Frontend**: Receives `transaction: true` flag and triggers balance refresh
+
+### Benefits
+- ✅ Only refreshes when actual transactions occur
+- ✅ Works for both direct REST calls and AI chat
+- ✅ Thread-safe using ThreadLocal
+- ✅ Automatic cleanup in finally block
+- ✅ No false positives from queries
+
+## Intelligent Date Handling
+
+Transactions default to the current date when not specified:
+
+1. **TransactionTools**: Uses `LocalDateTime.now()` for null/empty dates
+2. **FinanceAssistant SystemMessage**: Instructs AI about current date (2026-03-11)
+3. **AI Context**: "NEVER assume old dates like 2023, always use recent dates"
+
+This prevents the AI from inferring dates in the past when users don't specify one.
+
 ## Development
 
 ### Run Tests
@@ -136,18 +187,91 @@ Flyway migrations are located in `src/main/resources/db/migration/`:
 ## Architecture
 ```
 src/main/java/com/myfinance/
-├── ai/                    # AI tools for LangChain4j
-│   ├── FinanceAssistant.java
-│   ├── TransactionTools.java
-│   └── BalanceTools.java
-├── config/               # Spring configuration
-│   ├── ChatMemoryConfig.java
-│   └── PgVectorConfig.java
-├── controller/          # REST controllers
-│   └── dto/            # Data Transfer Objects
-├── model/              # JPA entities
-├── repository/         # Spring Data repositories
-└── service/           # Business logic
+├── ai/                           # AI tools for LangChain4j
+│   ├── FinanceAssistant.java    # AI service interface with SystemMessage
+│   ├── TransactionTools.java    # Transaction CRUD tools (marks context)
+│   ├── TransactionContext.java  # ThreadLocal for tracking operations
+│   ├── BalanceTools.java        # Balance query tools
+│   ├── CategoryTools.java       # Category management tools
+│   └── BankAccountTools.java    # Bank account management tools
+├── config/                       # Spring configuration
+│   ├── ChatMemoryConfig.java    # pgvector chat memory
+│   ├── PgVectorConfig.java      # Vector store configuration
+│   └── VectorStoreConfig.java   # Embedding configuration
+├── controller/                   # REST controllers
+│   ├── AssistantController.java # Chat endpoints
+│   ├── TransactionController.java
+│   ├── CategoryController.java
+│   ├── BankAccountController.java
+│   ├── BalanceController.java
+│   └── dto/                     # Request/Response DTOs
+│       ├── ChatResponseDTO.java # Includes transaction flag
+│       ├── CategoryBalanceDTO.java
+│       └── BankAccountBalanceDTO.java
+├── model/                       # JPA entities
+│   ├── Transaction.java         # Financial transactions
+│   ├── TransactionType.java     # CREDIT/DEBIT enum
+│   ├── Category.java
+│   ├── BankAccount.java
+│   ├── User.java
+│   └── Message.java             # Chat history with embeddings
+├── repository/                  # Spring Data repositories
+│   ├── TransactionRepository.java
+│   ├── CategoryRepository.java
+│   ├── BankAccountRepository.java
+│   ├── MessageRepository.java
+│   └── UserRepository.java
+└── service/                     # Business logic
+    ├── ChatService.java         # AI interaction + context checking
+    ├── TransactionService.java
+    ├── CategoryService.java
+    ├── BankAccountService.java
+    └── BalanceService.java
+```
+
+## Transaction Types
+
+The system uses CREDIT/DEBIT instead of INCOME/EXPENSE:
+- **CREDIT**: Money coming in (income, deposits)
+- **DEBIT**: Money going out (expenses, withdrawals)
+
+Defined in `TransactionType.java` enum.
+
+## API Response Format
+
+### Chat Response (ChatResponseDTO)
+```json
+{
+  "message": "Transaction created successfully",
+  "status": "success",
+  "transaction": true,
+  "showRepeat": false
+}
+```
+
+### Balance Response
+```json
+{
+  "totalBalance": 1500.00,
+  "totalCredit": 3000.00,
+  "totalDebit": 1500.00
+}
+```
+
+## Error Handling
+
+- AI tool failures return error status
+- Date parsing gracefully defaults to now()
+- Database constraints prevent invalid data
+- Thread cleanup in finally blocks
+
+## Performance Considerations
+
+- ThreadLocal cleanup prevents memory leaks
+- Indexed database queries
+- Efficient balance calculations with SQL aggregates
+- pgvector for fast semantic search
+- Connection pooling with HikariCP
 ```
 
 ## Debugging

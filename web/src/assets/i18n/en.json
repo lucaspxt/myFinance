@@ -1,4 +1,4 @@
-﻿﻿{
+﻿{
   "APP": {
     "TITLE": "My Finance"
   },
@@ -23,9 +23,8 @@
       "SERVICES": "What is my current balance?",
       "BUSINESS": "What is my balance by category?",
       "EXAMPLES": "What is my balance by bank account?"
-    }
-  ,
-  "RETRY_BUTTON": "Try again"
+    },
+    "RETRY_BUTTON": "Try again"
   },
   "LANGUAGE": {
     "LABEL": "Language",

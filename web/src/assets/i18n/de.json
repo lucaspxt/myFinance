@@ -1,4 +1,4 @@
-﻿{
+{
   "APP": {
     "TITLE": "My Finance"
   },
@@ -23,9 +23,8 @@
       "SERVICES": "Was ist mein aktueller Saldo?",
       "BUSINESS": "Was ist mein Saldo nach Kategorie?",
       "EXAMPLES": "Was ist mein Saldo nach Bankkonto?"
-    }
-  ,
-  "RETRY_BUTTON": "Erneut versuchen"
+    },
+    "RETRY_BUTTON": "Erneut versuchen"
   },
   "LANGUAGE": {
     "LABEL": "Sprache",

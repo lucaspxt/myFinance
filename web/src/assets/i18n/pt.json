@@ -23,9 +23,8 @@
       "SERVICES": "Qual meu saldo atual?",
       "BUSINESS": "Qual meu saldo por categoria?",
       "EXAMPLES": "Qual meu saldo por conta bancaria?"
-    }
-  ,
-  "RETRY_BUTTON": "Tentar novamente"
+    },
+    "RETRY_BUTTON": "Tentar novamente"
   },
   "LANGUAGE": {
     "LABEL": "Idioma",

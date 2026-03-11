@@ -45,11 +45,11 @@ export const appConfig: ApplicationConfig = {
           useFactory: createTranslateLoader,
           deps: [HttpClient]
         },
-    fallbackLang: 'en',
+        defaultLanguage: 'en',
+        fallbackLang: 'en',
         isolate: false
       })
-    )
-    ,
+    ),
     // Ensure translations are loaded before the app finishes bootstrapping
     {
       provide: APP_INITIALIZER,

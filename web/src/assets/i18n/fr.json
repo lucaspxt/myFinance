@@ -1,4 +1,4 @@
-﻿﻿{
+﻿{
   "APP": {
     "TITLE": "My Finance"
   },
@@ -23,9 +23,8 @@
       "SERVICES": "Quel est mon solde actuel ?",
       "BUSINESS": "Quel est mon solde par catégorie ?",
       "EXAMPLES": "Quel est mon solde par compte bancaire ?"
-    }
-  ,
-  "RETRY_BUTTON": "Réessayer"
+    },
+    "RETRY_BUTTON": "Réessayer"
   },
   "LANGUAGE": {
     "LABEL": "Langue",

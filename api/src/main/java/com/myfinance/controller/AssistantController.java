@@ -1,6 +1,7 @@
 package com.myfinance.controller;
 
 import com.myfinance.controller.dto.ChatRequest;
+import com.myfinance.controller.dto.ChatResponseDTO;
 import com.myfinance.service.ChatService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class AssistantController {
     }
 
     @PostMapping
-    public String chat(@RequestBody ChatRequest request) {
+    public ChatResponseDTO chat(@RequestBody ChatRequest request) {
         return chatService.chat(request.getMessage());
     }
 

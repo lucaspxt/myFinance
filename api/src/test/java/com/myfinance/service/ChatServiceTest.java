@@ -2,6 +2,7 @@ package com.myfinance.service;
 
 import com.myfinance.ai.FinanceAssistant;
 import com.myfinance.ai.TransactionExtractionResult;
+import com.myfinance.controller.dto.ChatResponseDTO;
 import com.myfinance.model.BankAccount;
 import com.myfinance.model.Category;
 import com.myfinance.model.Message;
@@ -57,9 +58,11 @@ class ChatServiceTest {
         when(assistant.chat(eq(1L), eq("Hello"))).thenReturn("Hi there!");
         when(messageRepository.save(any(Message.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        String result = chatService.chat("Hello");
+        ChatResponseDTO result = chatService.chat("Hello");
 
-        assertEquals("Hi there!", result);
+        assertEquals("Hi there!", result.getMessage());
+        assertEquals("success", result.getStatus());
+        assertEquals(true, result.isTransaction());
     }
 
     @Test

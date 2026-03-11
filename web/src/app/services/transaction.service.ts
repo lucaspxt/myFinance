@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { BalanceRefreshService } from './balance-refresh.service';
 
 export interface Transaction {
   id: number;
@@ -33,10 +34,15 @@ export interface TransactionRequest {
 export class TransactionService {
   private apiUrl = 'http://localhost:8080/api/transactions';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private balanceRefreshService: BalanceRefreshService
+  ) {}
 
   create(request: TransactionRequest): Observable<Transaction> {
-    return this.http.post<Transaction>(this.apiUrl, request);
+    return this.http.post<Transaction>(this.apiUrl, request).pipe(
+      tap(() => this.balanceRefreshService.triggerRefresh())
+    );
   }
 
   get(id: number): Observable<Transaction> {
@@ -48,10 +54,14 @@ export class TransactionService {
   }
 
   update(id: number, request: TransactionRequest): Observable<Transaction> {
-    return this.http.put<Transaction>(`${this.apiUrl}/${id}`, request);
+    return this.http.put<Transaction>(`${this.apiUrl}/${id}`, request).pipe(
+      tap(() => this.balanceRefreshService.triggerRefresh())
+    );
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      tap(() => this.balanceRefreshService.triggerRefresh())
+    );
   }
 }

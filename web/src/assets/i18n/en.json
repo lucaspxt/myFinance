@@ -20,9 +20,9 @@
     "ERROR_MESSAGE": "Sorry, we had a problem processing your question. Please try again later.",
     "SUGGESTED_TITLE": "Suggested questions:",
     "SUGGESTED_QUESTIONS": {
-      "SERVICES": "What is my current balance?",
-      "BUSINESS": "What is my balance by category?",
-      "EXAMPLES": "What is my balance by bank account?"
+      "QUESTION1": "What is my current balance?",
+      "QUESTION2": "What is my balance by category?",
+      "QUESTION3": "Analyze my current expenses and suggest improvements."
     },
     "RETRY_BUTTON": "Try again"
   },

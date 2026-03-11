@@ -20,9 +20,9 @@
     "ERROR_MESSAGE": "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
     "SUGGESTED_TITLE": "Vorgeschlagene Fragen:",
     "SUGGESTED_QUESTIONS": {
-      "SERVICES": "Was ist mein aktueller Saldo?",
-      "BUSINESS": "Was ist mein Saldo nach Kategorie?",
-      "EXAMPLES": "Was ist mein Saldo nach Bankkonto?"
+      "QUESTION1": "Was ist mein aktueller Saldo?",
+      "QUESTION2": "Was ist mein Saldo nach Kategorie?",
+      "QUESTION3": "Analysieren Sie meine aktuellen Ausgaben und schlagen Sie Verbesserungen vor."
     },
     "RETRY_BUTTON": "Erneut versuchen"
   },

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../components/layout/header/header.component';
 import { MessageComponent, MessageData } from '../../shared/message/message.component';
 import { ChatService } from '../../services/chat.service';
+import { BalanceRefreshService } from '../../services/balance-refresh.service';
 import { finalize, catchError, takeUntil } from 'rxjs/operators';
 import { of, Subject, firstValueFrom } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
@@ -27,7 +28,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   initialLoading: boolean = true;
   private scrollToBottom: boolean = false;
   private _overlayStart = 0;
-  private readonly _overlayMinMs = 2000; // minimum splash duration in ms
+  private readonly _overlayMinMs = 1500; // minimum splash duration in ms
   isLoading: boolean = false;
   userId?: number;
 
@@ -40,7 +41,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     private chatService: ChatService,
     private appService: AppService,
     private translateService: TranslateService,
-    private router: Router
+    private router: Router,
+    private balanceRefreshService: BalanceRefreshService
   ) {}
 
   ngOnInit(): void {
@@ -123,14 +125,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   private updateSuggestedQuestions(): void {
     // Load suggested questions via translate.get to ensure translations are available
     this.translateService.get([
-      'CHAT.SUGGESTED_QUESTIONS.SERVICES',
-      'CHAT.SUGGESTED_QUESTIONS.BUSINESS',
-      'CHAT.SUGGESTED_QUESTIONS.EXAMPLES'
+      'CHAT.SUGGESTED_QUESTIONS.QUESTION1',
+      'CHAT.SUGGESTED_QUESTIONS.QUESTION2',
+      'CHAT.SUGGESTED_QUESTIONS.QUESTION3'
     ]).subscribe((res: any) => {
       this.suggestedQuestions = [
-        res['CHAT.SUGGESTED_QUESTIONS.SERVICES'],
-        res['CHAT.SUGGESTED_QUESTIONS.BUSINESS'],
-        res['CHAT.SUGGESTED_QUESTIONS.EXAMPLES']
+        res['CHAT.SUGGESTED_QUESTIONS.QUESTION1'],
+        res['CHAT.SUGGESTED_QUESTIONS.QUESTION2'],
+        res['CHAT.SUGGESTED_QUESTIONS.QUESTION3']
       ];
     });
   }
@@ -306,6 +308,11 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         this.appService.setAppStatus(response[0].status as AppStatus);
         // Add the system response
         this.addSystemMessage(response[0].message);
+
+        // Trigger balance refresh if this was a transaction
+        if (response[0].isTransaction) {
+          this.balanceRefreshService.triggerRefresh();
+        }
 
         // If server flagged error or explicitly requested a repeat, append the repeat button
         const shouldShowRepeat = !!response[0].showRepeat || response[0].status === 'error';

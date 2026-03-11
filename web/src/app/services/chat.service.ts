@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
-// MyFinance API Response - the chat endpoint returns a simple string
+// MyFinance API Response - now returns structured JSON with balance refresh flag
 export interface ChatResponseItem {
   message: string;
   status: string;
+  isTransaction?: boolean;
+  showRepeat?: boolean;
 }
 
 export interface ChatRequest {
@@ -62,15 +64,10 @@ export class ChatService {
       message: message
     };
     
-    // The API returns a plain string with the assistant's response
-    return this.http.post(`${this.apiUrl}/chat`, request, { responseType: 'text' })
+    // The API now returns a structured JSON response with balance refresh flag
+    return this.http.post<ChatResponseItem>(`${this.apiUrl}/chat`, request)
       .pipe(
-        map((response: string) => [
-          {
-            message: response,
-            status: 'success'
-          }
-        ])
+        map((response: ChatResponseItem) => [response])
       );
   }
 

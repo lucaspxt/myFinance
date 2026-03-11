@@ -79,7 +79,7 @@ export class MessageComponent implements OnInit {
 
     // Calcula o intervalo baseado na velocidade e no tamanho da mensagem
     const textLength = this.message.text.length;
-    const totalDuration = Math.min(4000, Math.max(1000, textLength * 50)); // Entre 2 e 5 segundos, mais lento
+    const totalDuration = Math.min(1000, Math.max(500, textLength * 50)); // Entre 1 e 2 segundos, mais lento
     const interval = totalDuration / textLength;
 
     let currentIndex = 0;

@@ -12,8 +12,10 @@
             <div class="d-flex flex-column">
               <h3 class="d-flex align-items-center gap-1">
                 <span class="dolar-sign">$</span>
-                <ng-container *ngIf="balanceLoading">...</ng-container>
-                <ng-container *ngIf="!balanceLoading">{{ totalBalance?.totalBalance || 0 | number:'1.2-2' }}</ng-container>
+                <ng-container *ngIf="balanceLoading">
+                  <span class="skeleton-loader"></span>
+                </ng-container>
+                <ng-container *ngIf="!balanceLoading">{{ totalBalance?.totalBalance || 0 | currencyFormat }}</ng-container>
               </h3>
               <span class="description">{{ 'HEADER.TOTAL_BALANCE' | translate }}</span>
             </div>

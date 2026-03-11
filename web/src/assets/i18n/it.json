@@ -20,9 +20,9 @@
     "ERROR_MESSAGE": "Spiacenti, abbiamo avuto un problema nell'elaborare la tua domanda. Riprova più tardi.",
     "SUGGESTED_TITLE": "Domande suggerite:",
     "SUGGESTED_QUESTIONS": {
-      "SERVICES": "Qual è il mio saldo attuale?",
-      "BUSINESS": "Qual è il mio saldo per categoria?",
-      "EXAMPLES": "Qual è il mio saldo per conto bancario?"
+      "QUESTION1": "Qual è il mio saldo attuale?",
+      "QUESTION2": "Qual è il mio saldo per categoria?",
+      "QUESTION3": "Analizza le mie spese attuali e suggerisci miglioramenti."
     },
     "RETRY_BUTTON": "Riprova"
   },

@@ -20,9 +20,9 @@
     "ERROR_MESSAGE": "Désolé, nous avons rencontré un problème en traitant votre question. Veuillez réessayer plus tard.",
     "SUGGESTED_TITLE": "Questions suggérées:",
     "SUGGESTED_QUESTIONS": {
-      "SERVICES": "Quel est mon solde actuel ?",
-      "BUSINESS": "Quel est mon solde par catégorie ?",
-      "EXAMPLES": "Quel est mon solde par compte bancaire ?"
+      "QUESTION1": "Quel est mon solde actuel ?",
+      "QUESTION2": "Quel est mon solde par catégorie ?",
+      "QUESTION3": "Analysez mes dépenses actuelles et suggérez des améliorations."
     },
     "RETRY_BUTTON": "Réessayer"
   },

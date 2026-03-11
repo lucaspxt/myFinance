@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { AppService, AppStatus } from '../../../services/app.service';
 import { LanguageService, SupportedLanguages } from '../../../services/i18n/language.service';
 import { BalanceService, TotalBalanceDTO } from '../../../services/balance.service';
+import { BalanceRefreshService } from '../../../services/balance-refresh.service';
+import { CurrencyFormatPipe } from '../../../shared/pipes/currency-format.pipe';
 
 import { Subject, fromEvent, takeUntil } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, TranslateModule],
+  imports: [CommonModule, RouterModule, TranslateModule, CurrencyFormatPipe],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
@@ -33,6 +35,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private appService: AppService,
     private languageService: LanguageService,
     private balanceService: BalanceService,
+    private balanceRefreshService: BalanceRefreshService,
     private el: ElementRef
   ) {}
 
@@ -43,22 +46,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.appStatus = status;
     });
 
-    // Load total balance
-    this.balanceLoading = true;
-    this.balanceService.getTotalBalance()
+    // Load total balance initially
+    this.loadBalance();
+
+    // Subscribe to balance refresh events triggered by transactions or chat
+    this.balanceRefreshService.balanceRefresh$
       .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (balance) => {
-          this.totalBalance = balance;
-          this.balanceLoading = false;
-          this.balanceError = false;
-        },
-        error: (error) => {
-          console.error('Error loading balance:', error);
-          this.balanceLoading = false;
-          this.balanceError = true;
-          this.totalBalance = { totalBalance: 0, totalIncome: 0, totalExpense: 0 };
-        }
+      .subscribe(() => {
+        this.loadBalance();
       });
 
     // Subscribe to language changes to update local state only
@@ -79,6 +74,28 @@ export class HeaderComponent implements OnInit, OnDestroy {
         if (!menuWrapper) return;
         if (!target || !menuWrapper.contains(target)) {
           this.menuOpen = false;
+        }
+      });
+  }
+
+  /**
+   * Load total balance from the API
+   */
+  private loadBalance(): void {
+    this.balanceLoading = true;
+    this.balanceService.getTotalBalance()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (balance) => {
+          this.totalBalance = balance;
+          this.balanceLoading = false;
+          this.balanceError = false;
+        },
+        error: (error) => {
+          console.error('Error loading balance:', error);
+          this.balanceLoading = false;
+          this.balanceError = true;
+          this.totalBalance = { totalBalance: 0, totalIncome: 0, totalExpense: 0 };
         }
       });
   }

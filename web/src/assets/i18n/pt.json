@@ -20,9 +20,9 @@
     "ERROR_MESSAGE": "Desculpe, tivemos um problema ao processar sua pergunta. Por favor, tente novamente mais tarde.",
     "SUGGESTED_TITLE": "Perguntas sugeridas:",
     "SUGGESTED_QUESTIONS": {
-      "SERVICES": "Qual meu saldo atual?",
-      "BUSINESS": "Qual meu saldo por categoria?",
-      "EXAMPLES": "Qual meu saldo por conta bancaria?"
+      "QUESTION1": "Qual meu saldo atual?",
+      "QUESTION2": "Qual meu saldo por categoria?",
+      "QUESTION3": "Analise meus gastos atuais e sugira melhorias."
     },
     "RETRY_BUTTON": "Tentar novamente"
   },

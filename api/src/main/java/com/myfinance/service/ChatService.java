@@ -1,6 +1,7 @@
 package com.myfinance.service;
 
 import com.myfinance.ai.FinanceAssistant;
+import com.myfinance.controller.dto.ChatResponseDTO;
 import com.myfinance.model.Message;
 import com.myfinance.model.MessageType;
 import com.myfinance.repository.MessageRepository;
@@ -21,7 +22,7 @@ public class ChatService {
         this.userService = userService;
     }
 
-    public String chat(String userMessage) {
+    public ChatResponseDTO chat(String userMessage) {
         Long memoryId = userService.getCurrentUserId();
 
         messageRepository.save(new Message(userMessage, MessageType.USER, memoryId));
@@ -30,6 +31,7 @@ public class ChatService {
 
         messageRepository.save(new Message(response, MessageType.ASSISTANT, memoryId));
 
-        return response;
+        // Always set isTransaction=true as the AI assistant might have created/updated/deleted transactions
+        return new ChatResponseDTO(response, "success", true);
     }
 }

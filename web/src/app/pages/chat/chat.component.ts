@@ -310,7 +310,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         this.addSystemMessage(response[0].message);
 
         // Trigger balance refresh if this was a transaction
-        if (response[0].isTransaction) {
+        if (response[0].transaction) {
           this.balanceRefreshService.triggerRefresh();
         }
 

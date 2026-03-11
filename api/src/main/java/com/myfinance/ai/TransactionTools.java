@@ -94,8 +94,8 @@ public class TransactionTools {
                 }
             }
 
-            // Parse transaction date
-            LocalDateTime createdAt = null;
+            // Parse transaction date (default to today if not provided)
+            LocalDateTime createdAt = LocalDateTime.now();
             if (transactionDate != null && !transactionDate.isBlank()) {
                 try {
                     // Try parsing as LocalDateTime first (yyyy-MM-ddTHH:mm:ss)
@@ -119,6 +119,9 @@ public class TransactionTools {
                     description,
                     createdAt
             );
+            
+            // Mark that a transaction occurred
+            TransactionContext.markTransactionOccurred();
 
             String result = String.format("✅ Transaction created successfully!\nType: %s\nCategory: %s\nAccount: %s\nAmount: $ %.2f",
                     transactionType == TransactionType.CREDIT ? "Income" : "Expense",
@@ -233,7 +236,7 @@ public class TransactionTools {
                 return "Bank account not found: " + bankAccountName;
             }
 
-            // Parse transaction date
+            // Parse transaction date (keep existing date if not provided in update)
             LocalDateTime createdAt = null;
             if (transactionDate != null && !transactionDate.isBlank()) {
                 try {
@@ -257,6 +260,9 @@ public class TransactionTools {
                     description,
                     createdAt
             );
+            
+            // Mark that a transaction occurred
+            TransactionContext.markTransactionOccurred();
 
             String result = String.format("✅ Transaction updated successfully!\nID: %d\nType: %s\nCategory: %s\nAccount: %s\nAmount: $ %.2f",
                     transactionId,
@@ -295,6 +301,9 @@ public class TransactionTools {
             }
 
             transactionService.delete(transactionId);
+            
+            // Mark that a transaction occurred
+            TransactionContext.markTransactionOccurred();
 
             return String.format("✅ Transaction #%d deleted successfully!", transactionId);
         } catch (Exception e) {

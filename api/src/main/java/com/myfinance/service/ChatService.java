@@ -3,6 +3,7 @@ package com.myfinance.service;
 import org.springframework.stereotype.Service;
 
 import com.myfinance.ai.FinanceAssistant;
+import com.myfinance.ai.TransactionContext;
 import com.myfinance.controller.dto.ChatResponseDTO;
 import com.myfinance.model.Message;
 import com.myfinance.model.MessageType;
@@ -24,15 +25,21 @@ public class ChatService {
     }
 
     public ChatResponseDTO chat(String userMessage) {
-        Long memoryId = userService.getCurrentUserId();
+        try {
+            Long memoryId = userService.getCurrentUserId();
 
-        messageRepository.save(new Message(userMessage, MessageType.USER, memoryId));
+            messageRepository.save(new Message(userMessage, MessageType.USER, memoryId));
 
-        String response = assistant.chat(memoryId, userMessage);
+            String response = assistant.chat(memoryId, userMessage);
 
-        messageRepository.save(new Message(response, MessageType.ASSISTANT, memoryId));
+            messageRepository.save(new Message(response, MessageType.ASSISTANT, memoryId));
 
-        // Always set isTransaction=true as the AI assistant might have created/updated/deleted transactions
-        return new ChatResponseDTO(response, "success", true);
+            // Only set isTransaction=true if the AI assistant actually created/updated/deleted a transaction
+            boolean isTransaction = TransactionContext.hasTransactionOccurred();
+            return new ChatResponseDTO(response, "success", isTransaction);
+        } finally {
+            // Clear ThreadLocal to prevent memory leaks
+            TransactionContext.clear();
+        }
     }
 }

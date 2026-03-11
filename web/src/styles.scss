@@ -161,6 +161,14 @@ main {
   }
 }
 
+.sidebar {
+  border-radius: 1rem;
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  min-height: calc(100dvh - 8.2rem);
+
+}
+
 .message-btn {
   display:inline-flex;
   align-items:center;

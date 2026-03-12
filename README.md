@@ -1,5 +1,7 @@
 # MyFinance
 
+![MyFinance](myfinance.png)
+
 Personal finance management system with AI-powered chat assistant using LangChain4j and Angular.
 
 ## Project Structure

@@ -5,7 +5,7 @@ Spring Boot REST API with AI-powered financial assistant using LangChain4j.
 ## Quick Start
 
 ### 1. Prerequisites
-- Java 17 or higher
+- Java 21 or higher
 - Maven 3.6+
 - PostgreSQL with pgvector (via Docker Compose from root directory)
 
@@ -178,7 +178,7 @@ Flyway migrations are located in `src/main/resources/db/migration/`:
 
 ## Technology Stack
 - Spring Boot 3.5.3
-- Java 17
+- Java 21
 - LangChain4j 1.0.0-beta5
 - PostgreSQL + pgvector
 - Flyway (database migrations)

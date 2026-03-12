@@ -25,7 +25,7 @@ myFinance/
 ## Quick Start
 
 ### Prerequisites
-- Java 17 or higher
+- Java 21 or higher
 - Maven 3.6+
 - Docker & Docker Compose
 - Node.js 18+
@@ -107,7 +107,7 @@ Access the application at `http://localhost:4200`
 
 ### Backend
 - **Framework**: Spring Boot 3.5.3
-- **Language**: Java 17
+- **Language**: Java 21
 - **AI**: LangChain4j 1.0.0-beta5 + OpenAI GPT-4
 - **Database**: PostgreSQL + pgvector extension
 - **Migrations**: Flyway
@@ -356,7 +356,7 @@ ng test
 
 ### Backend
 - Spring Boot 3.5.3
-- Java 17
+- Java 21
 - LangChain4j 1.0.0-beta5
 - PostgreSQL + pgvector
 - Flyway

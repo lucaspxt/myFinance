@@ -25,11 +25,11 @@ public class TransactionService {
     private final UserService userService;
 
     public Transaction create(TransactionType type, Long categoryId, Long bankAccountId, Double value) {
-        return create(type, categoryId, bankAccountId, value, null, null, null);
+        return create(type, categoryId, bankAccountId, null, value, null, null);
     }
 
     public Transaction create(TransactionType type, Long categoryId, Long bankAccountId, Double value, String description) {
-        return create(type, categoryId, bankAccountId, value, description, null, null);
+        return create(type, categoryId, bankAccountId, null, value, description, null);
     }
 
     public Transaction create(TransactionType type, Long categoryId, Long bankAccountId, Double value, String description, LocalDateTime createdAt) {
@@ -65,11 +65,11 @@ public class TransactionService {
     }
 
     public Transaction update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value) {
-        return update(id, type, categoryId, bankAccountId, value, null, null, null);
+        return update(id, type, categoryId, bankAccountId, null, value, null, null);
     }
 
     public Transaction update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value, String description) {
-        return update(id, type, categoryId, bankAccountId, value, description, null, null);
+        return update(id, type, categoryId, bankAccountId, null, value, description, null);
     }
 
     public Transaction update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value, String description, LocalDateTime createdAt) {

@@ -1,5 +1,6 @@
 package com.myfinance.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -41,6 +42,7 @@ public class Transaction {
     @JoinColumn(name = "from_account_id")
     private BankAccount fromAccount;
 
+    @Column(name = "\"value\"")
     private Double value;
 
     private String description;

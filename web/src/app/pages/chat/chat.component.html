@@ -137,6 +137,7 @@
                     <button class="transaction-status-btn" 
                             [class.completed]="transaction.completed" 
                             [class.pending]="!transaction.completed"
+                            [attr.aria-label]="transaction.completed ? 'Transaction completed - click to mark as pending' : 'Transaction pending - click to mark as completed'"
                             (click)="toggleTransactionCompleted(transaction)">
                         <i [class]="transaction.completed ? 'fas fa-thumbs-up' : 'far fa-thumbs-down'"></i>
                     </button>

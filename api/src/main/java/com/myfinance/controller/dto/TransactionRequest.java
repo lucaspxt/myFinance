@@ -11,5 +11,6 @@ public class TransactionRequest {
     private TransactionType type;
     private Long categoryId;
     private Long bankAccountId;
+    private Long fromAccountId;
     private Double value;
 }

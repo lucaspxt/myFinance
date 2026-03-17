@@ -119,7 +119,7 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" (click)="closeMenu()">
             <div *ngIf="modalLoading" class="skeleton-transaction-list">
                 <div class="skeleton-transaction-item" *ngFor="let item of [1,2,3,4]">
                     <div class="skeleton-transaction-info">
@@ -142,10 +142,122 @@
                             <span class="transaction-date">{{ formatDate(transaction.createdAt) }}</span>
                         </div>
                     </div>
-                    <div class="transaction-value" [ngClass]="getTransactionTypeClass(transaction.type)">
-                        {{ transaction.type === 'CREDIT' ? '+' : '-' }}{{ transaction.value | currencyFormat }}
+                    <div class="transaction-actions">
+                        <div class="transaction-value" [ngClass]="getTransactionTypeClass(transaction.type)">
+                            {{ transaction.type === 'CREDIT' ? '+' : '-' }}{{ transaction.value | currencyFormat }}
+                        </div>
+                        <div class="transaction-menu">
+                            <button class="menu-button" (click)="toggleMenu(transaction.id, $event)">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu" *ngIf="openMenuId === transaction.id" (click)="$event.stopPropagation()">
+                                <button class="dropdown-item" (click)="openEditModal(transaction, $event)">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                                <button class="dropdown-item delete" (click)="confirmDelete(transaction, $event)">
+                                    <i class="fas fa-trash"></i> Deletar
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Transaction Modal -->
+<div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
+    <div class="modal-content edit-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h5>Editar Transação</h5>
+            <button class="modal-close" (click)="closeEditModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="editForm" (ngSubmit)="saveEditedTransaction()">
+                <div class="form-group">
+                    <label for="type">Tipo</label>
+                    <select id="type" class="form-control" formControlName="type">
+                        <option value="CREDIT">Crédito (+)</option>
+                        <option value="DEBIT">Débito (-)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Categoria</label>
+                    <select id="category" class="form-control" formControlName="categoryId">
+                        <option *ngFor="let category of categories" [value]="category.id">
+                            {{ category.name }}
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bankAccount">Conta Bancária</label>
+                    <select id="bankAccount" class="form-control" formControlName="bankAccountId">
+                        <option *ngFor="let account of bankAccounts" [value]="account.id">
+                            {{ account.name }}
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="value">Valor</label>
+                    <input type="number" id="value" class="form-control" formControlName="value" step="0.01" min="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Descrição (opcional)</label>
+                    <input type="text" id="description" class="form-control" formControlName="description">
+                </div>
+                
+                <div class="form-group">
+                    <label for="createdAt">Data</label>
+                    <input type="date" id="createdAt" class="form-control" formControlName="createdAt">
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="closeEditModal()" [disabled]="editModalLoading">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid || editModalLoading">
+                        <span *ngIf="!editModalLoading">Salvar</span>
+                        <span *ngIf="editModalLoading">
+                            <i class="fas fa-spinner fa-spin"></i> Salvando...
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" *ngIf="showDeleteConfirmation" (click)="closeDeleteConfirmation()">
+    <div class="modal-content delete-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h5>Confirmar Exclusão</h5>
+            <button class="modal-close" (click)="closeDeleteConfirmation()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Tem certeza que deseja deletar esta transação?</p>
+            <div *ngIf="transactionToDelete" class="transaction-preview">
+                <strong>{{ transactionToDelete.description || transactionToDelete.category.name }}</strong>
+                <span class="value" [ngClass]="getTransactionTypeClass(transactionToDelete.type)">
+                    {{ transactionToDelete.type === 'CREDIT' ? '+' : '-' }}{{ transactionToDelete.value | currencyFormat }}
+                </span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeDeleteConfirmation()">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" (click)="deleteTransaction()">
+                    <i class="fas fa-trash"></i> Deletar
+                </button>
             </div>
         </div>
     </div>

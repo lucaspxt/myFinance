@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HeaderComponent } from '../../components/layout/header/header.component';
 import { MessageComponent, MessageData } from '../../shared/message/message.component';
 import { ChatService } from '../../services/chat.service';
@@ -8,7 +8,7 @@ import { BalanceRefreshService } from '../../services/balance-refresh.service';
 import { CategoryService, Category } from '../../services/category.service';
 import { BankAccountService, BankAccount } from '../../services/bank-account.service';
 import { BalanceService, CategoryBalanceDTO, BankAccountBalanceDTO } from '../../services/balance.service';
-import { TransactionService, Transaction } from '../../services/transaction.service';
+import { TransactionService, Transaction, TransactionRequest } from '../../services/transaction.service';
 import { CurrencyFormatPipe } from '../../shared/pipes/currency-format.pipe';
 import { finalize, catchError, takeUntil } from 'rxjs/operators';
 import { of, Subject, firstValueFrom, forkJoin } from 'rxjs';
@@ -21,7 +21,7 @@ import { RepeatButtonComponent } from '../../shared/repeat-button/repeat-button.
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, MessageComponent, FormsModule, TranslateModule, CurrencyFormatPipe],
+  imports: [CommonModule, HeaderComponent, MessageComponent, FormsModule, ReactiveFormsModule, TranslateModule, CurrencyFormatPipe],
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
@@ -49,6 +49,19 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   modalTransactions: Transaction[] = [];
   modalLoading: boolean = false;
 
+  // Edit modal properties
+  showEditModal: boolean = false;
+  editForm!: FormGroup;
+  editingTransaction?: Transaction;
+  editModalLoading: boolean = false;
+
+  // Delete confirmation properties
+  showDeleteConfirmation: boolean = false;
+  transactionToDelete?: Transaction;
+
+  // Dropdown menu state
+  openMenuId: number | null = null;
+
   // Subject used to signal teardown for active subscriptions (takeUntil)
   private destroy$ = new Subject<void>();
 
@@ -61,7 +74,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     private categoryService: CategoryService,
     private bankAccountService: BankAccountService,
     private balanceService: BalanceService,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -469,6 +483,124 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-BR');
+  }
+
+  // Toggle dropdown menu for a transaction
+  toggleMenu(transactionId: number, event: Event): void {
+    event.stopPropagation();
+    this.openMenuId = this.openMenuId === transactionId ? null : transactionId;
+  }
+
+  // Close menu when clicking outside
+  closeMenu(): void {
+    this.openMenuId = null;
+  }
+
+  // Open edit modal
+  openEditModal(transaction: Transaction, event: Event): void {
+    event.stopPropagation();
+    this.editingTransaction = transaction;
+    this.showEditModal = true;
+    this.openMenuId = null;
+
+    // Initialize the form with transaction data
+    this.editForm = this.fb.group({
+      type: [transaction.type, Validators.required],
+      categoryId: [transaction.category.id, Validators.required],
+      bankAccountId: [transaction.bankAccount.id, Validators.required],
+      value: [transaction.value, [Validators.required, Validators.min(0.01)]],
+      description: [transaction.description || ''],
+      createdAt: [this.formatDateForInput(transaction.createdAt), Validators.required]
+    });
+  }
+
+  // Close edit modal
+  closeEditModal(): void {
+    this.showEditModal = false;
+    this.editingTransaction = undefined;
+    this.editForm.reset();
+  }
+
+  // Save edited transaction
+  saveEditedTransaction(): void {
+    if (this.editForm.invalid || !this.editingTransaction) {
+      return;
+    }
+
+    this.editModalLoading = true;
+    const formValue = this.editForm.value;
+    const request: TransactionRequest = {
+      type: formValue.type,
+      categoryId: formValue.categoryId,
+      bankAccountId: formValue.bankAccountId,
+      value: formValue.value,
+      description: formValue.description,
+      createdAt: formValue.createdAt
+    };
+
+    this.transactionService.update(this.editingTransaction.id, request).subscribe({
+      next: (updatedTransaction) => {
+        // Update the transaction in the modal list
+        const index = this.modalTransactions.findIndex(t => t.id === updatedTransaction.id);
+        if (index !== -1) {
+          this.modalTransactions[index] = updatedTransaction;
+        }
+        this.editModalLoading = false;
+        this.closeEditModal();
+        // Reload sidebar data to reflect balance changes
+        this.loadSidebarData();
+      },
+      error: (error) => {
+        console.error('Error updating transaction:', error);
+        this.editModalLoading = false;
+        alert('Erro ao atualizar transação. Tente novamente.');
+      }
+    });
+  }
+
+  // Open delete confirmation
+  confirmDelete(transaction: Transaction, event: Event): void {
+    event.stopPropagation();
+    this.transactionToDelete = transaction;
+    this.showDeleteConfirmation = true;
+    this.openMenuId = null;
+  }
+
+  // Close delete confirmation
+  closeDeleteConfirmation(): void {
+    this.showDeleteConfirmation = false;
+    this.transactionToDelete = undefined;
+  }
+
+  // Delete transaction
+  deleteTransaction(): void {
+    if (!this.transactionToDelete) {
+      return;
+    }
+
+    const transactionId = this.transactionToDelete.id;
+    this.transactionService.delete(transactionId).subscribe({
+      next: () => {
+        // Remove transaction from modal list
+        this.modalTransactions = this.modalTransactions.filter(t => t.id !== transactionId);
+        this.closeDeleteConfirmation();
+        // Reload sidebar data to reflect balance changes
+        this.loadSidebarData();
+      },
+      error: (error) => {
+        console.error('Error deleting transaction:', error);
+        alert('Erro ao deletar transação. Tente novamente.');
+      }
+    });
+  }
+
+  // Helper to format date for input field (YYYY-MM-DD)
+  formatDateForInput(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
     /** Extract a 2-letter language code from the first path segment of a URL. */

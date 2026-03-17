@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -207,5 +208,50 @@ class TransactionServiceTest {
 
         assertNotNull(result);
         verify(transactionRepository).save(any(Transaction.class));
+    }
+
+    @Test
+    void create_withPastDate_autoCompletesTrue() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(bankAccount));
+        when(bankAccountRepository.findByUserIdAndDefaultAccountTrue(1L)).thenReturn(Optional.of(bankAccount));
+        when(transactionRepository.save(any(Transaction.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        LocalDateTime pastDate = LocalDateTime.now().minusDays(5);
+        Transaction result = transactionService.create(TransactionType.CREDIT, 1L, 1L, 100.0, "Past transaction", pastDate, null);
+
+        assertNotNull(result);
+        assertEquals(true, result.getCompleted());
+    }
+
+    @Test
+    void create_withTodayDate_autoCompletesTrue() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(bankAccount));
+        when(bankAccountRepository.findByUserIdAndDefaultAccountTrue(1L)).thenReturn(Optional.of(bankAccount));
+        when(transactionRepository.save(any(Transaction.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        LocalDateTime todayDate = LocalDateTime.now();
+        Transaction result = transactionService.create(TransactionType.CREDIT, 1L, 1L, 100.0, "Today transaction", todayDate, null);
+
+        assertNotNull(result);
+        assertEquals(true, result.getCompleted());
+    }
+
+    @Test
+    void create_withFutureDate_autoCompletesFalse() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(bankAccount));
+        when(bankAccountRepository.findByUserIdAndDefaultAccountTrue(1L)).thenReturn(Optional.of(bankAccount));
+        when(transactionRepository.save(any(Transaction.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        LocalDateTime futureDate = LocalDateTime.now().plusDays(5);
+        Transaction result = transactionService.create(TransactionType.DEBIT, 1L, 1L, 100.0, "Future transaction", futureDate, null);
+
+        assertNotNull(result);
+        assertEquals(false, result.getCompleted());
     }
 }

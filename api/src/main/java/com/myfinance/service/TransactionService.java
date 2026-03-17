@@ -43,6 +43,13 @@ public class TransactionService {
         BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
                 .orElse(bankAccountRepository.findByUserIdAndDefaultAccountTrue(userId)
                         .orElseThrow(() -> new RuntimeException("Default bank account not found for user: " + userId)));
+        
+        // Auto-set completed=true if createdAt is today or in the past
+        LocalDateTime transactionDate = createdAt != null ? createdAt : LocalDateTime.now();
+        if (completed == null) {
+            completed = !transactionDate.toLocalDate().isAfter(LocalDateTime.now().toLocalDate());
+        }
+        
         Transaction transaction = new Transaction(type, category, bankAccount, value, description, createdAt, completed);
         return transactionRepository.save(transaction);
     }

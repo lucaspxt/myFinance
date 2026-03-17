@@ -35,11 +35,13 @@ public class BalanceService {
 
         double totalIncome = transactions.stream()
                 .filter(t -> t.getType() == TransactionType.CREDIT)
+                .filter(t -> Boolean.TRUE.equals(t.getCompleted()))
                 .mapToDouble(Transaction::getValue)
                 .sum();
 
         double totalExpense = transactions.stream()
                 .filter(t -> t.getType() == TransactionType.DEBIT)
+                .filter(t -> Boolean.TRUE.equals(t.getCompleted()))
                 .mapToDouble(Transaction::getValue)
                 .sum();
 
@@ -89,11 +91,13 @@ public class BalanceService {
     private double calculateBalance(List<Transaction> transactions) {
         double income = transactions.stream()
                 .filter(t -> t.getType() == TransactionType.CREDIT)
+                .filter(t -> Boolean.TRUE.equals(t.getCompleted()))
                 .mapToDouble(Transaction::getValue)
                 .sum();
 
         double expense = transactions.stream()
                 .filter(t -> t.getType() == TransactionType.DEBIT)
+                .filter(t -> Boolean.TRUE.equals(t.getCompleted()))
                 .mapToDouble(Transaction::getValue)
                 .sum();
 

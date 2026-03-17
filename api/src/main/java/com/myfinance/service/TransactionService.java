@@ -25,21 +25,32 @@ public class TransactionService {
     private final UserService userService;
 
     public Transaction create(TransactionType type, Long categoryId, Long bankAccountId, Double value) {
-        return create(type, categoryId, bankAccountId, value, null, null);
+        return create(type, categoryId, bankAccountId, value, null, null, null);
     }
 
     public Transaction create(TransactionType type, Long categoryId, Long bankAccountId, Double value, String description) {
-        return create(type, categoryId, bankAccountId, value, description, null);
+        return create(type, categoryId, bankAccountId, value, description, null, null);
     }
 
     public Transaction create(TransactionType type, Long categoryId, Long bankAccountId, Double value, String description, LocalDateTime createdAt) {
+        return create(type, categoryId, bankAccountId, value, description, createdAt, null);
+    }
+
+    public Transaction create(TransactionType type, Long categoryId, Long bankAccountId, Double value, String description, LocalDateTime createdAt, Boolean completed) {
         Long userId = userService.getCurrentUserId();
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
         BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
                 .orElse(bankAccountRepository.findByUserIdAndDefaultAccountTrue(userId)
                         .orElseThrow(() -> new RuntimeException("Default bank account not found for user: " + userId)));
-        Transaction transaction = new Transaction(type, category, bankAccount, value, description, createdAt);
+        
+        // Auto-set completed=true if createdAt is today or in the past
+        LocalDateTime transactionDate = createdAt != null ? createdAt : LocalDateTime.now();
+        if (completed == null) {
+            completed = !transactionDate.toLocalDate().isAfter(LocalDateTime.now().toLocalDate());
+        }
+        
+        Transaction transaction = new Transaction(type, category, bankAccount, value, description, createdAt, completed);
         return transactionRepository.save(transaction);
     }
 
@@ -54,14 +65,18 @@ public class TransactionService {
     }
 
     public Transaction update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value) {
-        return update(id, type, categoryId, bankAccountId, value, null, null);
+        return update(id, type, categoryId, bankAccountId, value, null, null, null);
     }
 
     public Transaction update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value, String description) {
-        return update(id, type, categoryId, bankAccountId, value, description, null);
+        return update(id, type, categoryId, bankAccountId, value, description, null, null);
     }
 
     public Transaction update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value, String description, LocalDateTime createdAt) {
+        return update(id, type, categoryId, bankAccountId, value, description, createdAt, null);
+    }
+
+    public Transaction update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value, String description, LocalDateTime createdAt, Boolean completed) {
         Transaction transaction = get(id);
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
@@ -74,6 +89,9 @@ public class TransactionService {
         transaction.setDescription(description);
         if (createdAt != null) {
             transaction.setCreatedAt(createdAt);
+        }
+        if (completed != null) {
+            transaction.setCompleted(completed);
         }
         return transactionRepository.save(transaction);
     }

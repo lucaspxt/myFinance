@@ -5,8 +5,13 @@
   "HEADER": {
     "VISIT_SITE": "Website besuchen",
     "TOTAL_BALANCE": "Gesamtsaldo",
+    "LOGO_ALT": "Logo",
     "MENU": {
-      "HOME": "Startseite"
+      "HOME": "Startseite",
+      "CLOSE": "Menü schließen",
+      "TOGGLE": "Menü umschalten",
+      "OPENED": "Menü geöffnet",
+      "CLOSED": "Menü geschlossen"
     }
   },
   "CHAT": {
@@ -33,6 +38,10 @@
     },
     "MODAL": {
       "NO_TRANSACTIONS": "Keine Transaktionen gefunden"
+    },
+    "TRANSACTION": {
+      "COMPLETED_ARIA": "Transaktion abgeschlossen - klicken um als ausstehend zu markieren",
+      "PENDING_ARIA": "Transaktion ausstehend - klicken um als abgeschlossen zu markieren"
     }
   },
   "LANGUAGE": {

@@ -43,20 +43,27 @@ public class Transaction {
 
     private LocalDateTime createdAt;
 
+    private Boolean completed;
+
     public Transaction(TransactionType type, Category category, BankAccount bankAccount, Double value) {
-        this(type, category, bankAccount, value, null, LocalDateTime.now());
+        this(type, category, bankAccount, value, null, LocalDateTime.now(), false);
     }
 
     public Transaction(TransactionType type, Category category, BankAccount bankAccount, Double value, String description) {
-        this(type, category, bankAccount, value, description, LocalDateTime.now());
+        this(type, category, bankAccount, value, description, LocalDateTime.now(), false);
     }
 
     public Transaction(TransactionType type, Category category, BankAccount bankAccount, Double value, String description, LocalDateTime createdAt) {
+        this(type, category, bankAccount, value, description, createdAt, false);
+    }
+
+    public Transaction(TransactionType type, Category category, BankAccount bankAccount, Double value, String description, LocalDateTime createdAt, Boolean completed) {
         this.type = type;
         this.category = category;
         this.bankAccount = bankAccount;
         this.value = value;
         this.description = description;
         this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
+        this.completed = completed != null ? completed : false;
     }
 }

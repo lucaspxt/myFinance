@@ -5,8 +5,13 @@
   "HEADER": {
     "VISIT_SITE": "visitar site",
     "TOTAL_BALANCE": "Saldo geral",
+    "LOGO_ALT": "Logo",
     "MENU": {
-      "HOME": "Início"
+      "HOME": "Início",
+      "CLOSE": "Fechar menu",
+      "TOGGLE": "Alternar menu",
+      "OPENED": "Menu aberto",
+      "CLOSED": "Menu fechado"
     }
   },
   "CHAT": {
@@ -33,6 +38,10 @@
     },
     "MODAL": {
       "NO_TRANSACTIONS": "Nenhuma transação encontrada"
+    },
+    "TRANSACTION": {
+      "COMPLETED_ARIA": "Transação concluída - clique para marcar como pendente",
+      "PENDING_ARIA": "Transação pendente - clique para marcar como concluída"
     }
   },
   "LANGUAGE": {

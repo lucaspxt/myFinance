@@ -456,6 +456,36 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       });
     }
 
+    toggleTransactionCompleted(transaction: Transaction): void {
+      // Toggle the completed status locally first for immediate UI feedback
+      transaction.completed = !transaction.completed;
+      
+      // Update the transaction on the server
+      const request = {
+        type: transaction.type,
+        categoryId: transaction.category.id,
+        bankAccountId: transaction.bankAccount.id,
+        value: transaction.value,
+        description: transaction.description,
+        createdAt: transaction.createdAt,
+        completed: transaction.completed
+      };
+
+      this.transactionService.update(transaction.id, request).subscribe({
+        next: (updatedTransaction) => {
+          // Update the local transaction with the server response
+          transaction.completed = updatedTransaction.completed;
+          // Trigger balance refresh since completed status affects the balance
+          this.balanceRefreshService.triggerRefresh();
+        },
+        error: (error) => {
+          console.error('Error updating transaction:', error);
+          // Revert the local change on error
+          transaction.completed = !transaction.completed;
+        }
+      });
+    }
+
     closeModal(): void {
       this.showModal = false;
       this.modalTransactions = [];

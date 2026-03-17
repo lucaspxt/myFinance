@@ -32,7 +32,10 @@ public class TransactionController {
                 request.getType(),
                 request.getCategoryId(),
                 request.getBankAccountId(),
-                request.getValue()
+                request.getValue(),
+                request.getDescription(),
+                request.getCreatedAt(),
+                request.getCompleted()
         ));
     }
 
@@ -53,7 +56,10 @@ public class TransactionController {
                 request.getType(),
                 request.getCategoryId(),
                 request.getBankAccountId(),
-                request.getValue()
+                request.getValue(),
+                request.getDescription(),
+                request.getCreatedAt(),
+                request.getCompleted()
         ));
     }
 

@@ -468,6 +468,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     return 'negative';
   }
 
+  getValuePrefix(type: string): string {
+    if (type === 'CREDIT') return '+';
+    if (type === 'TRANSFER') return '';
+    return '-';
+  }
+
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-BR');

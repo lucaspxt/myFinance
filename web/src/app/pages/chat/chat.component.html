@@ -149,7 +149,7 @@
                         </div>
                     </div>
                     <div class="transaction-value" [ngClass]="getTransactionTypeClass(transaction.type)">
-                        {{ transaction.type === 'CREDIT' ? '+' : transaction.type === 'TRANSFER' ? '' : '-' }}{{ transaction.value | currencyFormat }}
+                        {{ getValuePrefix(transaction.type) }}{{ transaction.value | currencyFormat }}
                     </div>
                 </div>
             </div>

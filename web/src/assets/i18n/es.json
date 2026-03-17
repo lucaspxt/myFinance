@@ -6,7 +6,11 @@
     "VISIT_SITE": "visitar sitio",
     "TOTAL_BALANCE": "Saldo total",
     "MENU": {
-      "HOME": "Inicio"
+      "HOME": "Inicio",
+      "CLOSE": "Cerrar menú",
+      "TOGGLE": "Alternar menú",
+      "OPENED": "Menú abierto",
+      "CLOSED": "Menú cerrado"
     }
   },
   "CHAT": {
@@ -33,6 +37,10 @@
     },
     "MODAL": {
       "NO_TRANSACTIONS": "No se encontraron transacciones"
+    },
+    "TRANSACTION": {
+      "COMPLETED_ARIA": "Transacción completada - haga clic para marcar como pendiente",
+      "PENDING_ARIA": "Transacción pendiente - haga clic para marcar como completada"
     }
   },
   "LANGUAGE": {

@@ -6,7 +6,11 @@
     "VISIT_SITE": "visit site",
     "TOTAL_BALANCE": "Total balance",
     "MENU": {
-      "HOME": "Home"
+      "HOME": "Home",
+      "CLOSE": "Close menu",
+      "TOGGLE": "Toggle menu",
+      "OPENED": "Menu opened",
+      "CLOSED": "Menu closed"
     }
   },
   "CHAT": {
@@ -33,6 +37,10 @@
     },
     "MODAL": {
       "NO_TRANSACTIONS": "No transactions found"
+    },
+    "TRANSACTION": {
+      "COMPLETED_ARIA": "Transaction completed - click to mark as pending",
+      "PENDING_ARIA": "Transaction pending - click to mark as completed"
     }
   },
   "LANGUAGE": {

@@ -24,19 +24,19 @@
         <div class="d-flex align-items-center gap-3">
             <div class="menu-wrapper">
                 <button class="hamburger btn btn-link" (click)="toggleMenu()"
-                        [attr.aria-label]="menuOpen ? 'Close menu' : 'Toggle menu'"
+                        [attr.aria-label]="menuOpen ? ('HEADER.MENU.CLOSE' | translate) : ('HEADER.MENU.TOGGLE' | translate)"
                         [attr.aria-expanded]="menuOpen">
                     <span class="hamburger-icon" aria-hidden="true">
                         <i [ngClass]="menuOpen ? 'fa-solid fa-xmark fa-lg' : 'fa-solid fa-bars fa-lg'"></i>
                     </span>
                     <!-- Visually-hidden text for screen readers to announce state changes -->
-                    <span class="visually-hidden" aria-live="polite">{{ menuOpen ? 'Menu aberto' : 'Menu fechado' }}</span>
+                    <span class="visually-hidden" aria-live="polite">{{ menuOpen ? ('HEADER.MENU.OPENED' | translate) : ('HEADER.MENU.CLOSED' | translate) }}</span>
                 </button>
 
                 <!-- Simple hamburger menu dropdown -->
                 <div class="hamburger-menu" *ngIf="menuOpen">
                     <!-- Close button for mobile full-screen menu -->
-                    <button class="hamburger close-btn d-md-none" (click)="toggleMenu()" aria-label="Close menu">
+                    <button class="hamburger close-btn d-md-none" (click)="toggleMenu()" [attr.aria-label]="'HEADER.MENU.CLOSE' | translate">
                         <span class="hamburger-icon" aria-hidden="true">
                             <i class="fa-solid fa-xmark fa-lg"></i>
                         </span>

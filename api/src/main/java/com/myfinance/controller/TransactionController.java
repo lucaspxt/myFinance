@@ -34,8 +34,8 @@ public class TransactionController {
                 request.getBankAccountId(),
                 request.getFromAccountId(),
                 request.getValue(),
-                null,
-                null
+                request.getDescription(),
+                request.getCreatedAt()
         ));
     }
 
@@ -58,8 +58,8 @@ public class TransactionController {
                 request.getBankAccountId(),
                 request.getFromAccountId(),
                 request.getValue(),
-                null,
-                null
+                request.getDescription(),
+                request.getCreatedAt()
         ));
     }
 

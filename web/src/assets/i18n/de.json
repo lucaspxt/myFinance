@@ -32,7 +32,9 @@
       "NO_ACCOUNTS": "Keine Konten gefunden"
     },
     "MODAL": {
-      "NO_TRANSACTIONS": "Keine Transaktionen gefunden"
+      "NO_TRANSACTIONS": "Keine Transaktionen gefunden",
+      "TRANSFER": "Überweisung",
+      "FROM": "Von"
     }
   },
   "LANGUAGE": {

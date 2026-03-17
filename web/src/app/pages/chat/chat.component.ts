@@ -62,6 +62,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   // Dropdown menu state
   openMenuId: number | null = null;
 
+  // Constants
+  private readonly MIN_TRANSACTION_VALUE = 0.01;
+
   // Subject used to signal teardown for active subscriptions (takeUntil)
   private destroy$ = new Subject<void>();
 
@@ -508,7 +511,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       type: [transaction.type, Validators.required],
       categoryId: [transaction.category.id, Validators.required],
       bankAccountId: [transaction.bankAccount.id, Validators.required],
-      value: [transaction.value, [Validators.required, Validators.min(0.01)]],
+      value: [transaction.value, [Validators.required, Validators.min(this.MIN_TRANSACTION_VALUE)]],
       description: [transaction.description || ''],
       createdAt: [this.formatDateForInput(transaction.createdAt), Validators.required]
     });
@@ -553,7 +556,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       error: (error) => {
         console.error('Error updating transaction:', error);
         this.editModalLoading = false;
-        alert('Erro ao atualizar transação. Tente novamente.');
+        const errorMessage = error?.error?.message || error?.message || 'Erro ao atualizar transação. Tente novamente.';
+        alert(errorMessage);
       }
     });
   }
@@ -589,7 +593,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       },
       error: (error) => {
         console.error('Error deleting transaction:', error);
-        alert('Erro ao deletar transação. Tente novamente.');
+        const errorMessage = error?.error?.message || error?.message || 'Erro ao deletar transação. Tente novamente.';
+        alert(errorMessage);
       }
     });
   }
@@ -597,9 +602,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   // Helper to format date for input field (YYYY-MM-DD)
   formatDateForInput(dateString: string): string {
     const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
 

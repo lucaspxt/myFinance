@@ -572,6 +572,10 @@
     color: var(--black);
     margin: 0;
     font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
   .transaction-meta {
@@ -579,10 +583,33 @@
     font-size: 0.75rem;
     color: var(--black);
     opacity: 0.7;
+    gap: 0.5rem;
+    flex-wrap: wrap;
 
     .transaction-date {
       font-weight: 500;
     }
+
+    .transfer-info {
+      font-style: italic;
+    }
+  }
+}
+
+.transfer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+
+  i {
+    font-size: 0.65rem;
   }
 }
 
@@ -598,6 +625,10 @@
 
   &.negative {
     color: var(--red);
+  }
+
+  &.neutral {
+    color: #667eea;
   }
 }
 

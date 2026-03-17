@@ -137,13 +137,19 @@
                     <div class="transaction-info">
                         <div class="transaction-description">
                             <strong>{{ transaction.description || transaction.category.name }}</strong>
+                            <span *ngIf="transaction.type === 'TRANSFER'" class="transfer-badge">
+                                <i class="fas fa-exchange-alt"></i> {{ 'CHAT.MODAL.TRANSFER' | translate }}
+                            </span>
                         </div>
                         <div class="transaction-meta">
                             <span class="transaction-date">{{ formatDate(transaction.createdAt) }}</span>
+                            <span *ngIf="transaction.type === 'TRANSFER' && transaction.fromAccount" class="transfer-info">
+                                • {{ 'CHAT.MODAL.FROM' | translate }}: {{ transaction.fromAccount.name }}
+                            </span>
                         </div>
                     </div>
                     <div class="transaction-value" [ngClass]="getTransactionTypeClass(transaction.type)">
-                        {{ transaction.type === 'CREDIT' ? '+' : '-' }}{{ transaction.value | currencyFormat }}
+                        {{ getValuePrefix(transaction.type) }}{{ transaction.value | currencyFormat }}
                     </div>
                 </div>
             </div>

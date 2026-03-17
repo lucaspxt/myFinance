@@ -1,5 +1,6 @@
 package com.myfinance.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -37,6 +38,11 @@ public class Transaction {
     @JoinColumn(name = "bank_account_id")
     private BankAccount bankAccount;
 
+    @ManyToOne
+    @JoinColumn(name = "from_account_id")
+    private BankAccount fromAccount;
+
+    @Column(name = "\"value\"")
     private Double value;
 
     private String description;
@@ -52,9 +58,14 @@ public class Transaction {
     }
 
     public Transaction(TransactionType type, Category category, BankAccount bankAccount, Double value, String description, LocalDateTime createdAt) {
+        this(type, category, bankAccount, null, value, description, createdAt);
+    }
+
+    public Transaction(TransactionType type, Category category, BankAccount bankAccount, BankAccount fromAccount, Double value, String description, LocalDateTime createdAt) {
         this.type = type;
         this.category = category;
         this.bankAccount = bankAccount;
+        this.fromAccount = fromAccount;
         this.value = value;
         this.description = description;
         this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();

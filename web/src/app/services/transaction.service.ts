@@ -5,12 +5,16 @@ import { BalanceRefreshService } from './balance-refresh.service';
 
 export interface Transaction {
   id: number;
-  type: 'CREDIT' | 'DEBIT';
+  type: 'CREDIT' | 'DEBIT' | 'TRANSFER';
   category: {
     id: number;
     name: string;
   };
   bankAccount: {
+    id: number;
+    name: string;
+  };
+  fromAccount?: {
     id: number;
     name: string;
   };
@@ -20,9 +24,10 @@ export interface Transaction {
 }
 
 export interface TransactionRequest {
-  type: 'CREDIT' | 'DEBIT';
+  type: 'CREDIT' | 'DEBIT' | 'TRANSFER';
   categoryId: number;
   bankAccountId: number;
+  fromAccountId?: number;
   value: number;
   description?: string;
   createdAt?: string;

@@ -72,7 +72,7 @@
                     <div class="container-body">
                         <div *ngIf="initialLoading" class="initial-spinner-overlay full-screen-overlay">
                             <div class="overlay-center">
-                                <img src="/logo-white.png" alt="logo" class="overlay-logo" />
+                                <img src="/logo-white.png" [attr.alt]="'HEADER.LOGO_ALT' | translate" class="overlay-logo" />
                             </div>
                         </div>
                         <div class="chat-messages" [ngClass]="{'with-suggested-questions': shouldShowSuggestedQuestions()}" #chatMessagesContainer>

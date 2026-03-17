@@ -153,4 +153,59 @@ class TransactionServiceTest {
 
         assertThrows(RuntimeException.class, () -> transactionService.delete(1L));
     }
+
+    @Test
+    void create_withCompletedTrue_success() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(bankAccount));
+        when(bankAccountRepository.findByUserIdAndDefaultAccountTrue(1L)).thenReturn(Optional.of(bankAccount));
+        
+        Transaction completedTransaction = new Transaction(TransactionType.CREDIT, category, bankAccount, 200.0, "Test", null, true);
+        completedTransaction.setId(2L);
+        when(transactionRepository.save(any(Transaction.class))).thenReturn(completedTransaction);
+
+        Transaction result = transactionService.create(TransactionType.CREDIT, 1L, 1L, 200.0, "Test", null, true);
+
+        assertNotNull(result);
+        assertEquals(TransactionType.CREDIT, result.getType());
+        assertEquals(200.0, result.getValue());
+        assertEquals(true, result.getCompleted());
+        verify(transactionRepository).save(any(Transaction.class));
+    }
+
+    @Test
+    void create_withCompletedFalse_success() {
+        when(userService.getCurrentUserId()).thenReturn(1L);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(bankAccount));
+        when(bankAccountRepository.findByUserIdAndDefaultAccountTrue(1L)).thenReturn(Optional.of(bankAccount));
+        
+        Transaction pendingTransaction = new Transaction(TransactionType.DEBIT, category, bankAccount, 150.0, "Future payment", null, false);
+        pendingTransaction.setId(3L);
+        when(transactionRepository.save(any(Transaction.class))).thenReturn(pendingTransaction);
+
+        Transaction result = transactionService.create(TransactionType.DEBIT, 1L, 1L, 150.0, "Future payment", null, false);
+
+        assertNotNull(result);
+        assertEquals(TransactionType.DEBIT, result.getType());
+        assertEquals(150.0, result.getValue());
+        assertEquals(false, result.getCompleted());
+        verify(transactionRepository).save(any(Transaction.class));
+    }
+
+    @Test
+    void update_withCompletedField_success() {
+        when(transactionRepository.findById(1L)).thenReturn(Optional.of(transaction));
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(bankAccount));
+        
+        transaction.setCompleted(false);
+        when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
+
+        Transaction result = transactionService.update(1L, TransactionType.CREDIT, 1L, 1L, 200.0, "Updated", null, true);
+
+        assertNotNull(result);
+        verify(transactionRepository).save(any(Transaction.class));
+    }
 }

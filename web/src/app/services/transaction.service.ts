@@ -17,6 +17,7 @@ export interface Transaction {
   value: number;
   description?: string;
   createdAt: string;
+  completed: boolean;
 }
 
 export interface TransactionRequest {
@@ -26,6 +27,7 @@ export interface TransactionRequest {
   value: number;
   description?: string;
   createdAt?: string;
+  completed?: boolean;
 }
 
 @Injectable({

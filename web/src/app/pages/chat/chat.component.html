@@ -134,6 +134,12 @@
             </div>
             <div *ngIf="!modalLoading && modalTransactions.length > 0" class="transaction-list">
                 <div class="transaction-item" *ngFor="let transaction of modalTransactions">
+                    <button class="transaction-status-btn" 
+                            [class.completed]="transaction.completed" 
+                            [class.pending]="!transaction.completed"
+                            (click)="toggleTransactionCompleted(transaction)">
+                        <i [class]="transaction.completed ? 'fas fa-thumbs-up' : 'far fa-thumbs-down'"></i>
+                    </button>
                     <div class="transaction-info">
                         <div class="transaction-description">
                             <strong>{{ transaction.description || transaction.category.name }}</strong>

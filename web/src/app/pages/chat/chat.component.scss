@@ -553,12 +553,41 @@
 .transaction-item {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   padding: 1rem;
   background: var(--white);
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.transaction-status-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin-right: 0.75rem;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.completed {
+    color: var(--green);
+  }
+
+  &.pending {
+    color: #000000;
+  }
+
+  i {
+    display: block;
+  }
 }
 
 .transaction-info {

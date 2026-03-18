@@ -6,7 +6,8 @@
     "VISIT_SITE": "visiter le site",
     "TOTAL_BALANCE": "Solde total",
     "MENU": {
-      "HOME": "Accueil"
+      "HOME": "Accueil",
+      "LOGOUT": "Se déconnecter"
     }
   },
   "CHAT": {
@@ -98,5 +99,34 @@
     "DESCRIPTION": "Nous utilisons des cookies et des technologies similaires pour fournir, analyser et améliorer nos services. En cliquant sur Accepter, vous consentez à l'utilisation des cookies.",
     "ACCEPT": "Accepter",
     "DECLINE": "Refuser"
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Se connecter",
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "vous@exemple.com",
+      "PASSWORD": "Mot de passe",
+      "PASSWORD_PLACEHOLDER": "Votre mot de passe",
+      "SUBMIT": "Se connecter",
+      "LOADING": "Connexion...",
+      "ERROR": "Email ou mot de passe invalide. Veuillez réessayer.",
+      "NO_ACCOUNT": "Pas de compte ?",
+      "REGISTER_LINK": "Créer un compte"
+    },
+    "REGISTER": {
+      "TITLE": "Créer un Compte",
+      "NAME": "Nom",
+      "NAME_PLACEHOLDER": "Votre nom",
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "vous@exemple.com",
+      "PASSWORD": "Mot de passe",
+      "PASSWORD_PLACEHOLDER": "Choisissez un mot de passe",
+      "SUBMIT": "Créer un Compte",
+      "LOADING": "Création du compte...",
+      "ERROR": "Échec de la création du compte. Veuillez réessayer.",
+      "ERROR_EMAIL_EXISTS": "Cet email est déjà enregistré. Essayez de vous connecter.",
+      "HAS_ACCOUNT": "Vous avez déjà un compte ?",
+      "LOGIN_LINK": "Se connecter"
+    }
   }
 }

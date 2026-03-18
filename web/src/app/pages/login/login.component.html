@@ -1,0 +1,50 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <img src="logo.png" alt="MyFinance" class="auth-logo-img">
+    </div>
+    <h2 class="auth-title">{{ 'AUTH.LOGIN.TITLE' | translate }}</h2>
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="auth-form">
+      <div class="form-group">
+        <label for="email">{{ 'AUTH.LOGIN.EMAIL' | translate }}</label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          [(ngModel)]="email"
+          name="email"
+          required
+          [placeholder]="'AUTH.LOGIN.EMAIL_PLACEHOLDER' | translate"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">{{ 'AUTH.LOGIN.PASSWORD' | translate }}</label>
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          [(ngModel)]="password"
+          name="password"
+          required
+          [placeholder]="'AUTH.LOGIN.PASSWORD_PLACEHOLDER' | translate"
+        >
+      </div>
+
+      <div *ngIf="errorKey" class="alert alert-danger">
+        {{ errorKey | translate }}
+      </div>
+
+      <button type="submit" class="btn btn-primary auth-btn" [disabled]="isLoading || !email || !password">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+        {{ isLoading ? ('AUTH.LOGIN.LOADING' | translate) : ('AUTH.LOGIN.SUBMIT' | translate) }}
+      </button>
+    </form>
+
+    <p class="auth-link">
+      {{ 'AUTH.LOGIN.NO_ACCOUNT' | translate }}
+      <a routerLink="/register">{{ 'AUTH.LOGIN.REGISTER_LINK' | translate }}</a>
+    </p>
+  </div>
+</div>

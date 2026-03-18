@@ -6,7 +6,8 @@
     "VISIT_SITE": "Website besuchen",
     "TOTAL_BALANCE": "Gesamtsaldo",
     "MENU": {
-      "HOME": "Startseite"
+      "HOME": "Startseite",
+      "LOGOUT": "Abmelden"
     }
   },
   "CHAT": {
@@ -98,5 +99,34 @@
     "DESCRIPTION": "Wir verwenden Cookies und ähnliche Technologien, um unsere Dienste bereitzustellen, zu analysieren und zu verbessern. Durch Klicken auf Akzeptieren stimmen Sie der Verwendung von Cookies zu.",
     "ACCEPT": "Akzeptieren",
     "DECLINE": "Ablehnen"
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Anmelden",
+      "EMAIL": "E-Mail",
+      "EMAIL_PLACEHOLDER": "sie@beispiel.de",
+      "PASSWORD": "Passwort",
+      "PASSWORD_PLACEHOLDER": "Ihr Passwort",
+      "SUBMIT": "Anmelden",
+      "LOADING": "Anmelden...",
+      "ERROR": "Ungültige E-Mail oder ungültiges Passwort. Bitte versuchen Sie es erneut.",
+      "NO_ACCOUNT": "Noch kein Konto?",
+      "REGISTER_LINK": "Konto erstellen"
+    },
+    "REGISTER": {
+      "TITLE": "Konto erstellen",
+      "NAME": "Name",
+      "NAME_PLACEHOLDER": "Ihr Name",
+      "EMAIL": "E-Mail",
+      "EMAIL_PLACEHOLDER": "sie@beispiel.de",
+      "PASSWORD": "Passwort",
+      "PASSWORD_PLACEHOLDER": "Passwort wählen",
+      "SUBMIT": "Konto erstellen",
+      "LOADING": "Konto wird erstellt...",
+      "ERROR": "Konto konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
+      "ERROR_EMAIL_EXISTS": "Diese E-Mail ist bereits registriert. Versuchen Sie sich anzumelden.",
+      "HAS_ACCOUNT": "Haben Sie bereits ein Konto?",
+      "LOGIN_LINK": "Anmelden"
+    }
   }
 }

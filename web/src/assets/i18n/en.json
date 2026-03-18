@@ -6,7 +6,8 @@
     "VISIT_SITE": "visit site",
     "TOTAL_BALANCE": "Total balance",
     "MENU": {
-      "HOME": "Home"
+      "HOME": "Home",
+      "LOGOUT": "Sign Out"
     }
   },
   "CHAT": {
@@ -100,5 +101,34 @@
     "DESCRIPTION": "We use cookies and similar technologies to provide, analyze and improve our services. By clicking Accept you consent to the use of cookies.",
     "ACCEPT": "Accept",
     "DECLINE": "Decline"
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Sign In",
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "you@example.com",
+      "PASSWORD": "Password",
+      "PASSWORD_PLACEHOLDER": "Your password",
+      "SUBMIT": "Sign In",
+      "LOADING": "Signing in...",
+      "ERROR": "Invalid email or password. Please try again.",
+      "NO_ACCOUNT": "Don't have an account?",
+      "REGISTER_LINK": "Create account"
+    },
+    "REGISTER": {
+      "TITLE": "Create Account",
+      "NAME": "Name",
+      "NAME_PLACEHOLDER": "Your name",
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "you@example.com",
+      "PASSWORD": "Password",
+      "PASSWORD_PLACEHOLDER": "Choose a password",
+      "SUBMIT": "Create Account",
+      "LOADING": "Creating account...",
+      "ERROR": "Failed to create account. Please try again.",
+      "ERROR_EMAIL_EXISTS": "This email is already registered. Try signing in.",
+      "HAS_ACCOUNT": "Already have an account?",
+      "LOGIN_LINK": "Sign in"
+    }
   }
 }

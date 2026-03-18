@@ -6,7 +6,8 @@
     "VISIT_SITE": "visitar sitio",
     "TOTAL_BALANCE": "Saldo total",
     "MENU": {
-      "HOME": "Inicio"
+      "HOME": "Inicio",
+      "LOGOUT": "Cerrar sesión"
     }
   },
   "CHAT": {
@@ -98,5 +99,34 @@
     "DESCRIPTION": "Usamos cookies y tecnologías similares para proporcionar, analizar y mejorar nuestros servicios. Al hacer clic en Aceptar consientes el uso de cookies.",
     "ACCEPT": "Aceptar",
     "DECLINE": "Rechazar"
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Iniciar Sesión",
+      "EMAIL": "Correo electrónico",
+      "EMAIL_PLACEHOLDER": "tu@ejemplo.com",
+      "PASSWORD": "Contraseña",
+      "PASSWORD_PLACEHOLDER": "Tu contraseña",
+      "SUBMIT": "Iniciar Sesión",
+      "LOADING": "Iniciando sesión...",
+      "ERROR": "Correo o contraseña inválidos. Inténtalo de nuevo.",
+      "NO_ACCOUNT": "¿No tienes una cuenta?",
+      "REGISTER_LINK": "Crear cuenta"
+    },
+    "REGISTER": {
+      "TITLE": "Crear Cuenta",
+      "NAME": "Nombre",
+      "NAME_PLACEHOLDER": "Tu nombre",
+      "EMAIL": "Correo electrónico",
+      "EMAIL_PLACEHOLDER": "tu@ejemplo.com",
+      "PASSWORD": "Contraseña",
+      "PASSWORD_PLACEHOLDER": "Elige una contraseña",
+      "SUBMIT": "Crear Cuenta",
+      "LOADING": "Creando cuenta...",
+      "ERROR": "Error al crear la cuenta. Inténtalo de nuevo.",
+      "ERROR_EMAIL_EXISTS": "Este correo ya está registrado. Intenta iniciar sesión.",
+      "HAS_ACCOUNT": "¿Ya tienes una cuenta?",
+      "LOGIN_LINK": "Iniciar sesión"
+    }
   }
 }

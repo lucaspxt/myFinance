@@ -55,6 +55,12 @@
                     <div class="division"></div>
                     <ul class="list-unstyled mb-0">
                         <li><a href="/">{{ 'HEADER.MENU.HOME' | translate }}</a></li>
+                        <li *ngIf="userName" class="menu-user-name">{{ userName }}</li>
+                        <li>
+                          <button class="btn btn-link logout-btn" (click)="logout()">
+                            {{ 'HEADER.MENU.LOGOUT' | translate }}
+                          </button>
+                        </li>
                     </ul>
                 </div>
             </div>

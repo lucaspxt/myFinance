@@ -6,7 +6,8 @@
     "VISIT_SITE": "visita sito",
     "TOTAL_BALANCE": "Saldo totale",
     "MENU": {
-      "HOME": "Home"
+      "HOME": "Home",
+      "LOGOUT": "Esci"
     }
   },
   "CHAT": {
@@ -100,5 +101,34 @@
     "DESCRIPTION": "Utilizziamo cookie e tecnologie simili per fornire, analizzare e migliorare i nostri servizi. Cliccando Accetta acconsenti all'uso dei cookie.",
     "ACCEPT": "Accetta",
     "DECLINE": "Rifiuta"
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Accedi",
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "tu@esempio.com",
+      "PASSWORD": "Password",
+      "PASSWORD_PLACEHOLDER": "La tua password",
+      "SUBMIT": "Accedi",
+      "LOADING": "Accesso in corso...",
+      "ERROR": "Email o password non validi. Riprova.",
+      "NO_ACCOUNT": "Non hai un account?",
+      "REGISTER_LINK": "Crea account"
+    },
+    "REGISTER": {
+      "TITLE": "Crea Account",
+      "NAME": "Nome",
+      "NAME_PLACEHOLDER": "Il tuo nome",
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "tu@esempio.com",
+      "PASSWORD": "Password",
+      "PASSWORD_PLACEHOLDER": "Scegli una password",
+      "SUBMIT": "Crea Account",
+      "LOADING": "Creazione account...",
+      "ERROR": "Impossibile creare l'account. Riprova.",
+      "ERROR_EMAIL_EXISTS": "Questa email è già registrata. Prova ad accedere.",
+      "HAS_ACCOUNT": "Hai già un account?",
+      "LOGIN_LINK": "Accedi"
+    }
   }
 }

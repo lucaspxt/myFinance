@@ -15,6 +15,7 @@
     "SEND": "Invia",
     "START_CONVERSATION": "Inizia una conversazione con la nostra IA",
     "LOADING": "Caricamento...",
+    "LOADING_MORE": "Caricamento di altre transazioni...",
     "CONTINUE_BUTTON": "Continua",
     "WELCOME_MESSAGE": "Ciao! Indica le tue spese ed entrate per iniziare!",
     "ERROR_MESSAGE": "Spiacenti, abbiamo avuto un problema nell'elaborare la tua domanda. Riprova più tardi.",
@@ -31,8 +32,58 @@
       "ACCOUNTS": "Conti",
       "NO_ACCOUNTS": "Nessun conto trovato"
     },
+    "TABS": {
+      "CHAT": "Chat",
+      "TRANSACTIONS": "Transazioni"
+    },
+    "FILTERS": {
+      "CATEGORY": "Categoria",
+      "ACCOUNT": "Conto",
+      "ALL_CATEGORIES": "Tutte le Categorie",
+      "ALL_ACCOUNTS": "Tutti i Conti",
+      "MONTH": "Mese",
+      "YEAR": "Anno",
+      "ALL_MONTHS": "Tutti i Mesi",
+      "ALL_YEARS": "Tutti gli Anni",
+      "CLEAR": "Cancella Filtri",
+      "TOGGLE": "Filtri",
+      "MONTHS": {
+        "JANUARY": "Gennaio",
+        "FEBRUARY": "Febbraio",
+        "MARCH": "Marzo",
+        "APRIL": "Aprile",
+        "MAY": "Maggio",
+        "JUNE": "Giugno",
+        "JULY": "Luglio",
+        "AUGUST": "Agosto",
+        "SEPTEMBER": "Settembre",
+        "OCTOBER": "Ottobre",
+        "NOVEMBER": "Novembre",
+        "DECEMBER": "Dicembre"
+      }
+    },
     "MODAL": {
-      "NO_TRANSACTIONS": "Nessuna transazione trovata"
+      "NO_TRANSACTIONS": "Nessuna transazione trovata",
+      "EDIT_TITLE": "Modifica Transazione",
+      "DELETE_TITLE": "Conferma Eliminazione",
+      "DELETE_MESSAGE": "Sei sicuro di voler eliminare questa transazione?"
+    },
+    "ACTIONS": {
+      "EDIT": "Modifica",
+      "DELETE": "Elimina",
+      "CANCEL": "Annulla",
+      "SAVE": "Salva",
+      "SAVING": "Salvataggio..."
+    },
+    "FORM": {
+      "TYPE": "Tipo",
+      "CATEGORY": "Categoria",
+      "BANK_ACCOUNT": "Conto Bancario",
+      "VALUE": "Valore",
+      "DESCRIPTION": "Descrizione (opzionale)",
+      "DATE": "Data",
+      "CREDIT": "Credito (+)",
+      "DEBIT": "Debito (-)"
     }
   },
   "LANGUAGE": {

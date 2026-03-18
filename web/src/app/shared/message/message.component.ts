@@ -35,15 +35,9 @@ export class MessageComponent implements OnInit {
   private createdComponentRef: any;
   
   ngOnInit() {
-    // Iniciar o efeito de digitação apenas para mensagens do sistema
-    if (!this.message.isUser && this.message.type !== 'component') {
-      // If this is a system text message, start typing effect
-      this.startTypingEffect();
-    } else {
-      // For user messages or component messages, show immediately
-      this.displayText = this.message.text;
-      this.typingComplete = true;
-    }
+    // Mostrar texto completo imediatamente (sem efeito de digitação)
+    this.displayText = this.message.text;
+    this.typingComplete = true;
   }
 
   ngAfterViewInit() {

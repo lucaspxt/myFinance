@@ -15,6 +15,7 @@
     "SEND": "Senden",
     "START_CONVERSATION": "Beginnen Sie ein Gespräch mit unserer KI",
     "LOADING": "Lädt...",
+    "LOADING_MORE": "Weitere Transaktionen werden geladen...",
     "CONTINUE_BUTTON": "Weiter",
     "WELCOME_MESSAGE": "Hallo! Geben Sie Ihre Ausgaben und Einnahmen an, um loszulegen!",
     "ERROR_MESSAGE": "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
@@ -31,8 +32,56 @@
       "ACCOUNTS": "Konten",
       "NO_ACCOUNTS": "Keine Konten gefunden"
     },
+    "TABS": {
+      "CHAT": "Chat",
+      "TRANSACTIONS": "Transaktionen"
+    },
+    "FILTERS": {
+      "CATEGORY": "Kategorie",
+      "ACCOUNT": "Konto",
+      "ALL_CATEGORIES": "Alle Kategorien",
+      "ALL_ACCOUNTS": "Alle Konten",
+      "MONTH": "Monat",
+      "YEAR": "Jahr",
+      "ALL_MONTHS": "Alle Monate",
+      "ALL_YEARS": "Alle Jahre",      "CLEAR": "Filter löschen",
+      "TOGGLE": "Filter",      "MONTHS": {
+        "JANUARY": "Januar",
+        "FEBRUARY": "Februar",
+        "MARCH": "März",
+        "APRIL": "April",
+        "MAY": "Mai",
+        "JUNE": "Juni",
+        "JULY": "Juli",
+        "AUGUST": "August",
+        "SEPTEMBER": "September",
+        "OCTOBER": "Oktober",
+        "NOVEMBER": "November",
+        "DECEMBER": "Dezember"
+      }
+    },
     "MODAL": {
-      "NO_TRANSACTIONS": "Keine Transaktionen gefunden"
+      "NO_TRANSACTIONS": "Keine Transaktionen gefunden",
+      "EDIT_TITLE": "Transaktion Bearbeiten",
+      "DELETE_TITLE": "Löschen Bestätigen",
+      "DELETE_MESSAGE": "Möchten Sie diese Transaktion wirklich löschen?"
+    },
+    "ACTIONS": {
+      "EDIT": "Bearbeiten",
+      "DELETE": "Löschen",
+      "CANCEL": "Abbrechen",
+      "SAVE": "Speichern",
+      "SAVING": "Speichern..."
+    },
+    "FORM": {
+      "TYPE": "Typ",
+      "CATEGORY": "Kategorie",
+      "BANK_ACCOUNT": "Bankkonto",
+      "VALUE": "Wert",
+      "DESCRIPTION": "Beschreibung (optional)",
+      "DATE": "Datum",
+      "CREDIT": "Gutschrift (+)",
+      "DEBIT": "Lastschrift (-)"
     }
   },
   "LANGUAGE": {

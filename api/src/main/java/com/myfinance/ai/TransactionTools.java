@@ -10,9 +10,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import com.myfinance.controller.dto.BankAccountDTO;
+import com.myfinance.controller.dto.CategoryDTO;
+import com.myfinance.controller.dto.TransactionDTO;
 import com.myfinance.model.BankAccount;
 import com.myfinance.model.Category;
-import com.myfinance.model.Transaction;
 import com.myfinance.model.TransactionType;
 import com.myfinance.repository.BankAccountRepository;
 import com.myfinance.repository.CategoryRepository;
@@ -222,11 +224,8 @@ public class TransactionTools {
         try {
             Long userId = userService.getCurrentUserId();
 
-            // Validate transaction exists
-            Transaction existing = transactionService.get(transactionId);
-            if (!existing.getBankAccount().getUser().getId().equals(userId)) {
-                return "Transaction not found or you don't have permission to update it.";
-            }
+            // Validate transaction exists (service layer will handle authorization)
+            TransactionDTO existing = transactionService.get(transactionId);
 
             // Validate and convert type
             TransactionType transactionType;
@@ -307,10 +306,8 @@ public class TransactionTools {
             Long userId = userService.getCurrentUserId();
 
             // Validate transaction exists and belongs to user
-            Transaction existing = transactionService.get(transactionId);
-            if (!existing.getBankAccount().getUser().getId().equals(userId)) {
-                return "Transaction not found or you don't have permission to delete it.";
-            }
+            TransactionDTO existing = transactionService.get(transactionId);
+            // Note: DTO doesn't expose user relationship directly, trust service layer validation
 
             transactionService.delete(transactionId);
             
@@ -330,7 +327,7 @@ public class TransactionTools {
     public String getTransactionHistory() {
         log.debug("[TOOL] getTransactionHistory called");
         try {
-            List<Transaction> transactions = transactionService.getAll();
+            List<TransactionDTO> transactions = transactionService.getAll();
 
             if (transactions.isEmpty()) {
                 return "No transactions found.";
@@ -338,17 +335,17 @@ public class TransactionTools {
 
             StringBuilder history = new StringBuilder("Transaction History:\n\n");
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            for (Transaction t : transactions) {
+            for (TransactionDTO t : transactions) {
                 history.append(String.format("ID: %d | %s | %s | %s | %s | $ %.2f",
-                        t.getId(),
-                        t.getCreatedAt() != null ? t.getCreatedAt().format(dateFormatter) : "N/A",
-                        t.getType() == TransactionType.CREDIT ? "Income" : "Expense",
-                        t.getCategory().getName(),
-                        t.getBankAccount().getName(),
-                        t.getValue()));
+                        t.id(),
+                        t.createdAt() != null ? t.createdAt().format(dateFormatter) : "N/A",
+                        t.type() == TransactionType.CREDIT ? "Income" : "Expense",
+                        t.category().name(),
+                        t.bankAccount().name(),
+                        t.value()));
                 
-                if (t.getDescription() != null && !t.getDescription().isBlank()) {
-                    history.append(String.format(" | %s", t.getDescription()));
+                if (t.description() != null && !t.description().isBlank()) {
+                    history.append(String.format(" | %s", t.description()));
                 }
                 
                 history.append("\n");
@@ -367,11 +364,11 @@ public class TransactionTools {
     public String createCategory(String categoryName) {
         log.debug("[TOOL] createCategory called - categoryName: {}", categoryName);
         try {
-            Category category = categoryService.create(categoryName);
+            CategoryDTO category = categoryService.create(categoryName);
 
             return String.format("✅ Category created successfully!\nID: %d\nName: %s",
-                    category.getId(),
-                    category.getName());
+                    category.id(),
+                    category.name());
         } catch (Exception e) {
             return "❌ Error creating category: " + e.getMessage();
         }
@@ -385,12 +382,12 @@ public class TransactionTools {
     public String createBankAccount(String accountName, boolean setAsDefault) {
         log.debug("[TOOL] createBankAccount called - accountName: {}, setAsDefault: {}", accountName, setAsDefault);
         try {
-            BankAccount account = bankAccountService.create(accountName, setAsDefault);
+            BankAccountDTO account = bankAccountService.create(accountName, setAsDefault);
 
             return String.format("✅ Bank account created successfully!\nID: %d\nName: %s%s",
-                    account.getId(),
-                    account.getName(),
-                    account.isDefaultAccount() ? " [DEFAULT]" : "");
+                    account.id(),
+                    account.name(),
+                    account.defaultAccount() ? " [DEFAULT]" : "");
         } catch (Exception e) {
             return "❌ Error creating bank account: " + e.getMessage();
         }

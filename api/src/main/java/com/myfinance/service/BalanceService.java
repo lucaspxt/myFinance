@@ -1,5 +1,10 @@
 package com.myfinance.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.myfinance.controller.dto.BankAccountBalanceDTO;
 import com.myfinance.controller.dto.CategoryBalanceDTO;
 import com.myfinance.controller.dto.TotalBalanceDTO;
@@ -10,10 +15,6 @@ import com.myfinance.model.TransactionType;
 import com.myfinance.repository.BankAccountRepository;
 import com.myfinance.repository.CategoryRepository;
 import com.myfinance.repository.TransactionRepository;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BalanceService {
@@ -54,7 +55,7 @@ public class BalanceService {
         return bankAccounts.stream()
                 .map(account -> {
                     List<Transaction> transactions = transactionRepository
-                            .findByUserIdAndBankAccountId(userId, account.getId());
+                            .findByUserIdWithFilters(userId, null, account.getId(), null, null);
 
                     double balance = calculateBalance(transactions);
 
@@ -73,7 +74,7 @@ public class BalanceService {
         return categories.stream()
                 .map(category -> {
                     List<Transaction> transactions = transactionRepository
-                            .findByUserIdAndCategoryId(userId, category.getId());
+                            .findByUserIdWithFilters(userId, category.getId(), null, null, null);
 
                     double balance = calculateBalance(transactions);
 

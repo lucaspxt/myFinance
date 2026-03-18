@@ -40,23 +40,23 @@ public class TransactionTools {
     @Tool("""
             Creates a new financial transaction (income or expense).
             - type: CREDIT for income/revenue, DEBIT for expense/outflow
-            - categoryName: category name (use listCategories to see available ones)
-            - bankAccountName: bank account name (use listBankAccounts to see available ones). Leave blank to use default account.
-            - value: transaction amount
-            - description: optional description of what the transaction represents
-            - transactionDate: OPTIONAL date parameter. Leave empty/null to use TODAY's date (2026-03-11). Only provide if user explicitly mentions a different date. Format: yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss.
+            - categoryName: OPTIONAL - category name. If not provided, will try to identify based on description. Use listCategories to see available ones.
+            - bankAccountName: OPTIONAL - bank account name. Leave blank to use default account. Use listBankAccounts to see available ones.
+            - value: transaction amount (required)
+            - description: OPTIONAL - description of the transaction. Helps identify category automatically if categoryName not provided.
+            - transactionDate: OPTIONAL - date of transaction. Leave empty/null to use TODAY's date. Format: yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss.
              
-             Example for today's date (DO NOT provide transactionDate):
+             Example with auto-identified category (categoryName left null):
              createTransaction(
                 type="DEBIT",
-                categoryName="Food",
+                categoryName=null,
                 bankAccountName="Wallet",
                 value=50.75,
                 description="Lunch at restaurant",
                 transactionDate=null
              )
              
-             Example for specific past date:
+             Example with specific category and date:
              createTransaction(
                 type="CREDIT",
                 categoryName="Salary",
@@ -86,10 +86,20 @@ public class TransactionTools {
                 return "Invalid transaction type. Use CREDIT (income) or DEBIT (expense).";
             }
 
-            // Find category
-            Optional<Category> category = categoryRepository.findByUserIdAndNameIgnoreCase(userId, categoryName);
-            if (category.isEmpty()) {
-                return "Category not found: " + categoryName + ". Use listCategories() to see available categories.";
+            // Find or identify category
+            Optional<Category> category;
+            if (categoryName == null || categoryName.isBlank()) {
+                // Try to identify category from description
+                category = identifyCategory(userId, description);
+                if (category.isEmpty()) {
+                    return "Could not identify category automatically. Please specify a category name or provide a description with more details. Use listCategories() to see available categories.";
+                }
+                log.debug("[TOOL] Auto-identified category: {}", category.get().getName());
+            } else {
+                category = categoryRepository.findByUserIdAndNameIgnoreCase(userId, categoryName);
+                if (category.isEmpty()) {
+                    return "Category not found: " + categoryName + ". Use listCategories() to see available categories.";
+                }
             }
 
             // Find bank account
@@ -394,5 +404,85 @@ public class TransactionTools {
         } catch (Exception e) {
             return "❌ Error creating bank account: " + e.getMessage();
         }
+    }
+
+    /**
+     * Tries to identify a category based on keywords in the description.
+     * Searches through user's categories and matches against description text.
+     */
+    private Optional<Category> identifyCategory(Long userId, String description) {
+        if (description == null || description.isBlank()) {
+            return Optional.empty();
+        }
+
+        List<Category> categories = categoryRepository.findByUserId(userId);
+        if (categories.isEmpty()) {
+            return Optional.empty();
+        }
+
+        String descLower = description.toLowerCase();
+
+        // Try exact or partial match with category names
+        for (Category category : categories) {
+            String categoryLower = category.getName().toLowerCase();
+            
+            // Check if category name is contained in description or vice versa
+            if (descLower.contains(categoryLower) || categoryLower.contains(descLower)) {
+                return Optional.of(category);
+            }
+        }
+
+        // Common keyword mappings for better identification
+        return categories.stream()
+                .filter(cat -> matchesCategoryKeywords(cat.getName().toLowerCase(), descLower))
+                .findFirst();
+    }
+
+    /**
+     * Matches category keywords with common related terms
+     */
+    private boolean matchesCategoryKeywords(String categoryName, String description) {
+        // Food/Restaurant related
+        if (categoryName.contains("food") || categoryName.contains("comida") || 
+            categoryName.contains("alimentação") || categoryName.contains("restaurant")) {
+            return description.matches(".*(lunch|dinner|breakfast|restaurant|cafe|coffee|food|meal|pizza|burger|comida|almoço|jantar|restaurante|lanche).*");
+        }
+        
+        // Transport related
+        if (categoryName.contains("transport") || categoryName.contains("transporte") || 
+            categoryName.contains("car") || categoryName.contains("carro")) {
+            return description.matches(".*(uber|taxi|gas|fuel|transport|bus|metro|subway|car|gasolina|combustível|ônibus|metrô|carro).*");
+        }
+        
+        // Salary/Income related
+        if (categoryName.contains("salary") || categoryName.contains("salário") || 
+            categoryName.contains("income") || categoryName.contains("renda")) {
+            return description.matches(".*(salary|wage|payment|income|salário|pagamento|renda|vencimento).*");
+        }
+        
+        // Shopping related
+        if (categoryName.contains("shop") || categoryName.contains("compra") || categoryName.contains("market")) {
+            return description.matches(".*(shop|shopping|store|market|supermarket|compra|loja|mercado|supermercado).*");
+        }
+        
+        // Bills/Utilities related
+        if (categoryName.contains("bill") || categoryName.contains("conta") || 
+            categoryName.contains("utilit") || categoryName.contains("utility")) {
+            return description.matches(".*(bill|electricity|water|internet|phone|utilities|conta|luz|água|telefone|internet).*");
+        }
+        
+        // Health related
+        if (categoryName.contains("health") || categoryName.contains("saúde") || 
+            categoryName.contains("medical") || categoryName.contains("pharmacy")) {
+            return description.matches(".*(doctor|hospital|pharmacy|medicine|health|médico|hospital|farmácia|remédio|saúde).*");
+        }
+        
+        // Entertainment related
+        if (categoryName.contains("entertainment") || categoryName.contains("lazer") || 
+            categoryName.contains("leisure") || categoryName.contains("fun")) {
+            return description.matches(".*(movie|cinema|theater|game|entertainment|streaming|netflix|spotify|filme|cinema|jogo|diversão|lazer).*");
+        }
+        
+        return false;
     }
 }

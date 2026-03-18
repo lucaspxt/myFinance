@@ -31,8 +31,56 @@
       "ACCOUNTS": "Contas",
       "NO_ACCOUNTS": "Nenhuma conta encontrada"
     },
+    "TABS": {
+      "CHAT": "Chat",
+      "TRANSACTIONS": "Transações"
+    },
+    "FILTERS": {
+      "CATEGORY": "Filtrar por Categoria",
+      "ACCOUNT": "Filtrar por Conta",
+      "ALL_CATEGORIES": "Todas as Categorias",
+      "ALL_ACCOUNTS": "Todas as Contas",
+      "MONTH": "Filtrar por Mês",
+      "YEAR": "Filtrar por Ano",
+      "ALL_MONTHS": "Todos os Meses",
+      "ALL_YEARS": "Todos os Anos",
+      "MONTHS": {
+        "JANUARY": "Janeiro",
+        "FEBRUARY": "Fevereiro",
+        "MARCH": "Março",
+        "APRIL": "Abril",
+        "MAY": "Maio",
+        "JUNE": "Junho",
+        "JULY": "Julho",
+        "AUGUST": "Agosto",
+        "SEPTEMBER": "Setembro",
+        "OCTOBER": "Outubro",
+        "NOVEMBER": "Novembro",
+        "DECEMBER": "Dezembro"
+      }
+    },
     "MODAL": {
-      "NO_TRANSACTIONS": "Nenhuma transação encontrada"
+      "NO_TRANSACTIONS": "Nenhuma transação encontrada",
+      "EDIT_TITLE": "Editar Transação",
+      "DELETE_TITLE": "Confirmar Exclusão",
+      "DELETE_MESSAGE": "Tem certeza que deseja deletar esta transação?"
+    },
+    "ACTIONS": {
+      "EDIT": "Editar",
+      "DELETE": "Deletar",
+      "CANCEL": "Cancelar",
+      "SAVE": "Salvar",
+      "SAVING": "Salvando..."
+    },
+    "FORM": {
+      "TYPE": "Tipo",
+      "CATEGORY": "Categoria",
+      "BANK_ACCOUNT": "Conta Bancária",
+      "VALUE": "Valor",
+      "DESCRIPTION": "Descrição (opcional)",
+      "DATE": "Data",
+      "CREDIT": "Crédito (+)",
+      "DEBIT": "Débito (-)"
     }
   },
   "LANGUAGE": {

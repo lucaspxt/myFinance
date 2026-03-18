@@ -66,7 +66,14 @@
             <div class="col-12 col-lg-9">
                 <div class="container-box">
                     <div class="container-header">
-                        <span>{{ 'CHAT.HEADER' | translate }}</span>
+                        <div class="header-tabs">
+                            <button class="tab-button" [class.active]="activeView === 'chat'" (click)="activeView = 'chat'">
+                                {{ 'CHAT.TABS.CHAT' | translate }}
+                            </button>
+                            <button class="tab-button" [class.active]="activeView === 'transactions'" (click)="activeView = 'transactions'">
+                                {{ transactionsTitle || ('CHAT.TABS.TRANSACTIONS' | translate) }}
+                            </button>
+                        </div>
                     </div>
 
                     <div class="container-body">
@@ -75,7 +82,9 @@
                                 <img src="/logo-white.png" alt="logo" class="overlay-logo" />
                             </div>
                         </div>
-                        <div class="chat-messages" [ngClass]="{'with-suggested-questions': shouldShowSuggestedQuestions()}" #chatMessagesContainer>
+                        
+                        <!-- Chat View -->
+                        <div *ngIf="activeView === 'chat'" class="chat-messages" [ngClass]="{'with-suggested-questions': shouldShowSuggestedQuestions()}" #chatMessagesContainer>
                             <app-message *ngFor="let message of messages" [message]="message"></app-message>
                             <div *ngIf="messages.length === 0" class="empty-chat">
                                 <p>{{ 'CHAT.LOADING' | translate }}</p>
@@ -93,7 +102,97 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="chat-input">
+                        
+                        <!-- Transactions View -->
+                        <div *ngIf="activeView === 'transactions'" class="transactions-view">
+                            <!-- Filters -->
+                            <div class="transaction-filters">
+                                <div class="filter-group">
+                                    <label for="categoryFilter">{{ 'CHAT.FILTERS.CATEGORY' | translate }}</label>
+                                    <select id="categoryFilter" class="form-control" [(ngModel)]="selectedCategoryFilter" (change)="onCategoryFilterChange()">
+                                        <option [ngValue]="null">{{ 'CHAT.FILTERS.ALL_CATEGORIES' | translate }}</option>
+                                        <option *ngFor="let category of categories" [ngValue]="category.id">
+                                            {{ category.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label for="accountFilter">{{ 'CHAT.FILTERS.ACCOUNT' | translate }}</label>
+                                    <select id="accountFilter" class="form-control" [(ngModel)]="selectedAccountFilter" (change)="onAccountFilterChange()">
+                                        <option [ngValue]="null">{{ 'CHAT.FILTERS.ALL_ACCOUNTS' | translate }}</option>
+                                        <option *ngFor="let account of bankAccounts" [ngValue]="account.id">
+                                            {{ account.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label for="monthFilter">{{ 'CHAT.FILTERS.MONTH' | translate }}</label>
+                                    <select id="monthFilter" class="form-control" [(ngModel)]="selectedMonthFilter" (change)="onMonthFilterChange()">
+                                        <option [ngValue]="null">{{ 'CHAT.FILTERS.ALL_MONTHS' | translate }}</option>
+                                        <option *ngFor="let month of months" [ngValue]="month.value">
+                                            {{ month.label | translate }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label for="yearFilter">{{ 'CHAT.FILTERS.YEAR' | translate }}</label>
+                                    <select id="yearFilter" class="form-control" [(ngModel)]="selectedYearFilter" (change)="onYearFilterChange()">
+                                        <option [ngValue]="null">{{ 'CHAT.FILTERS.ALL_YEARS' | translate }}</option>
+                                        <option *ngFor="let year of years" [ngValue]="year">
+                                            {{ year }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div *ngIf="modalLoading" class="skeleton-transaction-list">
+                                <div class="skeleton-transaction-item" *ngFor="let item of [1,2,3,4]">
+                                    <div class="skeleton-transaction-info">
+                                        <div class="skeleton-line skeleton-description"></div>
+                                        <div class="skeleton-line skeleton-date"></div>
+                                    </div>
+                                    <div class="skeleton-line skeleton-value"></div>
+                                </div>
+                            </div>
+                            <div *ngIf="!modalLoading && modalTransactions.length === 0" class="modal-empty">
+                                <p>{{ 'CHAT.MODAL.NO_TRANSACTIONS' | translate }}</p>
+                            </div>
+                            <div *ngIf="!modalLoading && modalTransactions.length > 0" class="transaction-list">
+                                <div class="transaction-item" *ngFor="let transaction of modalTransactions; let i = index">
+                                    <div class="transaction-info">
+                                        <div class="transaction-description">
+                                            <strong>{{ transaction.description || transaction.category.name }}</strong>
+                                        </div>
+                                        <div class="transaction-meta">
+                                            <span class="transaction-date">{{ formatDate(transaction.createdAt) }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="transaction-actions">
+                                        <div class="transaction-value" [ngClass]="getTransactionTypeClass(transaction.type)">
+                                            {{ transaction.type === 'CREDIT' ? '+' : '-' }}{{ transaction.value | currencyFormat }}
+                                        </div>
+                                        <div class="transaction-menu">
+                                            <button class="menu-button" (click)="toggleMenu(transaction.id, $event)">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <div class="dropdown-menu" 
+                                                 [class.dropdown-up]="modalTransactions.length > 2 && i >= modalTransactions.length - 2"
+                                                 *ngIf="openMenuId === transaction.id" 
+                                                 (click)="$event.stopPropagation()">
+                                                <button class="dropdown-item" (click)="openEditModal(transaction, $event)">
+                                                    <i class="fas fa-edit"></i> {{ 'CHAT.ACTIONS.EDIT' | translate }}
+                                                </button>
+                                                <button class="dropdown-item delete" (click)="confirmDelete(transaction, $event)">
+                                                    <i class="fas fa-trash"></i> {{ 'CHAT.ACTIONS.DELETE' | translate }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div *ngIf="activeView === 'chat'" class="chat-input">
                             <input type="text" class="form-control"
                                 [(ngModel)]="newMessage"
                                 placeholder="{{ 'CHAT.PLACEHOLDER' | translate }}"
@@ -155,10 +254,10 @@
                                  *ngIf="openMenuId === transaction.id" 
                                  (click)="$event.stopPropagation()">
                                 <button class="dropdown-item" (click)="openEditModal(transaction, $event)">
-                                    <i class="fas fa-edit"></i> Editar
+                                    <i class="fas fa-edit"></i> {{ 'CHAT.ACTIONS.EDIT' | translate }}
                                 </button>
                                 <button class="dropdown-item delete" (click)="confirmDelete(transaction, $event)">
-                                    <i class="fas fa-trash"></i> Deletar
+                                    <i class="fas fa-trash"></i> {{ 'CHAT.ACTIONS.DELETE' | translate }}
                                 </button>
                             </div>
                         </div>
@@ -173,67 +272,61 @@
 <div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
     <div class="modal-content edit-modal" (click)="$event.stopPropagation()">
         <div class="modal-header">
-            <h5>Editar Transação</h5>
+            <h5>{{ 'CHAT.MODAL.EDIT_TITLE' | translate }}</h5>
             <button class="modal-close" (click)="closeEditModal()">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <div class="modal-body">
-            <form [formGroup]="editForm" (ngSubmit)="saveEditedTransaction()">
+        <form [formGroup]="editForm" (ngSubmit)="saveEditedTransaction()">
+            <div class="modal-body">
                 <div class="form-group">
-                    <label for="type">Tipo</label>
+                    <label for="type">{{ 'CHAT.FORM.TYPE' | translate }}</label>
                     <select id="type" class="form-control" formControlName="type">
-                        <option value="CREDIT">Crédito (+)</option>
-                        <option value="DEBIT">Débito (-)</option>
+                        <option value="CREDIT">{{ 'CHAT.FORM.CREDIT' | translate }}</option>
+                        <option value="DEBIT">{{ 'CHAT.FORM.DEBIT' | translate }}</option>
                     </select>
                 </div>
-                
                 <div class="form-group">
-                    <label for="category">Categoria</label>
+                    <label for="category">{{ 'CHAT.FORM.CATEGORY' | translate }}</label>
                     <select id="category" class="form-control" formControlName="categoryId">
                         <option *ngFor="let category of categories" [value]="category.id">
                             {{ category.name }}
                         </option>
                     </select>
                 </div>
-                
                 <div class="form-group">
-                    <label for="bankAccount">Conta Bancária</label>
+                    <label for="bankAccount">{{ 'CHAT.FORM.BANK_ACCOUNT' | translate }}</label>
                     <select id="bankAccount" class="form-control" formControlName="bankAccountId">
                         <option *ngFor="let account of bankAccounts" [value]="account.id">
                             {{ account.name }}
                         </option>
                     </select>
                 </div>
-                
                 <div class="form-group">
-                    <label for="value">Valor</label>
+                    <label for="value">{{ 'CHAT.FORM.VALUE' | translate }}</label>
                     <input type="number" id="value" class="form-control" formControlName="value" step="0.01" min="0.01">
                 </div>
-                
                 <div class="form-group">
-                    <label for="description">Descrição (opcional)</label>
+                    <label for="description">{{ 'CHAT.FORM.DESCRIPTION' | translate }}</label>
                     <input type="text" id="description" class="form-control" formControlName="description">
                 </div>
-                
                 <div class="form-group">
-                    <label for="createdAt">Data</label>
+                    <label for="createdAt">{{ 'CHAT.FORM.DATE' | translate }}</label>
                     <input type="date" id="createdAt" class="form-control" formControlName="createdAt">
                 </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="closeEditModal()" [disabled]="editModalLoading">
-                        Cancelar
-                    </button>
-                    <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid || editModalLoading">
-                        <span *ngIf="!editModalLoading">Salvar</span>
-                        <span *ngIf="editModalLoading">
-                            <i class="fas fa-spinner fa-spin"></i> Salvando...
-                        </span>
-                    </button>
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeEditModal()" [disabled]="editModalLoading">
+                    {{ 'CHAT.ACTIONS.CANCEL' | translate }}
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid || editModalLoading">
+                    <span *ngIf="!editModalLoading">{{ 'CHAT.ACTIONS.SAVE' | translate }}</span>
+                    <span *ngIf="editModalLoading">
+                        <i class="fas fa-spinner fa-spin"></i> {{ 'CHAT.ACTIONS.SAVING' | translate }}
+                    </span>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -241,27 +334,27 @@
 <div class="modal-overlay" *ngIf="showDeleteConfirmation" (click)="closeDeleteConfirmation()">
     <div class="modal-content delete-modal" (click)="$event.stopPropagation()">
         <div class="modal-header">
-            <h5>Confirmar Exclusão</h5>
+            <h5>{{ 'CHAT.MODAL.DELETE_TITLE' | translate }}</h5>
             <button class="modal-close" (click)="closeDeleteConfirmation()">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         <div class="modal-body">
-            <p>Tem certeza que deseja deletar esta transação?</p>
+            <p>{{ 'CHAT.MODAL.DELETE_MESSAGE' | translate }}</p>
             <div *ngIf="transactionToDelete" class="transaction-preview">
                 <strong>{{ transactionToDelete.description || transactionToDelete.category.name }}</strong>
                 <span class="value" [ngClass]="getTransactionTypeClass(transactionToDelete.type)">
                     {{ transactionToDelete.type === 'CREDIT' ? '+' : '-' }}{{ transactionToDelete.value | currencyFormat }}
                 </span>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="closeDeleteConfirmation()">
-                    Cancelar
-                </button>
-                <button type="button" class="btn btn-danger" (click)="deleteTransaction()">
-                    <i class="fas fa-trash"></i> Deletar
-                </button>
-            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeDeleteConfirmation()">
+                {{ 'CHAT.ACTIONS.CANCEL' | translate }}
+            </button>
+            <button type="button" class="btn btn-danger" (click)="deleteTransaction()">
+                <i class="fas fa-trash"></i> {{ 'CHAT.ACTIONS.DELETE' | translate }}
+            </button>
         </div>
     </div>
 </div>

@@ -2,7 +2,6 @@ package com.myfinance.controller;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,10 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myfinance.controller.dto.TransactionDTO;
 import com.myfinance.controller.dto.TransactionRequest;
-import com.myfinance.model.Transaction;
 import com.myfinance.service.TransactionService;
 
 @RestController
@@ -27,30 +27,39 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<Transaction> create(@RequestBody TransactionRequest request) {
-        return ResponseEntity.ok(transactionService.create(
+    public TransactionDTO create(@RequestBody TransactionRequest request) {
+        return transactionService.create(
                 request.getType(),
                 request.getCategoryId(),
                 request.getBankAccountId(),
                 request.getValue(),
                 request.getDescription(),
                 request.getCreatedAt()
-        ));
+        );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Transaction> get(@PathVariable Long id) {
-        return ResponseEntity.ok(transactionService.get(id));
+    public TransactionDTO get(@PathVariable Long id) {
+        return transactionService.get(id);
     }
 
     @GetMapping
-    public ResponseEntity<List<Transaction>> getAll() {
-        return ResponseEntity.ok(transactionService.getAll());
+    public List<TransactionDTO> getAll(
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long bankAccountId,
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer year) {
+        return transactionService.getAllFiltered(categoryId, bankAccountId, month, year);
+    }
+
+    @GetMapping("/years")
+    public List<Integer> getDistinctYears() {
+        return transactionService.getDistinctYears();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Transaction> update(@PathVariable Long id, @RequestBody TransactionRequest request) {
-        return ResponseEntity.ok(transactionService.update(
+    public TransactionDTO update(@PathVariable Long id, @RequestBody TransactionRequest request) {
+        return transactionService.update(
                 id,
                 request.getType(),
                 request.getCategoryId(),
@@ -58,12 +67,11 @@ public class TransactionController {
                 request.getValue(),
                 request.getDescription(),
                 request.getCreatedAt()
-        ));
+        );
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         transactionService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -1,5 +1,6 @@
 package com.myfinance.service;
 
+import com.myfinance.controller.dto.CategoryDTO;
 import com.myfinance.model.Category;
 import com.myfinance.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,11 +46,10 @@ class CategoryServiceTest {
         when(userService.getCurrentUserId()).thenReturn(1L);
         when(categoryRepository.save(any(Category.class))).thenReturn(category);
 
-        Category result = categoryService.create("Food");
+        CategoryDTO result = categoryService.create("Food");
 
         assertNotNull(result);
-        assertEquals("Food", result.getName());
-        assertEquals(1L, result.getUserId());
+        assertEquals("Food", result.name());
         verify(categoryRepository).save(any(Category.class));
     }
 
@@ -57,10 +57,10 @@ class CategoryServiceTest {
     void get_success() {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
 
-        Category result = categoryService.get(1L);
+        CategoryDTO result = categoryService.get(1L);
 
         assertNotNull(result);
-        assertEquals(1L, result.getId());
+        assertEquals(1L, result.id());
     }
 
     @Test
@@ -75,7 +75,7 @@ class CategoryServiceTest {
         when(userService.getCurrentUserId()).thenReturn(1L);
         when(categoryRepository.findByUserId(1L)).thenReturn(List.of(category));
 
-        List<Category> result = categoryService.getAll();
+        List<CategoryDTO> result = categoryService.getAll();
 
         assertEquals(1, result.size());
     }
@@ -86,9 +86,9 @@ class CategoryServiceTest {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(categoryRepository.save(any(Category.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        Category result = categoryService.update(1L, "Transport", false);
+        CategoryDTO result = categoryService.update(1L, "Transport", false);
 
-        assertEquals("Transport", result.getName());
+        assertEquals("Transport", result.name());
         verify(categoryRepository).save(any(Category.class));
     }
 
@@ -98,9 +98,9 @@ class CategoryServiceTest {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(categoryRepository.save(any(Category.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        Category result = categoryService.update(1L, "Food", true);
+        CategoryDTO result = categoryService.update(1L, "Food", true);
 
-        assertTrue(result.isArchived());
+        assertTrue(result.archived());
         verify(categoryRepository).save(any(Category.class));
     }
 

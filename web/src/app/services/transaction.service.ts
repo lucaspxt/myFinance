@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { BalanceRefreshService } from './balance-refresh.service';
 
@@ -49,8 +49,30 @@ export class TransactionService {
     return this.http.get<Transaction>(`${this.apiUrl}/${id}`);
   }
 
-  getAll(): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(this.apiUrl);
+  getAll(categoryId?: number | null, bankAccountId?: number | null, month?: number | null, year?: number | null): Observable<Transaction[]> {
+    let params = new HttpParams();
+    
+    if (categoryId !== null && categoryId !== undefined) {
+      params = params.set('categoryId', categoryId.toString());
+    }
+    
+    if (bankAccountId !== null && bankAccountId !== undefined) {
+      params = params.set('bankAccountId', bankAccountId.toString());
+    }
+    
+    if (month !== null && month !== undefined) {
+      params = params.set('month', month.toString());
+    }
+    
+    if (year !== null && year !== undefined) {
+      params = params.set('year', year.toString());
+    }
+    
+    return this.http.get<Transaction[]>(this.apiUrl, { params });
+  }
+
+  getYears(): Observable<number[]> {
+    return this.http.get<number[]>(`${this.apiUrl}/years`);
   }
 
   update(id: number, request: TransactionRequest): Observable<Transaction> {

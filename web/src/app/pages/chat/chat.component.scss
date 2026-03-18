@@ -29,7 +29,7 @@
 
 .sidebar {
   background-color: var(--white);
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   padding: 1rem;
   height: calc(100dvh - 13rem);
   overflow-y: auto;
@@ -46,6 +46,7 @@
       border-radius: 10rem;
       padding: 0.25rem;
       gap: 0.25rem;
+      height: 3rem;
 
       .tab-button {
         flex: 1;
@@ -131,7 +132,6 @@
         justify-content: space-between;
         align-items: center;
         padding: 0.75rem;
-        background-color: var(--background-gray);
         border: 1px solid var(--border-color);
         border-radius: 0.5rem;
         transition: all 0.2s ease;
@@ -231,7 +231,7 @@
 }
 
 .chat-messages {
-  height: calc(100dvh - 17rem);
+  height: calc(100dvh - 18.5rem);
   overflow-y: auto;
   overflow-x: hidden;
   border-radius: 0.5rem;
@@ -462,13 +462,21 @@
 }
 
 .modal-body {
-  padding: 0;
+  padding: 1rem;
   overflow: visible;
   flex: 1;
   background: var(--background-gray);
-  border-radius: 0 0 12px 12px;
   display: flex;
   flex-direction: column;
+}
+
+.modal-footer {
+  display: flex;
+  margin-top: 0;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-top: 1px solid #e0e0e0;
 }
 
 .modal-loading {
@@ -555,30 +563,13 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 1.5rem;
-  padding-bottom: 120px;
-  overflow-y: auto;
-  flex: 1;
-  
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-  }
 }
 
 .transaction-item {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  padding: 1rem;
+  align-items: center;
+  padding: 0.5rem 1rem;
   background: var(--white);
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -634,9 +625,18 @@
 .transaction-menu {
   position: relative !important;
   z-index: 1;
+  
+  // Increase z-index when dropdown is open
+  &:has(.dropdown-menu) {
+    z-index: 10001;
+  }
 }
 
 .menu-button {
+  display: flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
   background: none;
   border: none;
   cursor: pointer;
@@ -649,10 +649,11 @@
   &:hover {
     opacity: 1;
     background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 10rem;
   }
 
   i {
-    font-size: 1rem;
+    font-size: 0.85rem;
   }
 }
 
@@ -666,7 +667,7 @@
   border-radius: 8px !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   min-width: 150px !important;
-  z-index: 10000 !important;
+  z-index: 99999 !important;
   animation: fadeIn 0.2s ease;
   margin-top: 0.25rem !important;
   visibility: visible !important;
@@ -741,15 +742,6 @@
       border-color: var(--primary-color);
     }
   }
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e0e0e0;
 }
 
 .btn {
@@ -867,5 +859,143 @@
       white-space: normal; /* ensure text wraps within cards */
       margin-bottom: 0.5rem; /* add some bottom margin */
     }
+  }
+}
+
+// Header Tabs Styles
+.header-tabs {
+  display: flex;
+  width: 100%;
+  max-width: 18rem;
+  height: 3rem;
+  background-color: var(--background-gray);
+  border-radius: 10rem;
+  padding: 0.25rem;
+  gap: 0.25rem;
+
+  .tab-button {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    background-color: transparent;
+    border: none;
+    border-radius: 10rem;
+    color: var(--black);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &.active {
+      background-color: var(--white);
+      color: var(--primary-color);
+      opacity: 1;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Transactions View Styles
+.transactions-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background-gray);
+
+  .transaction-filters {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--white);
+    border-bottom: 1px solid #e0e0e0;
+    
+    .filter-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--black);
+        margin-bottom: 0;
+      }
+      
+      select {
+        font-size: 0.875rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 0.5rem 0.75rem;
+        background: var(--white);
+        color: var(--black);
+        cursor: pointer;
+        transition: all 0.2s;
+        
+        &:hover {
+          border-color: var(--primary-color);
+        }
+        
+        &:focus {
+          outline: none;
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+      }
+    }
+    
+    // Responsive filters
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+    }
+  }
+
+  .transaction-list {
+    padding: 1.5rem;
+    padding-bottom: 120px;
+  }
+
+  .skeleton-transaction-list {
+    padding: 1.5rem;
+  }
+
+  .modal-empty {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+
+    p {
+      margin: 0;
+      color: var(--black);
+      opacity: 0.7;
+      font-size: 1rem;
+    }
+  }
+}
+
+// Container body with scroll for both views
+.container-box .container-body {
+  overflow-y: auto;
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
   }
 }

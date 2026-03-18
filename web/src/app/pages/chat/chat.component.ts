@@ -44,10 +44,34 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   bankAccountBalances: BankAccountBalanceDTO[] = [];
   sidebarLoading: boolean = true;
   activeTab: 'categories' | 'accounts' = 'categories';
+  activeView: 'chat' | 'transactions' = 'chat';
   showModal: boolean = false;
   modalTitle: string = '';
   modalTransactions: Transaction[] = [];
   modalLoading: boolean = false;
+  transactionsTitle: string = '';
+  selectedCategoryFilter: number | null = null;
+  selectedAccountFilter: number | null = null;
+  selectedMonthFilter: number | null = null;
+  selectedYearFilter: number | null = null;
+  
+  // Month and year options
+  months = [
+    { value: 1, label: 'CHAT.FILTERS.MONTHS.JANUARY' },
+    { value: 2, label: 'CHAT.FILTERS.MONTHS.FEBRUARY' },
+    { value: 3, label: 'CHAT.FILTERS.MONTHS.MARCH' },
+    { value: 4, label: 'CHAT.FILTERS.MONTHS.APRIL' },
+    { value: 5, label: 'CHAT.FILTERS.MONTHS.MAY' },
+    { value: 6, label: 'CHAT.FILTERS.MONTHS.JUNE' },
+    { value: 7, label: 'CHAT.FILTERS.MONTHS.JULY' },
+    { value: 8, label: 'CHAT.FILTERS.MONTHS.AUGUST' },
+    { value: 9, label: 'CHAT.FILTERS.MONTHS.SEPTEMBER' },
+    { value: 10, label: 'CHAT.FILTERS.MONTHS.OCTOBER' },
+    { value: 11, label: 'CHAT.FILTERS.MONTHS.NOVEMBER' },
+    { value: 12, label: 'CHAT.FILTERS.MONTHS.DECEMBER' }
+  ];
+  
+  years: number[] = [];
 
   // Edit modal properties
   showEditModal: boolean = false;
@@ -163,6 +187,22 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     // Subscribe to balance refresh to reload sidebar data
     this.balanceRefreshService.balanceRefresh$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.loadSidebarData();
+      this.loadYears();
+    });
+    
+    // Load years from backend
+    this.loadYears();
+  }
+
+  private loadYears(): void {
+    this.transactionService.getYears().subscribe({
+      next: (years) => {
+        this.years = years;
+      },
+      error: (error) => {
+        console.error('Error loading years:', error);
+        this.years = [];
+      }
     });
   }
 
@@ -438,14 +478,31 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     }
 
     openCategoryModal(category: Category): void {
-      this.modalTitle = category.name;
-      this.showModal = true;
+      this.activeView = 'transactions';
+      this.selectedCategoryFilter = category.id;
+      this.selectedAccountFilter = null;
+      this.loadTransactions();
+    }
+
+    openAccountModal(account: BankAccount): void {
+      this.activeView = 'transactions';
+      this.selectedAccountFilter = account.id;
+      this.selectedCategoryFilter = null;
+      this.loadTransactions();
+    }
+
+    loadTransactions(): void {
       this.modalLoading = true;
       this.modalTransactions = [];
 
-      this.transactionService.getAll().subscribe({
+      this.transactionService.getAll(
+        this.selectedCategoryFilter,
+        this.selectedAccountFilter,
+        this.selectedMonthFilter,
+        this.selectedYearFilter
+      ).subscribe({
         next: (transactions) => {
-          this.modalTransactions = transactions.filter(t => t.category.id === category.id);
+          this.modalTransactions = transactions;
           this.modalLoading = false;
         },
         error: (error) => {
@@ -455,22 +512,20 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       });
     }
 
-    openAccountModal(account: BankAccount): void {
-      this.modalTitle = account.name;
-      this.showModal = true;
-      this.modalLoading = true;
-      this.modalTransactions = [];
+    onCategoryFilterChange(): void {
+      this.loadTransactions();
+    }
 
-      this.transactionService.getAll().subscribe({
-        next: (transactions) => {
-          this.modalTransactions = transactions.filter(t => t.bankAccount.id === account.id);
-          this.modalLoading = false;
-        },
-        error: (error) => {
-          console.error('Error loading transactions:', error);
-          this.modalLoading = false;
-        }
-      });
+    onAccountFilterChange(): void {
+      this.loadTransactions();
+    }
+    
+    onMonthFilterChange(): void {
+      this.loadTransactions();
+    }
+    
+    onYearFilterChange(): void {
+      this.loadTransactions();
     }
 
     closeModal(): void {
@@ -540,13 +595,33 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
     this.editModalLoading = true;
     const formValue = this.editForm.value;
+    
+    // Convert date string to ISO DateTime format (YYYY-MM-DDTHH:mm:ss)
+    // If only date is provided, use the original time from the existing transaction
+    let createdAtISO: string;
+    if (formValue.createdAt) {
+      const originalDateTime = new Date(this.editingTransaction.createdAt);
+      const [year, month, day] = formValue.createdAt.split('-');
+      const updatedDate = new Date(
+        parseInt(year),
+        parseInt(month) - 1,
+        parseInt(day),
+        originalDateTime.getHours(),
+        originalDateTime.getMinutes(),
+        originalDateTime.getSeconds()
+      );
+      createdAtISO = updatedDate.toISOString().slice(0, 19);
+    } else {
+      createdAtISO = new Date().toISOString().slice(0, 19);
+    }
+    
     const request: TransactionRequest = {
       type: formValue.type,
       categoryId: formValue.categoryId,
       bankAccountId: formValue.bankAccountId,
       value: formValue.value,
       description: formValue.description,
-      createdAt: formValue.createdAt
+      createdAt: createdAtISO
     };
 
     this.transactionService.update(this.editingTransaction.id, request).subscribe({

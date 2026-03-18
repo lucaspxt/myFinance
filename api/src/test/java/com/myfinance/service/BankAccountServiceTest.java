@@ -1,16 +1,5 @@
 package com.myfinance.service;
 
-import com.myfinance.model.BankAccount;
-import com.myfinance.model.User;
-import com.myfinance.repository.BankAccountRepository;
-import com.myfinance.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +8,22 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.myfinance.controller.dto.BankAccountDTO;
+import com.myfinance.model.BankAccount;
+import com.myfinance.model.User;
+import com.myfinance.repository.BankAccountRepository;
+import com.myfinance.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
 class BankAccountServiceTest {
@@ -58,11 +58,11 @@ class BankAccountServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(bankAccountRepository.save(any(BankAccount.class))).thenReturn(bankAccount);
 
-        BankAccount result = bankAccountService.create("Test Account", false);
+        BankAccountDTO result = bankAccountService.create("Test Account", false);
 
         assertNotNull(result);
-        assertEquals("Test Account", result.getName());
-        assertEquals(user, result.getUser());
+        assertEquals("Test Account", result.name());
+        assertNotNull(result.id());
         verify(bankAccountRepository).save(any(BankAccount.class));
     }
 
@@ -77,10 +77,10 @@ class BankAccountServiceTest {
         when(bankAccountRepository.findByUserIdAndDefaultAccountTrue(1L)).thenReturn(Optional.of(existingDefault));
         when(bankAccountRepository.save(any(BankAccount.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        BankAccount result = bankAccountService.create("New Default Account", true);
+        BankAccountDTO result = bankAccountService.create("New Default Account", true);
 
         assertFalse(existingDefault.isDefaultAccount());
-        assertTrue(result.isDefaultAccount());
+        assertTrue(result.defaultAccount());
         verify(bankAccountRepository, times(2)).save(any(BankAccount.class));
     }
 
@@ -91,9 +91,9 @@ class BankAccountServiceTest {
         when(bankAccountRepository.findByUserIdAndDefaultAccountTrue(1L)).thenReturn(Optional.empty());
         when(bankAccountRepository.save(any(BankAccount.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        BankAccount result = bankAccountService.create("New Default Account", true);
+        BankAccountDTO result = bankAccountService.create("New Default Account", true);
 
-        assertTrue(result.isDefaultAccount());
+        assertTrue(result.defaultAccount());
         verify(bankAccountRepository, times(1)).save(any(BankAccount.class));
     }
 
@@ -109,10 +109,10 @@ class BankAccountServiceTest {
     void get_success() {
         when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(bankAccount));
 
-        BankAccount result = bankAccountService.get(1L);
+        BankAccountDTO result = bankAccountService.get(1L);
 
         assertNotNull(result);
-        assertEquals(1L, result.getId());
+        assertEquals(1L, result.id());
     }
 
     @Test
@@ -126,7 +126,7 @@ class BankAccountServiceTest {
     void getAll_success() {
         when(bankAccountRepository.findAll()).thenReturn(List.of(bankAccount));
 
-        List<BankAccount> result = bankAccountService.getAll();
+        List<BankAccountDTO> result = bankAccountService.getAll();
 
         assertEquals(1, result.size());
     }
@@ -136,9 +136,9 @@ class BankAccountServiceTest {
         when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(bankAccount));
         when(bankAccountRepository.save(any(BankAccount.class))).thenReturn(bankAccount);
 
-        BankAccount result = bankAccountService.update(1L, "Updated Account", false, false);
+        BankAccountDTO result = bankAccountService.update(1L, "Updated Account", false, false);
 
-        assertEquals("Updated Account", result.getName());
+        assertEquals("Updated Account", result.name());
         verify(bankAccountRepository).save(any(BankAccount.class));
     }
 
@@ -152,10 +152,10 @@ class BankAccountServiceTest {
         when(bankAccountRepository.findByUserIdAndDefaultAccountTrue(1L)).thenReturn(Optional.of(existingDefault));
         when(bankAccountRepository.save(any(BankAccount.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        BankAccount result = bankAccountService.update(1L, "Updated Account", true, false);
+        BankAccountDTO result = bankAccountService.update(1L, "Updated Account", true, false);
 
         assertFalse(existingDefault.isDefaultAccount());
-        assertTrue(result.isDefaultAccount());
+        assertTrue(result.defaultAccount());
         verify(bankAccountRepository, times(2)).save(any(BankAccount.class));
     }
 
@@ -164,9 +164,9 @@ class BankAccountServiceTest {
         when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(bankAccount));
         when(bankAccountRepository.save(any(BankAccount.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        BankAccount result = bankAccountService.update(1L, "Test Account", false, true);
+        BankAccountDTO result = bankAccountService.update(1L, "Test Account", false, true);
 
-        assertTrue(result.isArchived());
+        assertTrue(result.archived());
         verify(bankAccountRepository).save(any(BankAccount.class));
     }
 

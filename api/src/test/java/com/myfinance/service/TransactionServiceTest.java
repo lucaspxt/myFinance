@@ -1,5 +1,22 @@
 package com.myfinance.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.myfinance.controller.dto.TransactionDTO;
 import com.myfinance.model.BankAccount;
 import com.myfinance.model.Category;
 import com.myfinance.model.Transaction;
@@ -8,22 +25,6 @@ import com.myfinance.model.User;
 import com.myfinance.repository.BankAccountRepository;
 import com.myfinance.repository.CategoryRepository;
 import com.myfinance.repository.TransactionRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceTest {
@@ -70,11 +71,11 @@ class TransactionServiceTest {
         when(bankAccountRepository.findByUserIdAndDefaultAccountTrue(1L)).thenReturn(Optional.of(bankAccount));
         when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
-        Transaction result = transactionService.create(TransactionType.DEBIT, 1L, 1L, 100.0);
+        TransactionDTO result = transactionService.create(TransactionType.DEBIT, 1L, 1L, 100.0);
 
         assertNotNull(result);
-        assertEquals(TransactionType.DEBIT, result.getType());
-        assertEquals(100.0, result.getValue());
+        assertEquals(TransactionType.DEBIT, result.type());
+        assertEquals(100.0, result.value());
         verify(transactionRepository).save(any(Transaction.class));
     }
 
@@ -102,10 +103,10 @@ class TransactionServiceTest {
     void get_success() {
         when(transactionRepository.findById(1L)).thenReturn(Optional.of(transaction));
 
-        Transaction result = transactionService.get(1L);
+        TransactionDTO result = transactionService.get(1L);
 
         assertNotNull(result);
-        assertEquals(1L, result.getId());
+        assertEquals(1L, result.id());
     }
 
     @Test
@@ -120,7 +121,7 @@ class TransactionServiceTest {
         when(userService.getCurrentUserId()).thenReturn(1L);
         when(transactionRepository.findByUserId(1L)).thenReturn(List.of(transaction));
 
-        List<Transaction> result = transactionService.getAll();
+        List<TransactionDTO> result = transactionService.getAll();
 
         assertEquals(1, result.size());
     }
@@ -132,7 +133,7 @@ class TransactionServiceTest {
         when(bankAccountRepository.findById(1L)).thenReturn(Optional.of(bankAccount));
         when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
-        Transaction result = transactionService.update(1L, TransactionType.CREDIT, 1L, 1L, 200.0);
+        TransactionDTO result = transactionService.update(1L, TransactionType.CREDIT, 1L, 1L, 200.0);
 
         assertNotNull(result);
         verify(transactionRepository).save(any(Transaction.class));

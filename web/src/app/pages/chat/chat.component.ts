@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HeaderComponent } from '../../components/layout/header/header.component';
 import { MessageComponent, MessageData } from '../../shared/message/message.component';
 import { ChatService } from '../../services/chat.service';
@@ -8,7 +8,7 @@ import { BalanceRefreshService } from '../../services/balance-refresh.service';
 import { CategoryService, Category } from '../../services/category.service';
 import { BankAccountService, BankAccount } from '../../services/bank-account.service';
 import { BalanceService, CategoryBalanceDTO, BankAccountBalanceDTO } from '../../services/balance.service';
-import { TransactionService, Transaction } from '../../services/transaction.service';
+import { TransactionService, Transaction, TransactionRequest } from '../../services/transaction.service';
 import { CurrencyFormatPipe } from '../../shared/pipes/currency-format.pipe';
 import { finalize, catchError, takeUntil } from 'rxjs/operators';
 import { of, Subject, firstValueFrom, forkJoin } from 'rxjs';
@@ -21,12 +21,13 @@ import { RepeatButtonComponent } from '../../shared/repeat-button/repeat-button.
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, MessageComponent, FormsModule, TranslateModule, CurrencyFormatPipe],
+  imports: [CommonModule, HeaderComponent, MessageComponent, FormsModule, ReactiveFormsModule, TranslateModule, CurrencyFormatPipe],
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
   @ViewChild('chatMessagesContainer') private messagesContainer!: ElementRef;
+  @ViewChild('transactionsList') private transactionsList?: ElementRef;
 
   messages: MessageData[] = [];
   newMessage: string = '';
@@ -44,10 +45,59 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   bankAccountBalances: BankAccountBalanceDTO[] = [];
   sidebarLoading: boolean = true;
   activeTab: 'categories' | 'accounts' = 'categories';
+  activeView: 'chat' | 'transactions' = 'chat';
   showModal: boolean = false;
   modalTitle: string = '';
   modalTransactions: Transaction[] = [];
   modalLoading: boolean = false;
+  transactionsTitle: string = '';
+  selectedCategoryFilter: number | null = null;
+  selectedAccountFilter: number | null = null;
+  selectedMonthFilter: number | null = null;
+  selectedYearFilter: number | null = null;
+  
+  // Mobile filters toggle
+  showFilters: boolean = false;
+  
+  // Pagination properties
+  private readonly PAGE_SIZE = 50;
+  private currentOffset = 0;
+  hasMoreTransactions = true;
+  isLoadingMore = false;
+  
+  // Month and year options
+  months = [
+    { value: 1, label: 'CHAT.FILTERS.MONTHS.JANUARY' },
+    { value: 2, label: 'CHAT.FILTERS.MONTHS.FEBRUARY' },
+    { value: 3, label: 'CHAT.FILTERS.MONTHS.MARCH' },
+    { value: 4, label: 'CHAT.FILTERS.MONTHS.APRIL' },
+    { value: 5, label: 'CHAT.FILTERS.MONTHS.MAY' },
+    { value: 6, label: 'CHAT.FILTERS.MONTHS.JUNE' },
+    { value: 7, label: 'CHAT.FILTERS.MONTHS.JULY' },
+    { value: 8, label: 'CHAT.FILTERS.MONTHS.AUGUST' },
+    { value: 9, label: 'CHAT.FILTERS.MONTHS.SEPTEMBER' },
+    { value: 10, label: 'CHAT.FILTERS.MONTHS.OCTOBER' },
+    { value: 11, label: 'CHAT.FILTERS.MONTHS.NOVEMBER' },
+    { value: 12, label: 'CHAT.FILTERS.MONTHS.DECEMBER' }
+  ];
+  
+  years: number[] = [];
+
+  // Edit modal properties
+  showEditModal: boolean = false;
+  editForm!: FormGroup;
+  editingTransaction?: Transaction;
+  editModalLoading: boolean = false;
+
+  // Delete confirmation properties
+  showDeleteConfirmation: boolean = false;
+  transactionToDelete?: Transaction;
+
+  // Dropdown menu state
+  openMenuId: number | null = null;
+
+  // Constants
+  private readonly MIN_TRANSACTION_VALUE = 0.01;
 
   // Subject used to signal teardown for active subscriptions (takeUntil)
   private destroy$ = new Subject<void>();
@@ -61,7 +111,8 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     private categoryService: CategoryService,
     private bankAccountService: BankAccountService,
     private balanceService: BalanceService,
-    private transactionService: TransactionService
+    private transactionService: TransactionService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -146,6 +197,22 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     // Subscribe to balance refresh to reload sidebar data
     this.balanceRefreshService.balanceRefresh$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.loadSidebarData();
+      this.loadYears();
+    });
+    
+    // Load years from backend
+    this.loadYears();
+  }
+
+  private loadYears(): void {
+    this.transactionService.getYears().subscribe({
+      next: (years) => {
+        this.years = years;
+      },
+      error: (error) => {
+        console.error('Error loading years:', error);
+        this.years = [];
+      }
     });
   }
 
@@ -421,39 +488,139 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     }
 
     openCategoryModal(category: Category): void {
-      this.modalTitle = category.name;
-      this.showModal = true;
-      this.modalLoading = true;
-      this.modalTransactions = [];
-
-      this.transactionService.getAll().subscribe({
-        next: (transactions) => {
-          this.modalTransactions = transactions.filter(t => t.category.id === category.id);
-          this.modalLoading = false;
-        },
-        error: (error) => {
-          console.error('Error loading transactions:', error);
-          this.modalLoading = false;
-        }
-      });
+      this.activeView = 'transactions';
+      this.selectedCategoryFilter = category.id;
+      this.selectedAccountFilter = null;
+      this.resetPaginationAndLoadTransactions();
     }
 
     openAccountModal(account: BankAccount): void {
-      this.modalTitle = account.name;
-      this.showModal = true;
-      this.modalLoading = true;
+      this.activeView = 'transactions';
+      this.selectedAccountFilter = account.id;
+      this.selectedCategoryFilter = null;
+      this.resetPaginationAndLoadTransactions();
+    }
+    
+    private resetPaginationAndLoadTransactions(): void {
+      this.currentOffset = 0;
+      this.hasMoreTransactions = true;
       this.modalTransactions = [];
+      this.loadTransactions();
+    }
 
-      this.transactionService.getAll().subscribe({
+    loadTransactions(): void {
+      // Determine if we should use pagination
+      const hasFilters = this.selectedCategoryFilter !== null || 
+                        this.selectedAccountFilter !== null || 
+                        this.selectedMonthFilter !== null || 
+                        this.selectedYearFilter !== null;
+      
+      const shouldUsePagination = !hasFilters;
+      
+      this.modalLoading = this.currentOffset === 0;
+      this.isLoadingMore = this.currentOffset > 0;
+
+      this.transactionService.getAll(
+        this.selectedCategoryFilter,
+        this.selectedAccountFilter,
+        this.selectedMonthFilter,
+        this.selectedYearFilter,
+        shouldUsePagination ? this.PAGE_SIZE : undefined,
+        shouldUsePagination ? this.currentOffset : undefined
+      ).subscribe({
         next: (transactions) => {
-          this.modalTransactions = transactions.filter(t => t.bankAccount.id === account.id);
+          if (this.currentOffset === 0) {
+            this.modalTransactions = transactions;
+          } else {
+            this.modalTransactions = [...this.modalTransactions, ...transactions];
+          }
+          
+          // Check if there are more transactions to load
+          if (shouldUsePagination && transactions.length < this.PAGE_SIZE) {
+            this.hasMoreTransactions = false;
+          }
+          
           this.modalLoading = false;
+          this.isLoadingMore = false;
         },
         error: (error) => {
           console.error('Error loading transactions:', error);
           this.modalLoading = false;
+          this.isLoadingMore = false;
         }
       });
+    }
+    
+    loadMoreTransactions(): void {
+      if (!this.isLoadingMore && this.hasMoreTransactions) {
+        this.currentOffset += this.PAGE_SIZE;
+        this.loadTransactions();
+      }
+    }
+    
+    onTransactionsScroll(event: Event): void {
+      const element = event.target as HTMLElement;
+      const scrollPosition = element.scrollTop + element.clientHeight;
+      const scrollHeight = element.scrollHeight;
+      
+      // Load more when scrolled to 80% of the list
+      if (scrollPosition >= scrollHeight * 0.8 && !this.isLoadingMore && this.hasMoreTransactions) {
+        this.loadMoreTransactions();
+      }
+    }
+
+    onCategoryFilterChange(): void {
+      this.resetPaginationAndLoadTransactions();
+    }
+
+    onAccountFilterChange(): void {
+      this.resetPaginationAndLoadTransactions();
+    }
+    
+    onMonthFilterChange(): void {
+      this.resetPaginationAndLoadTransactions();
+    }
+    
+    onYearFilterChange(): void {
+      this.resetPaginationAndLoadTransactions();
+    }
+    
+    switchToTransactionsView(): void {
+      if (this.activeView !== 'transactions') {
+        this.activeView = 'transactions';
+        // Load transactions if not already loaded
+        if (this.modalTransactions.length === 0) {
+          this.resetPaginationAndLoadTransactions();
+        }
+      }
+    }
+    
+    clearFilters(): void {
+      this.selectedCategoryFilter = null;
+      this.selectedAccountFilter = null;
+      this.selectedMonthFilter = null;
+      this.selectedYearFilter = null;
+      this.resetPaginationAndLoadTransactions();
+    }
+    
+    hasActiveFilters(): boolean {
+      return this.selectedCategoryFilter !== null || 
+             this.selectedAccountFilter !== null || 
+             this.selectedMonthFilter !== null || 
+             this.selectedYearFilter !== null;
+    }
+    
+    toggleFilters(): void {
+      this.showFilters = !this.showFilters;
+    }
+
+    getActiveFilterCount(): number {
+      let count = 0;
+      if (this.selectedCategoryFilter !== null) count++;
+      if (this.selectedAccountFilter !== null) count++;
+      if (this.selectedMonthFilter !== null) count++;
+      if (this.selectedYearFilter !== null) count++;
+      return count;
     }
 
     closeModal(): void {
@@ -469,6 +636,154 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString('pt-BR');
+  }
+
+  // Toggle dropdown menu for a transaction
+  toggleMenu(transactionId: number, event: Event): void {
+    event.stopPropagation();
+    this.openMenuId = this.openMenuId === transactionId ? null : transactionId;
+  }
+
+  // Close menu when clicking outside
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.transaction-menu')) {
+      this.openMenuId = null;
+    }
+  }
+
+  closeMenu(): void {
+    this.openMenuId = null;
+  }
+
+  // Open edit modal
+  openEditModal(transaction: Transaction, event: Event): void {
+    event.stopPropagation();
+    this.editingTransaction = transaction;
+    this.showEditModal = true;
+    this.openMenuId = null;
+
+    // Initialize the form with transaction data
+    this.editForm = this.fb.group({
+      type: [transaction.type, Validators.required],
+      categoryId: [transaction.category.id, Validators.required],
+      bankAccountId: [transaction.bankAccount.id, Validators.required],
+      value: [transaction.value, [Validators.required, Validators.min(this.MIN_TRANSACTION_VALUE)]],
+      description: [transaction.description || ''],
+      createdAt: [this.formatDateForInput(transaction.createdAt), Validators.required]
+    });
+  }
+
+  // Close edit modal
+  closeEditModal(): void {
+    this.showEditModal = false;
+    this.editingTransaction = undefined;
+    this.editForm.reset();
+  }
+
+  // Save edited transaction
+  saveEditedTransaction(): void {
+    if (this.editForm.invalid || !this.editingTransaction) {
+      return;
+    }
+
+    this.editModalLoading = true;
+    const formValue = this.editForm.value;
+    
+    // Convert date string to ISO DateTime format (YYYY-MM-DDTHH:mm:ss)
+    // If only date is provided, use the original time from the existing transaction
+    let createdAtISO: string;
+    if (formValue.createdAt) {
+      const originalDateTime = new Date(this.editingTransaction.createdAt);
+      const [year, month, day] = formValue.createdAt.split('-');
+      const updatedDate = new Date(
+        parseInt(year),
+        parseInt(month) - 1,
+        parseInt(day),
+        originalDateTime.getHours(),
+        originalDateTime.getMinutes(),
+        originalDateTime.getSeconds()
+      );
+      createdAtISO = updatedDate.toISOString().slice(0, 19);
+    } else {
+      createdAtISO = new Date().toISOString().slice(0, 19);
+    }
+    
+    const request: TransactionRequest = {
+      type: formValue.type,
+      categoryId: formValue.categoryId,
+      bankAccountId: formValue.bankAccountId,
+      value: formValue.value,
+      description: formValue.description,
+      createdAt: createdAtISO
+    };
+
+    this.transactionService.update(this.editingTransaction.id, request).subscribe({
+      next: (updatedTransaction) => {
+        // Update the transaction in the modal list
+        const index = this.modalTransactions.findIndex(t => t.id === updatedTransaction.id);
+        if (index !== -1) {
+          this.modalTransactions[index] = updatedTransaction;
+        }
+        this.editModalLoading = false;
+        this.closeEditModal();
+        // Reload sidebar data to reflect balance changes
+        this.loadSidebarData();
+      },
+      error: (error) => {
+        console.error('Error updating transaction:', error);
+        this.editModalLoading = false;
+        const errorMessage = error?.error?.message || error?.message || 'Erro ao atualizar transação. Tente novamente.';
+        alert(errorMessage);
+      }
+    });
+  }
+
+  // Open delete confirmation
+  confirmDelete(transaction: Transaction, event: Event): void {
+    event.stopPropagation();
+    this.transactionToDelete = transaction;
+    this.showDeleteConfirmation = true;
+    this.openMenuId = null;
+  }
+
+  // Close delete confirmation
+  closeDeleteConfirmation(): void {
+    this.showDeleteConfirmation = false;
+    this.transactionToDelete = undefined;
+  }
+
+  // Delete transaction
+  deleteTransaction(): void {
+    if (!this.transactionToDelete) {
+      return;
+    }
+
+    const transactionId = this.transactionToDelete.id;
+    this.transactionService.delete(transactionId).subscribe({
+      next: () => {
+        // Remove transaction from modal list
+        this.modalTransactions = this.modalTransactions.filter(t => t.id !== transactionId);
+        this.closeDeleteConfirmation();
+        // Reload sidebar data to reflect balance changes
+        this.loadSidebarData();
+      },
+      error: (error) => {
+        console.error('Error deleting transaction:', error);
+        const errorMessage = error?.error?.message || error?.message || 'Erro ao deletar transação. Tente novamente.';
+        alert(errorMessage);
+      }
+    });
+  }
+
+  // Helper to format date for input field (YYYY-MM-DD)
+  formatDateForInput(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
     /** Extract a 2-letter language code from the first path segment of a URL. */

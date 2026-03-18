@@ -113,18 +113,18 @@ main {
   border-radius: 1rem;
   background: var(--background-gray);
   border: 1px solid var(--border-color);
-  min-height: calc(100dvh - 10rem);
+  min-height: calc(100dvh - 8.2rem);
 
   .container-header {
     background: var(--white);
-    padding: 1rem 2rem;
+    padding: 1rem;
     border-bottom: 1px solid var(--border-color);
     border-radius: 1rem 1rem 0 0;
   }
 
   .container-body {
     padding: 0;
-    padding-bottom: 2rem;
+    padding-bottom: 1.5rem;
   }
 
   h1 {
@@ -296,9 +296,6 @@ html {
   }
 
   .container-box {
-    .container-header {
-      display: none;
-    }
     .container-body {
       padding-bottom: 1rem;
 

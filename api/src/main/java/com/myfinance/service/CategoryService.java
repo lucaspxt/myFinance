@@ -1,46 +1,52 @@
 package com.myfinance.service;
 
-import com.myfinance.model.Category;
-import com.myfinance.repository.CategoryRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import com.myfinance.controller.dto.CategoryDTO;
+import com.myfinance.controller.dto.CategoryMapper;
+import com.myfinance.model.Category;
+import com.myfinance.repository.CategoryRepository;
+
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final UserService userService;
+    private final CategoryMapper categoryMapper;
 
-    public CategoryService(CategoryRepository categoryRepository, UserService userService) {
-        this.categoryRepository = categoryRepository;
-        this.userService = userService;
-    }
-
-    public Category create(String name) {
+    public CategoryDTO create(String name) {
         Long userId = userService.getCurrentUserId();
         Category category = new Category(name, userId);
-        return categoryRepository.save(category);
+        return categoryMapper.toDTO(categoryRepository.save(category));
     }
 
-    public Category get(Long id) {
-        return categoryRepository.findById(id)
+    public CategoryDTO get(Long id) {
+        Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+        return categoryMapper.toDTO(category);
     }
 
-    public List<Category> getAll() {
+    public List<CategoryDTO> getAll() {
         Long userId = userService.getCurrentUserId();
-        return categoryRepository.findByUserId(userId);
+        return categoryRepository.findByUserId(userId).stream()
+                .map(categoryMapper::toDTO)
+                .toList();
     }
 
-    public Category update(Long id, String name, boolean archived) {
+    public CategoryDTO update(Long id, String name, boolean archived) {
         Long userId = userService.getCurrentUserId();
-        Category category = get(id);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
         if (!userId.equals(category.getUserId())) {
             throw new RuntimeException("Category not found with id: " + id);
         }
         category.setName(name);
         category.setArchived(archived);
-        return categoryRepository.save(category);
+        return categoryMapper.toDTO(categoryRepository.save(category));
     }
 }

@@ -15,6 +15,7 @@
     "SEND": "Send",
     "START_CONVERSATION": "Start a conversation with our AI",
     "LOADING": "Loading...",
+    "LOADING_MORE": "Loading more transactions...",
     "CONTINUE_BUTTON": "Continue",
     "WELCOME_MESSAGE": "Hello! Report your expenses and income to get started!",
     "ERROR_MESSAGE": "Sorry, we had a problem processing your question. Please try again later.",
@@ -31,8 +32,58 @@
       "ACCOUNTS": "Accounts",
       "NO_ACCOUNTS": "No accounts found"
     },
+    "TABS": {
+      "CHAT": "Chat",
+      "TRANSACTIONS": "Transactions"
+    },
+    "FILTERS": {
+      "CATEGORY": "Category",
+      "ACCOUNT": "Account",
+      "ALL_CATEGORIES": "All Categories",
+      "ALL_ACCOUNTS": "All Accounts",
+      "MONTH": "Month",
+      "YEAR": "Year",
+      "ALL_MONTHS": "All Months",
+      "ALL_YEARS": "All Years",
+      "CLEAR": "Clear Filters",
+      "TOGGLE": "Filters",
+      "MONTHS": {
+        "JANUARY": "January",
+        "FEBRUARY": "February",
+        "MARCH": "March",
+        "APRIL": "April",
+        "MAY": "May",
+        "JUNE": "June",
+        "JULY": "July",
+        "AUGUST": "August",
+        "SEPTEMBER": "September",
+        "OCTOBER": "October",
+        "NOVEMBER": "November",
+        "DECEMBER": "December"
+      }
+    },
     "MODAL": {
-      "NO_TRANSACTIONS": "No transactions found"
+      "NO_TRANSACTIONS": "No transactions found",
+      "EDIT_TITLE": "Edit Transaction",
+      "DELETE_TITLE": "Confirm Deletion",
+      "DELETE_MESSAGE": "Are you sure you want to delete this transaction?"
+    },
+    "ACTIONS": {
+      "EDIT": "Edit",
+      "DELETE": "Delete",
+      "CANCEL": "Cancel",
+      "SAVE": "Save",
+      "SAVING": "Saving..."
+    },
+    "FORM": {
+      "TYPE": "Type",
+      "CATEGORY": "Category",
+      "BANK_ACCOUNT": "Bank Account",
+      "VALUE": "Value",
+      "DESCRIPTION": "Description (optional)",
+      "DATE": "Date",
+      "CREDIT": "Credit (+)",
+      "DEBIT": "Debit (-)"
     }
   },
   "LANGUAGE": {

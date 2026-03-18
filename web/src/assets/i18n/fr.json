@@ -15,6 +15,7 @@
     "SEND": "Envoyer",
     "START_CONVERSATION": "Commencez une conversation avec notre IA",
     "LOADING": "Chargement...",
+    "LOADING_MORE": "Chargement de plus de transactions...",
     "CONTINUE_BUTTON": "Continuer",
     "WELCOME_MESSAGE": "Bonjour ! Indiquez vos dépenses et revenus pour commencer !",
     "ERROR_MESSAGE": "Désolé, nous avons rencontré un problème en traitant votre question. Veuillez réessayer plus tard.",
@@ -31,8 +32,56 @@
       "ACCOUNTS": "Comptes",
       "NO_ACCOUNTS": "Aucun compte trouvé"
     },
+    "TABS": {
+      "CHAT": "Chat",
+      "TRANSACTIONS": "Transactions"
+    },
+    "FILTERS": {
+      "CATEGORY": "Catégorie",
+      "ACCOUNT": "Compte",
+      "ALL_CATEGORIES": "Toutes les Catégories",
+      "ALL_ACCOUNTS": "Tous les Comptes",
+      "MONTH": "Mois",
+      "YEAR": "Année",
+      "ALL_MONTHS": "Tous les Mois",
+      "ALL_YEARS": "Toutes les Années",
+      "CLEAR": "Effacer les Filtres",      "TOGGLE": "Filtres",      "MONTHS": {
+        "JANUARY": "Janvier",
+        "FEBRUARY": "Février",
+        "MARCH": "Mars",
+        "APRIL": "Avril",
+        "MAY": "Mai",
+        "JUNE": "Juin",
+        "JULY": "Juillet",
+        "AUGUST": "Août",
+        "SEPTEMBER": "Septembre",
+        "OCTOBER": "Octobre",
+        "NOVEMBER": "Novembre",
+        "DECEMBER": "Décembre"
+      }
+    },
     "MODAL": {
-      "NO_TRANSACTIONS": "Aucune transaction trouvée"
+      "NO_TRANSACTIONS": "Aucune transaction trouvée",
+      "EDIT_TITLE": "Modifier la Transaction",
+      "DELETE_TITLE": "Confirmer la Suppression",
+      "DELETE_MESSAGE": "Êtes-vous sûr de vouloir supprimer cette transaction ?"
+    },
+    "ACTIONS": {
+      "EDIT": "Modifier",
+      "DELETE": "Supprimer",
+      "CANCEL": "Annuler",
+      "SAVE": "Enregistrer",
+      "SAVING": "Enregistrement..."
+    },
+    "FORM": {
+      "TYPE": "Type",
+      "CATEGORY": "Catégorie",
+      "BANK_ACCOUNT": "Compte Bancaire",
+      "VALUE": "Valeur",
+      "DESCRIPTION": "Description (optionnelle)",
+      "DATE": "Date",
+      "CREDIT": "Crédit (+)",
+      "DEBIT": "Débit (-)"
     }
   },
   "LANGUAGE": {

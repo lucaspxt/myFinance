@@ -14,8 +14,7 @@
     "PLACEHOLDER": "Escribe tu mensaje aquí...",
     "SEND": "Enviar",
     "START_CONVERSATION": "Inicia una conversación con nuestra IA",
-    "LOADING": "Cargando...",
-    "CONTINUE_BUTTON": "Continuar",
+    "LOADING": "Cargando...",    "LOADING_MORE": "Cargando más transacciones...",    "CONTINUE_BUTTON": "Continuar",
     "WELCOME_MESSAGE": "¡Hola! ¡Informa tus gastos e ingresos para comenzar!",
     "ERROR_MESSAGE": "Lo sentimos, tuvimos un problema al procesar tu pregunta. Por favor, intenta de nuevo más tarde.",
     "SUGGESTED_TITLE": "Preguntas sugeridas:",
@@ -31,8 +30,58 @@
       "ACCOUNTS": "Cuentas",
       "NO_ACCOUNTS": "No se encontraron cuentas"
     },
+    "TABS": {
+      "CHAT": "Chat",
+      "TRANSACTIONS": "Transacciones"
+    },
+    "FILTERS": {
+      "CATEGORY": "Categoría",
+      "ACCOUNT": "Cuenta",
+      "ALL_CATEGORIES": "Todas las Categorías",
+      "ALL_ACCOUNTS": "Todas las Cuentas",
+      "MONTH": "Mes",
+      "YEAR": "Año",
+      "ALL_MONTHS": "Todos los Meses",
+      "ALL_YEARS": "Todos los Años",
+      "CLEAR": "Limpiar Filtros",
+      "TOGGLE": "Filtros",
+      "MONTHS": {
+        "JANUARY": "Enero",
+        "FEBRUARY": "Febrero",
+        "MARCH": "Marzo",
+        "APRIL": "Abril",
+        "MAY": "Mayo",
+        "JUNE": "Junio",
+        "JULY": "Julio",
+        "AUGUST": "Agosto",
+        "SEPTEMBER": "Septiembre",
+        "OCTOBER": "Octubre",
+        "NOVEMBER": "Noviembre",
+        "DECEMBER": "Diciembre"
+      }
+    },
     "MODAL": {
-      "NO_TRANSACTIONS": "No se encontraron transacciones"
+      "NO_TRANSACTIONS": "No se encontraron transacciones",
+      "EDIT_TITLE": "Editar Transacción",
+      "DELETE_TITLE": "Confirmar Eliminación",
+      "DELETE_MESSAGE": "¿Estás seguro de que deseas eliminar esta transacción?"
+    },
+    "ACTIONS": {
+      "EDIT": "Editar",
+      "DELETE": "Eliminar",
+      "CANCEL": "Cancelar",
+      "SAVE": "Guardar",
+      "SAVING": "Guardando..."
+    },
+    "FORM": {
+      "TYPE": "Tipo",
+      "CATEGORY": "Categoría",
+      "BANK_ACCOUNT": "Cuenta Bancaria",
+      "VALUE": "Valor",
+      "DESCRIPTION": "Descripción (opcional)",
+      "DATE": "Fecha",
+      "CREDIT": "Crédito (+)",
+      "DEBIT": "Débito (-)"
     }
   },
   "LANGUAGE": {

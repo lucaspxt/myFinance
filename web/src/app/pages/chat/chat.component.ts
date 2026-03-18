@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HeaderComponent } from '../../components/layout/header/header.component';
@@ -495,6 +495,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   }
 
   // Close menu when clicking outside
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.transaction-menu')) {
+      this.openMenuId = null;
+    }
+  }
+
   closeMenu(): void {
     this.openMenuId = null;
   }

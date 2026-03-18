@@ -133,7 +133,7 @@
                 <p>{{ 'CHAT.MODAL.NO_TRANSACTIONS' | translate }}</p>
             </div>
             <div *ngIf="!modalLoading && modalTransactions.length > 0" class="transaction-list">
-                <div class="transaction-item" *ngFor="let transaction of modalTransactions">
+                <div class="transaction-item" *ngFor="let transaction of modalTransactions; let i = index">
                     <div class="transaction-info">
                         <div class="transaction-description">
                             <strong>{{ transaction.description || transaction.category.name }}</strong>
@@ -150,7 +150,10 @@
                             <button class="menu-button" (click)="toggleMenu(transaction.id, $event)">
                                 <i class="fas fa-ellipsis-v"></i>
                             </button>
-                            <div class="dropdown-menu" *ngIf="openMenuId === transaction.id" (click)="$event.stopPropagation()">
+                            <div class="dropdown-menu" 
+                                 [class.dropdown-up]="i >= modalTransactions.length - 2"
+                                 *ngIf="openMenuId === transaction.id" 
+                                 (click)="$event.stopPropagation()">
                                 <button class="dropdown-item" (click)="openEditModal(transaction, $event)">
                                     <i class="fas fa-edit"></i> Editar
                                 </button>

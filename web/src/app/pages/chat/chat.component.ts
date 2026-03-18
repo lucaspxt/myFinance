@@ -27,6 +27,7 @@ import { RepeatButtonComponent } from '../../shared/repeat-button/repeat-button.
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
   @ViewChild('chatMessagesContainer') private messagesContainer!: ElementRef;
+  @ViewChild('transactionsList') private transactionsList?: ElementRef;
 
   messages: MessageData[] = [];
   newMessage: string = '';
@@ -54,6 +55,15 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   selectedAccountFilter: number | null = null;
   selectedMonthFilter: number | null = null;
   selectedYearFilter: number | null = null;
+  
+  // Mobile filters toggle
+  showFilters: boolean = false;
+  
+  // Pagination properties
+  private readonly PAGE_SIZE = 50;
+  private currentOffset = 0;
+  hasMoreTransactions = true;
+  isLoadingMore = false;
   
   // Month and year options
   months = [
@@ -481,51 +491,136 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.activeView = 'transactions';
       this.selectedCategoryFilter = category.id;
       this.selectedAccountFilter = null;
-      this.loadTransactions();
+      this.resetPaginationAndLoadTransactions();
     }
 
     openAccountModal(account: BankAccount): void {
       this.activeView = 'transactions';
       this.selectedAccountFilter = account.id;
       this.selectedCategoryFilter = null;
+      this.resetPaginationAndLoadTransactions();
+    }
+    
+    private resetPaginationAndLoadTransactions(): void {
+      this.currentOffset = 0;
+      this.hasMoreTransactions = true;
+      this.modalTransactions = [];
       this.loadTransactions();
     }
 
     loadTransactions(): void {
-      this.modalLoading = true;
-      this.modalTransactions = [];
+      // Determine if we should use pagination
+      const hasFilters = this.selectedCategoryFilter !== null || 
+                        this.selectedAccountFilter !== null || 
+                        this.selectedMonthFilter !== null || 
+                        this.selectedYearFilter !== null;
+      
+      const shouldUsePagination = !hasFilters;
+      
+      this.modalLoading = this.currentOffset === 0;
+      this.isLoadingMore = this.currentOffset > 0;
 
       this.transactionService.getAll(
         this.selectedCategoryFilter,
         this.selectedAccountFilter,
         this.selectedMonthFilter,
-        this.selectedYearFilter
+        this.selectedYearFilter,
+        shouldUsePagination ? this.PAGE_SIZE : undefined,
+        shouldUsePagination ? this.currentOffset : undefined
       ).subscribe({
         next: (transactions) => {
-          this.modalTransactions = transactions;
+          if (this.currentOffset === 0) {
+            this.modalTransactions = transactions;
+          } else {
+            this.modalTransactions = [...this.modalTransactions, ...transactions];
+          }
+          
+          // Check if there are more transactions to load
+          if (shouldUsePagination && transactions.length < this.PAGE_SIZE) {
+            this.hasMoreTransactions = false;
+          }
+          
           this.modalLoading = false;
+          this.isLoadingMore = false;
         },
         error: (error) => {
           console.error('Error loading transactions:', error);
           this.modalLoading = false;
+          this.isLoadingMore = false;
         }
       });
     }
+    
+    loadMoreTransactions(): void {
+      if (!this.isLoadingMore && this.hasMoreTransactions) {
+        this.currentOffset += this.PAGE_SIZE;
+        this.loadTransactions();
+      }
+    }
+    
+    onTransactionsScroll(event: Event): void {
+      const element = event.target as HTMLElement;
+      const scrollPosition = element.scrollTop + element.clientHeight;
+      const scrollHeight = element.scrollHeight;
+      
+      // Load more when scrolled to 80% of the list
+      if (scrollPosition >= scrollHeight * 0.8 && !this.isLoadingMore && this.hasMoreTransactions) {
+        this.loadMoreTransactions();
+      }
+    }
 
     onCategoryFilterChange(): void {
-      this.loadTransactions();
+      this.resetPaginationAndLoadTransactions();
     }
 
     onAccountFilterChange(): void {
-      this.loadTransactions();
+      this.resetPaginationAndLoadTransactions();
     }
     
     onMonthFilterChange(): void {
-      this.loadTransactions();
+      this.resetPaginationAndLoadTransactions();
     }
     
     onYearFilterChange(): void {
-      this.loadTransactions();
+      this.resetPaginationAndLoadTransactions();
+    }
+    
+    switchToTransactionsView(): void {
+      if (this.activeView !== 'transactions') {
+        this.activeView = 'transactions';
+        // Load transactions if not already loaded
+        if (this.modalTransactions.length === 0) {
+          this.resetPaginationAndLoadTransactions();
+        }
+      }
+    }
+    
+    clearFilters(): void {
+      this.selectedCategoryFilter = null;
+      this.selectedAccountFilter = null;
+      this.selectedMonthFilter = null;
+      this.selectedYearFilter = null;
+      this.resetPaginationAndLoadTransactions();
+    }
+    
+    hasActiveFilters(): boolean {
+      return this.selectedCategoryFilter !== null || 
+             this.selectedAccountFilter !== null || 
+             this.selectedMonthFilter !== null || 
+             this.selectedYearFilter !== null;
+    }
+    
+    toggleFilters(): void {
+      this.showFilters = !this.showFilters;
+    }
+
+    getActiveFilterCount(): number {
+      let count = 0;
+      if (this.selectedCategoryFilter !== null) count++;
+      if (this.selectedAccountFilter !== null) count++;
+      if (this.selectedMonthFilter !== null) count++;
+      if (this.selectedYearFilter !== null) count++;
+      return count;
     }
 
     closeModal(): void {

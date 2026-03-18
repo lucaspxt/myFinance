@@ -48,7 +48,14 @@ public class TransactionController {
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long bankAccountId,
             @RequestParam(required = false) Integer month,
-            @RequestParam(required = false) Integer year) {
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) Integer offset) {
+        // If limit and offset are provided, use pagination
+        if (limit != null && offset != null) {
+            return transactionService.getAllFilteredWithPagination(categoryId, bankAccountId, month, year, limit, offset);
+        }
+        // Otherwise, return all matching transactions
         return transactionService.getAllFiltered(categoryId, bankAccountId, month, year);
     }
 

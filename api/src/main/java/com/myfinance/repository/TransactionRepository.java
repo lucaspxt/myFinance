@@ -2,6 +2,7 @@ package com.myfinance.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +25,21 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             @Param("bankAccountId") Long bankAccountId,
             @Param("month") Integer month,
             @Param("year") Integer year
+    );
+
+    @Query("SELECT t FROM Transaction t WHERE t.bankAccount.user.id = :userId " +
+           "AND (:categoryId IS NULL OR t.category.id = :categoryId) " +
+           "AND (:bankAccountId IS NULL OR t.bankAccount.id = :bankAccountId) " +
+           "AND (:month IS NULL OR MONTH(t.createdAt) = :month) " +
+           "AND (:year IS NULL OR YEAR(t.createdAt) = :year) " +
+           "ORDER BY t.createdAt DESC")
+    List<Transaction> findByUserIdWithFiltersAndPagination(
+            @Param("userId") Long userId,
+            @Param("categoryId") Long categoryId,
+            @Param("bankAccountId") Long bankAccountId,
+            @Param("month") Integer month,
+            @Param("year") Integer year,
+            Pageable pageable
     );
 
     @Query("SELECT DISTINCT YEAR(t.createdAt) FROM Transaction t WHERE t.bankAccount.user.id = :userId ORDER BY YEAR(t.createdAt) DESC")

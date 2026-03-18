@@ -15,6 +15,7 @@
     "SEND": "Send",
     "START_CONVERSATION": "Start a conversation with our AI",
     "LOADING": "Loading...",
+    "LOADING_MORE": "Loading more transactions...",
     "CONTINUE_BUTTON": "Continue",
     "WELCOME_MESSAGE": "Hello! Report your expenses and income to get started!",
     "ERROR_MESSAGE": "Sorry, we had a problem processing your question. Please try again later.",
@@ -36,14 +37,16 @@
       "TRANSACTIONS": "Transactions"
     },
     "FILTERS": {
-      "CATEGORY": "Filter by Category",
-      "ACCOUNT": "Filter by Account",
+      "CATEGORY": "Category",
+      "ACCOUNT": "Account",
       "ALL_CATEGORIES": "All Categories",
       "ALL_ACCOUNTS": "All Accounts",
-      "MONTH": "Filter by Month",
-      "YEAR": "Filter by Year",
+      "MONTH": "Month",
+      "YEAR": "Year",
       "ALL_MONTHS": "All Months",
       "ALL_YEARS": "All Years",
+      "CLEAR": "Clear Filters",
+      "TOGGLE": "Filters",
       "MONTHS": {
         "JANUARY": "January",
         "FEBRUARY": "February",

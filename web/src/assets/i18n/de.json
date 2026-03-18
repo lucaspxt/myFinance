@@ -15,6 +15,7 @@
     "SEND": "Senden",
     "START_CONVERSATION": "Beginnen Sie ein Gespräch mit unserer KI",
     "LOADING": "Lädt...",
+    "LOADING_MORE": "Weitere Transaktionen werden geladen...",
     "CONTINUE_BUTTON": "Weiter",
     "WELCOME_MESSAGE": "Hallo! Geben Sie Ihre Ausgaben und Einnahmen an, um loszulegen!",
     "ERROR_MESSAGE": "Entschuldigung, bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.",
@@ -36,15 +37,15 @@
       "TRANSACTIONS": "Transaktionen"
     },
     "FILTERS": {
-      "CATEGORY": "Nach Kategorie Filtern",
-      "ACCOUNT": "Nach Konto Filtern",
+      "CATEGORY": "Kategorie",
+      "ACCOUNT": "Konto",
       "ALL_CATEGORIES": "Alle Kategorien",
       "ALL_ACCOUNTS": "Alle Konten",
-      "MONTH": "Nach Monat Filtern",
-      "YEAR": "Nach Jahr Filtern",
+      "MONTH": "Monat",
+      "YEAR": "Jahr",
       "ALL_MONTHS": "Alle Monate",
-      "ALL_YEARS": "Alle Jahre",
-      "MONTHS": {
+      "ALL_YEARS": "Alle Jahre",      "CLEAR": "Filter löschen",
+      "TOGGLE": "Filter",      "MONTHS": {
         "JANUARY": "Januar",
         "FEBRUARY": "Februar",
         "MARCH": "März",

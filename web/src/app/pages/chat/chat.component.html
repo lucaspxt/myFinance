@@ -70,7 +70,7 @@
                             <button class="tab-button" [class.active]="activeView === 'chat'" (click)="activeView = 'chat'">
                                 {{ 'CHAT.TABS.CHAT' | translate }}
                             </button>
-                            <button class="tab-button" [class.active]="activeView === 'transactions'" (click)="activeView = 'transactions'">
+                            <button class="tab-button" [class.active]="activeView === 'transactions'" (click)="switchToTransactionsView()">
                                 {{ transactionsTitle || ('CHAT.TABS.TRANSACTIONS' | translate) }}
                             </button>
                         </div>
@@ -106,7 +106,14 @@
                         <!-- Transactions View -->
                         <div *ngIf="activeView === 'transactions'" class="transactions-view">
                             <!-- Filters -->
-                            <div class="transaction-filters">
+                            <div class="mobile-filter-header">
+                                <button class="btn-toggle-filters" (click)="toggleFilters()">
+                                    <i class="fas" [ngClass]="showFilters ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                                    <span>{{ 'CHAT.FILTERS.TOGGLE' | translate }}</span>
+                                    <span *ngIf="hasActiveFilters() && !showFilters" class="filter-badge">{{ getActiveFilterCount() }}</span>
+                                </button>
+                            </div>
+                            <div class="transaction-filters" [class.mobile-hidden]="!showFilters">
                                 <div class="filter-group">
                                     <label for="categoryFilter">{{ 'CHAT.FILTERS.CATEGORY' | translate }}</label>
                                     <select id="categoryFilter" class="form-control" [(ngModel)]="selectedCategoryFilter" (change)="onCategoryFilterChange()">
@@ -143,6 +150,17 @@
                                         </option>
                                     </select>
                                 </div>
+                                <div class="filter-group filter-actions">
+                                    <label>&nbsp;</label>
+                                    <button 
+                                        class="btn-clear-filters" 
+                                        (click)="clearFilters()"
+                                        [disabled]="!hasActiveFilters()"
+                                        [title]="'CHAT.FILTERS.CLEAR' | translate">
+                                        <i class="fas fa-filter-circle-xmark"></i>
+                                        <span>{{ 'CHAT.FILTERS.CLEAR' | translate }}</span>
+                                    </button>
+                                </div>
                             </div>
                             
                             <div *ngIf="modalLoading" class="skeleton-transaction-list">
@@ -157,7 +175,10 @@
                             <div *ngIf="!modalLoading && modalTransactions.length === 0" class="modal-empty">
                                 <p>{{ 'CHAT.MODAL.NO_TRANSACTIONS' | translate }}</p>
                             </div>
-                            <div *ngIf="!modalLoading && modalTransactions.length > 0" class="transaction-list">
+                            <div *ngIf="!modalLoading && modalTransactions.length > 0" 
+                                 class="transaction-list" 
+                                 #transactionsList
+                                 (scroll)="onTransactionsScroll($event)">
                                 <div class="transaction-item" *ngFor="let transaction of modalTransactions; let i = index">
                                     <div class="transaction-info">
                                         <div class="transaction-description">
@@ -188,6 +209,12 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                
+                                <!-- Loading indicator for infinite scroll -->
+                                <div *ngIf="isLoadingMore" class="loading-more">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <span>{{ 'CHAT.LOADING_MORE' | translate }}</span>
                                 </div>
                             </div>
                         </div>

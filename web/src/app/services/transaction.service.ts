@@ -49,7 +49,7 @@ export class TransactionService {
     return this.http.get<Transaction>(`${this.apiUrl}/${id}`);
   }
 
-  getAll(categoryId?: number | null, bankAccountId?: number | null, month?: number | null, year?: number | null): Observable<Transaction[]> {
+  getAll(categoryId?: number | null, bankAccountId?: number | null, month?: number | null, year?: number | null, limit?: number, offset?: number): Observable<Transaction[]> {
     let params = new HttpParams();
     
     if (categoryId !== null && categoryId !== undefined) {
@@ -66,6 +66,14 @@ export class TransactionService {
     
     if (year !== null && year !== undefined) {
       params = params.set('year', year.toString());
+    }
+    
+    if (limit !== undefined) {
+      params = params.set('limit', limit.toString());
+    }
+    
+    if (offset !== undefined) {
+      params = params.set('offset', offset.toString());
     }
     
     return this.http.get<Transaction[]>(this.apiUrl, { params });

@@ -3,6 +3,8 @@ package com.myfinance.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.myfinance.controller.dto.TransactionDTO;
@@ -62,6 +64,15 @@ public class TransactionService {
     public List<TransactionDTO> getAllFiltered(Long categoryId, Long bankAccountId, Integer month, Integer year) {
         Long userId = userService.getCurrentUserId();
         return transactionRepository.findByUserIdWithFilters(userId, categoryId, bankAccountId, month, year).stream()
+                .map(transactionMapper::toDTO)
+                .toList();
+    }
+
+    public List<TransactionDTO> getAllFilteredWithPagination(Long categoryId, Long bankAccountId, Integer month, Integer year, Integer limit, Integer offset) {
+        Long userId = userService.getCurrentUserId();
+        int page = offset / limit;
+        Pageable pageable = PageRequest.of(page, limit);
+        return transactionRepository.findByUserIdWithFiltersAndPagination(userId, categoryId, bankAccountId, month, year, pageable).stream()
                 .map(transactionMapper::toDTO)
                 .toList();
     }

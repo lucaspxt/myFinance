@@ -15,6 +15,7 @@
     "SEND": "Enviar",
     "START_CONVERSATION": "Inicie uma conversa com nossa IA",
     "LOADING": "Carregando...",
+    "LOADING_MORE": "Carregando mais transações...",
     "CONTINUE_BUTTON": "Continuar",
     "WELCOME_MESSAGE": "Olá! Informe seus gastos e receitas para começar!",
     "ERROR_MESSAGE": "Desculpe, tivemos um problema ao processar sua pergunta. Por favor, tente novamente mais tarde.",
@@ -36,14 +37,16 @@
       "TRANSACTIONS": "Transações"
     },
     "FILTERS": {
-      "CATEGORY": "Filtrar por Categoria",
-      "ACCOUNT": "Filtrar por Conta",
+      "CATEGORY": "Categoria",
+      "ACCOUNT": "Conta",
       "ALL_CATEGORIES": "Todas as Categorias",
       "ALL_ACCOUNTS": "Todas as Contas",
-      "MONTH": "Filtrar por Mês",
-      "YEAR": "Filtrar por Ano",
+      "MONTH": "Mês",
+      "YEAR": "Ano",
       "ALL_MONTHS": "Todos os Meses",
       "ALL_YEARS": "Todos os Anos",
+      "CLEAR": "Limpar Filtros",
+      "TOGGLE": "Filtros",
       "MONTHS": {
         "JANUARY": "Janeiro",
         "FEBRUARY": "Fevereiro",

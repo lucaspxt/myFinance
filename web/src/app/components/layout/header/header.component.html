@@ -52,10 +52,9 @@
                             <option value="fr">{{ 'LANGUAGE.FRENCH' | translate }}</option>
                         </select>
                     </div>
-                    <div class="division"></div>
                     <ul class="list-unstyled mb-0">
-                        <li><a href="/">{{ 'HEADER.MENU.HOME' | translate }}</a></li>
                         <li *ngIf="userName" class="menu-user-name">{{ userName }}</li>
+                        <li><a href="/">{{ 'HEADER.MENU.HOME' | translate }}</a></li>
                         <li>
                           <button class="btn btn-link logout-btn" (click)="logout()">
                             {{ 'HEADER.MENU.LOGOUT' | translate }}

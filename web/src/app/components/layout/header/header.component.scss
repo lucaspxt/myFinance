@@ -165,8 +165,11 @@
 
     .menu-user-name {
       font-size: 0.85rem;
-      color: var(--text-muted, #6b7280);
-      padding: 0.25rem 0;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      padding: 0.5rem 0rem;
+      color: var(--black);
+      margin-bottom: 0.5rem;
     }
 
     .logout-btn {

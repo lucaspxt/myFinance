@@ -585,6 +585,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       this.resetPaginationAndLoadTransactions();
     }
     
+    switchToChatView(): void {
+      if (this.activeView !== 'chat') {
+        this.activeView = 'chat';
+        // Scroll to bottom when switching to chat view
+        this.scrollToBottom = true;
+      }
+    }
+    
     switchToTransactionsView(): void {
       if (this.activeView !== 'transactions') {
         this.activeView = 'transactions';

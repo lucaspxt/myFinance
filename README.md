@@ -2,6 +2,16 @@
 
 ![MyFinance](myfinance.png)
 
+**Intelligent Chat Interface** - Register transactions using natural language with AI-powered assistance. The system understands your input and automatically categorizes expenses, detects amounts, and assigns them to the correct bank account.
+
+![MyFinanceTransactions](myfinance2.png)
+
+**Advanced Transaction Management** - Browse all your financial records with powerful filtering options by category, bank account, month, and year. View detailed transaction history with inline editing and deletion capabilities.
+
+![MyFinanceTransactions](myfinance3.png)
+
+**Real-time Balance Overview** - Monitor your finances with live balance calculations displayed in an elegant sidebar. Track spending by category and account with color-coded visual indicators for income (green) and expenses (red).
+
 Personal finance management system with AI-powered chat assistant using LangChain4j and Angular.
 
 ## Project Structure

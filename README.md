@@ -1,5 +1,19 @@
 # MyFinance
 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://openjdk.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.3-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Angular](https://img.shields.io/badge/Angular-19-red.svg)](https://angular.dev)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+Personal finance management system with AI-powered chat assistant using LangChain4j and Angular.
+
+---
+
+📚 **[Getting Started](#quick-start)** | 🤝 **[Contributing](CONTRIBUTING.md)** | 🔒 **[Security](SECURITY.md)** | 📖 **[Documentation](#documentation)**
+
+---
+
 ![MyFinance](myfinance.png)
 
 **Intelligent Chat Interface** - Register transactions using natural language with AI-powered assistance. The system understands your input and automatically categorizes expenses, detects amounts, and assigns them to the correct bank account.
@@ -43,15 +57,60 @@ myFinance/
 - Node.js 18+
 - Angular CLI 19+
 
+### Configuration
+
+#### 1. Environment Variables Setup
+
+Copy the example environment file and configure your credentials:
+
+```bash
+cp .env.example .env
+```
+
+Edit the `.env` file with your configuration:
+
+```env
+# Database Configuration
+POSTGRES_DB=myfinance
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_secure_password_here
+DB_HOST=localhost
+DB_PORT=5433
+
+# OpenAI Configuration
+OPENAI_API_KEY=sk-your-openai-api-key-here
+OPENAI_MODEL=gpt-4o-mini
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+
+# Application Configuration
+CORS_ALLOWED_ORIGINS=http://localhost:4200
+```
+
+**Important**: 
+- Never commit the `.env` file to version control (already in `.gitignore`)
+- Use strong passwords for production environments
+- Keep your OpenAI API key secure
+- The `.env.example` file serves as a template with safe default values
+
+#### 2. Get Your OpenAI API Key
+
+1. Visit [OpenAI Platform](https://platform.openai.com/)
+2. Sign up or log in to your account
+3. Navigate to [API Keys](https://platform.openai.com/api-keys)
+4. Click "Create new secret key"
+5. Copy the key and paste it into your `.env` file
+
 ### Option 1: Start All Services (Windows)
+
 ```powershell
 .\start-dev.ps1
 ```
 
 This script will:
-1. Start PostgreSQL database
-2. Start backend API on port 8080
-3. Start Angular dev server on port 4200
+1. Load environment variables from `.env`
+2. Start PostgreSQL database with your configured credentials
+3. Start backend API on port 8080
+4. Start Angular dev server on port 4200
 
 ### Option 2: Manual Start
 
@@ -60,28 +119,29 @@ This script will:
 docker-compose up -d
 ```
 
-#### 2. Configure Backend
-Create `api/src/main/resources/application-local.yml`:
-```yaml
-spring:
-  datasource:
-    password: postgres
+The database will use the credentials from your `.env` file.
 
-langchain4j:
-  open-ai:
-    chat-model:
-      api-key: your-openai-api-key-here
-    embedding-model:
-      api-key: your-openai-api-key-here
+#### 2. Run Backend
+
+The backend uses the `local` profile which reads from environment variables.
+
+On **Windows PowerShell**:
+```powershell
+cd api
+mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
-#### 3. Run Backend
+On **Linux/macOS**:
 ```bash
 cd api
-mvn spring-boot:run
+mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
-#### 4. Run Frontend
+The `application-local.yml` is already configured to read from the same environment variables as your `.env` file.
+
+**Note**: If you need to override specific settings, you can edit `api/src/main/resources/application-local.yml` directly (it's already in `.gitignore` for safety).
+
+#### 3. Run Frontend
 ```bash
 cd web
 npm install
@@ -89,6 +149,84 @@ npm start
 ```
 
 Access the application at `http://localhost:4200`
+
+### Environment Variables Reference
+
+| Variable | Description | Default | Required |
+|----------|-------------|---------|----------|
+| `POSTGRES_DB` | Database name | `myfinance` | No |
+| `POSTGRES_USER` | Database username | `postgres` | No |
+| `POSTGRES_PASSWORD` | Database password | `postgres` | **Yes** (for production) |
+| `DB_HOST` | Database host | `localhost` | No |
+| `DB_PORT` | Database port | `5433` | No |
+| `OPENAI_API_KEY` | OpenAI API key for AI features | - | **Yes** |
+| `OPENAI_MODEL` | OpenAI chat model | `gpt-4o-mini` | No |
+| `OPENAI_EMBEDDING_MODEL` | OpenAI embedding model | `text-embedding-3-small` | No |
+| `CORS_ALLOWED_ORIGINS` | Allowed CORS origins | `http://localhost:4200` | No |
+
+### Docker Compose Configuration
+
+The `docker-compose.yml` file is configured to use environment variables from your `.env` file. All database credentials are parameterized for security:
+
+```yaml
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-myfinance}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "${DB_PORT:-5433}:5432"
+```
+
+The syntax `${VARIABLE:-default}` means: use the environment variable if set, otherwise use the default value.
+
+## Security Best Practices
+
+### 🔒 Protecting Sensitive Information
+
+1. **Never commit `.env` file to version control**
+   - The `.env` file is already in `.gitignore`
+   - Always use `.env.example` as a template with placeholder values
+   - Share configuration instructions, not actual credentials
+
+2. **Use strong passwords**
+   - Change default database password in production
+   - Use complex passwords with mixed characters
+   - Consider using a password manager
+
+3. **Secure your OpenAI API Key**
+   - Keep your API key confidential
+   - Rotate keys periodically
+   - Set usage limits in OpenAI dashboard
+   - Monitor API usage for unexpected activity
+
+4. **Environment-specific configuration**
+   ```bash
+   # Development
+   POSTGRES_PASSWORD=postgres
+   OPENAI_MODEL=gpt-4o-mini
+   
+   # Production
+   POSTGRES_PASSWORD=strong_random_password_here
+   OPENAI_MODEL=gpt-4o
+   ```
+
+5. **For production deployments**
+   - Use secret management services (AWS Secrets Manager, Azure Key Vault, etc.)
+   - Enable HTTPS/TLS for all connections
+   - Update `CORS_ALLOWED_ORIGINS` to your production domain
+   - Set up database connection encryption
+   - Use environment variables from your hosting platform
+
+### 📋 Pre-deployment Checklist
+
+- [ ] Changed default database password
+- [ ] Added valid OpenAI API key
+- [ ] Updated CORS origins for production domain
+- [ ] Reviewed and removed development-only settings
+- [ ] Tested with production-like configuration
+- [ ] Verified `.env` is in `.gitignore`
 
 ## Features
 
@@ -296,10 +434,91 @@ Tables:
 
 ## Contributing
 
-1. Create a feature branch
-2. Make changes
-3. Run tests
-4. Submit pull request
+We welcome contributions to MyFinance! Here's how you can help:
+
+### Getting Started
+
+1. **Fork the repository** on GitHub
+2. **Clone your fork** locally:
+   ```bash
+   git clone https://github.com/your-username/myFinance.git
+   cd myFinance
+   ```
+3. **Set up your environment** following the Quick Start guide above
+4. **Create a feature branch**:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+### Development Workflow
+
+1. **Make your changes**
+   - Write clean, readable code
+   - Follow existing code style and conventions
+   - Add comments for complex logic
+   - Update documentation as needed
+
+2. **Test your changes**
+   - Test locally with the development setup
+   - Ensure all existing features still work
+   - Test edge cases and error scenarios
+
+3. **Commit your changes**
+   ```bash
+   git add .
+   git commit -m "feat: add description of your feature"
+   ```
+   
+   Use conventional commit messages:
+   - `feat:` - New feature
+   - `fix:` - Bug fix
+   - `docs:` - Documentation changes
+   - `refactor:` - Code refactoring
+   - `test:` - Adding tests
+   - `chore:` - Maintenance tasks
+
+4. **Push to your fork**
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+5. **Submit a Pull Request**
+   - Go to the original repository on GitHub
+   - Click "New Pull Request"
+   - Select your fork and branch
+   - Describe your changes clearly
+   - Link any related issues
+
+### What to Contribute
+
+- 🐛 **Bug fixes** - Found a bug? Please report or fix it!
+- ✨ **New features** - Have an idea? Open an issue first to discuss
+- 📝 **Documentation** - Improve README, add examples, fix typos
+- 🌍 **Translations** - Add new language support to the frontend
+- 🎨 **UI/UX improvements** - Make the interface better
+- ⚡ **Performance** - Optimize slow operations
+- 🧪 **Tests** - Increase test coverage
+
+### Code of Conduct
+
+- Be respectful and inclusive
+- Provide constructive feedback
+- Help others learn and grow
+- Keep discussions on topic
+
+### Questions?
+
+- Open an issue for bugs or feature requests
+- Start a discussion for general questions
+- Check existing issues before creating new ones
+
+### Development Resources
+
+- **Backend**: See [api/README.md](api/README.md) for detailed backend documentation
+- **Frontend**: See [web/README.md](web/README.md) for Angular setup
+- **AI Tools**: See [api/TOOL_CALLING_GUIDE.md](api/TOOL_CALLING_GUIDE.md) for LangChain4j details
+
+Thank you for contributing to MyFinance! 🙏
 
 ## Troubleshooting
 
@@ -335,51 +554,52 @@ npm install
 - Check rate limits
 - Ensure sufficient credits
 
-## License
+### Maven build fails
+```bash
+# Clean and rebuild
+cd api
+mvn clean install
+```
 
-Private project
+### Frontend not loading
+```bash
+# Clear Angular cache
+cd web
+rm -rf node_modules .angular
+npm install
+```
 
 ## Documentation
 
-- [`api/README.md`](api/README.md) - Backend details
-- [`api/TOOL_CALLING_GUIDE.md`](api/TOOL_CALLING_GUIDE.md) - AI tools documentation
-- [`web/README.md`](web/README.md) - Frontend setup
-- [`web/INTEGRATION_GUIDE.md`](web/INTEGRATION_GUIDE.md) - Frontend integration guide
-```
+### Project Documentation
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute to this project
+- **[SECURITY.md](SECURITY.md)** - Security policies and best practices
+- **[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)** - Community guidelines
 
-### Frontend Development
-```bash
-cd web
-ng serve
-```
-
-### Run Tests
-```bash
-# Backend tests
-cd api
-mvn test
-
-# Frontend tests (once created)
-cd web
-ng test
-```
-
-## Technology Stack
-
-### Backend
-- Spring Boot 3.5.3
-- Java 21
-- LangChain4j 1.0.0-beta5
-- PostgreSQL + pgvector
-- Flyway
-- Lombok
-
-### Frontend
-- Angular (to be installed)
-- TypeScript
-- RxJS
-- Angular Material (optional)
+### Component Documentation
+- **[api/README.md](api/README.md)** - Backend API documentation
+- **[api/TOOL_CALLING_GUIDE.md](api/TOOL_CALLING_GUIDE.md)** - LangChain4j AI tools guide
+- **[web/README.md](web/README.md)** - Frontend setup and architecture
+- **[web/INTEGRATION_GUIDE.md](web/INTEGRATION_GUIDE.md)** - Frontend integration guide
 
 ## License
 
-Private project
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [Spring Boot](https://spring.io/projects/spring-boot) - Backend framework
+- [Angular](https://angular.dev) - Frontend framework
+- [LangChain4j](https://docs.langchain4j.dev) - AI integration library
+- [OpenAI](https://openai.com) - AI models
+- [pgvector](https://github.com/pgvector/pgvector) - Vector similarity search
+
+## Support
+
+- 📧 **Issues**: [GitHub Issues](https://github.com/your-username/myFinance/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/your-username/myFinance/discussions)
+- 📖 **Documentation**: See [Documentation](#documentation) section above
+
+---
+
+Made with ❤️ by the MyFinance community

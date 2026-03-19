@@ -532,7 +532,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
           if (this.currentOffset === 0) {
             this.modalTransactions = transactions;
           } else {
-            this.modalTransactions = [...this.modalTransactions, ...transactions];
+            // Append new transactions and remove duplicates based on ID
+            const existingIds = new Set(this.modalTransactions.map(t => t.id));
+            const newTransactions = transactions.filter(t => !existingIds.has(t.id));
+            this.modalTransactions = [...this.modalTransactions, ...newTransactions];
           }
           
           // Check if there are more transactions to load
@@ -563,8 +566,17 @@ export class ChatComponent implements OnInit, AfterViewChecked {
       const scrollPosition = element.scrollTop + element.clientHeight;
       const scrollHeight = element.scrollHeight;
       
+      // Only trigger infinite scroll if there's actual scrollable content
+      // and user has scrolled at least 50px (prevents dropdown from triggering it)
+      const hasScrollableContent = scrollHeight > element.clientHeight + 50;
+      const hasScrolledEnough = element.scrollTop > 0;
+      
       // Load more when scrolled to 80% of the list
-      if (scrollPosition >= scrollHeight * 0.8 && !this.isLoadingMore && this.hasMoreTransactions) {
+      if (hasScrollableContent && 
+          hasScrolledEnough && 
+          scrollPosition >= scrollHeight * 0.8 && 
+          !this.isLoadingMore && 
+          this.hasMoreTransactions) {
         this.loadMoreTransactions();
       }
     }
@@ -650,19 +662,36 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   toggleMenu(transactionId: number, event: Event): void {
     event.stopPropagation();
     this.openMenuId = this.openMenuId === transactionId ? null : transactionId;
+    
+    // Toggle overflow on transaction list to prevent dropdown clipping
+    setTimeout(() => {
+      const transactionsList = document.querySelector('.transaction-list');
+      if (transactionsList) {
+        if (this.openMenuId !== null) {
+          transactionsList.classList.add('dropdown-open');
+        } else {
+          transactionsList.classList.remove('dropdown-open');
+        }
+      }
+    }, 0);
   }
 
-  // Close menu when clicking outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     if (!target.closest('.transaction-menu')) {
-      this.openMenuId = null;
+      this.closeMenu();
     }
   }
 
   closeMenu(): void {
     this.openMenuId = null;
+    
+    // Remove overflow adjustment
+    const transactionsList = document.querySelector('.transaction-list');
+    if (transactionsList) {
+      transactionsList.classList.remove('dropdown-open');
+    }
   }
 
   // Open edit modal
@@ -785,7 +814,16 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  // Helper to format date for input field (YYYY-MM-DD)
+  shouldOpenUpwards(index: number): boolean {
+    // If 3 or fewer items, always open downwards (there's space)
+    if (this.modalTransactions.length <= 3) {
+      return false;
+    }
+    
+    // For lists with more items, open upwards for the last 2 items
+    return index >= this.modalTransactions.length - 2;
+  }
+
   formatDateForInput(dateString: string): string {
     const date = new Date(dateString);
     const year = date.getUTCFullYear();
@@ -794,10 +832,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     return `${year}-${month}-${day}`;
   }
 
-    /** Extract a 2-letter language code from the first path segment of a URL. */
-    private extractLangFromUrl(url: string): string | null {
-      if (!url) return null;
-      const m = url.match(/\/([a-z]{2})(?:\/|$)/i);
-      return m ? m[1].toLowerCase() : null;
-    }
+  trackByTransactionId(index: number, transaction: Transaction): number {
+    return transaction.id;
+  }
+
+  /** Extract a 2-letter language code from the first path segment of a URL. */
+  private extractLangFromUrl(url: string): string | null {
+    if (!url) return null;
+    const m = url.match(/\/([a-z]{2})(?:\/|$)/i);
+    return m ? m[1].toLowerCase() : null;
+  }
 }

@@ -619,6 +619,11 @@
   flex-direction: column;
   gap: 0.5rem;
   overflow-y: auto;
+  
+  // When dropdown is open, allow it to overflow without creating scroll
+  &.dropdown-open {
+    overflow-y: visible;
+  }
 }
 
 .loading-more {

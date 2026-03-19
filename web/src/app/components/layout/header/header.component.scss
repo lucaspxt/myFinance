@@ -162,6 +162,28 @@
         text-decoration: underline;
       }
     }
+
+    .menu-user-name {
+      font-size: 0.85rem;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      padding: 0.5rem 0rem;
+      color: var(--black);
+      margin-bottom: 0.5rem;
+    }
+
+    .logout-btn {
+      color: var(--black);
+      font-weight: bold;
+      padding: 0.25rem 0;
+      text-decoration: none;
+      display: block;
+      font-size: 1rem;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
 

@@ -41,16 +41,26 @@ public class TransactionService {
         Long userId = userService.getCurrentUserId();
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+        if (!userId.equals(category.getUserId())) {
+            throw new RuntimeException("Access denied to this category");
+        }
         BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
                 .orElse(bankAccountRepository.findByUserIdAndDefaultAccountTrue(userId)
                         .orElseThrow(() -> new RuntimeException("Default bank account not found for user: " + userId)));
+        if (!userId.equals(bankAccount.getUser().getId())) {
+            throw new RuntimeException("Access denied to this bank account");
+        }
         Transaction transaction = new Transaction(type, category, bankAccount, value, description, createdAt);
         return transactionMapper.toDTO(transactionRepository.save(transaction));
     }
 
     public TransactionDTO get(Long id) {
+        Long userId = userService.getCurrentUserId();
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Transaction not found with id: " + id));
+        if (!userId.equals(transaction.getBankAccount().getUser().getId())) {
+            throw new RuntimeException("Access denied to this transaction");
+        }
         return transactionMapper.toDTO(transaction);
     }
 
@@ -91,12 +101,22 @@ public class TransactionService {
     }
 
     public TransactionDTO update(Long id, TransactionType type, Long categoryId, Long bankAccountId, Double value, String description, LocalDateTime createdAt) {
+        Long userId = userService.getCurrentUserId();
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Transaction not found with id: " + id));
+        if (!userId.equals(transaction.getBankAccount().getUser().getId())) {
+            throw new RuntimeException("Access denied to this transaction");
+        }
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+        if (!userId.equals(category.getUserId())) {
+            throw new RuntimeException("Access denied to this category");
+        }
         BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
                 .orElseThrow(() -> new RuntimeException("BankAccount not found with id: " + bankAccountId));
+        if (!userId.equals(bankAccount.getUser().getId())) {
+            throw new RuntimeException("Access denied to this bank account");
+        }
         transaction.setType(type);
         transaction.setCategory(category);
         transaction.setBankAccount(bankAccount);
@@ -109,8 +129,12 @@ public class TransactionService {
     }
 
     public void delete(Long id) {
+        Long userId = userService.getCurrentUserId();
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Transaction not found with id: " + id));
+        if (!userId.equals(transaction.getBankAccount().getUser().getId())) {
+            throw new RuntimeException("Access denied to this transaction");
+        }
         transactionRepository.delete(transaction);
     }
 }

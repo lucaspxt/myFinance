@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/myfinance
-    username: postgres
-    password: ${DATASOURCE_PASSWORD:postgres}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${POSTGRES_DB:myfinance}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -14,7 +14,7 @@ spring:
 
 # CORS Configuration
 cors:
-  allowed-origins: http://localhost:4200
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:4200}
 
 logging:
   level:
@@ -24,18 +24,18 @@ langchain4j:
   open-ai:
     chat-model:
       api-key: ${OPENAI_API_KEY:your-api-key-here}
-      model-name: gpt-4o-mini
+      model-name: ${OPENAI_MODEL:gpt-4o-mini}
       temperature: 0.7
     embedding-model:
       api-key: ${OPENAI_API_KEY:your-api-key-here}
-      model-name: text-embedding-3-small
+      model-name: ${OPENAI_EMBEDDING_MODEL:text-embedding-3-small}
   pgvector:
     embedding-store:
       host: ${DB_HOST:localhost}
       port: ${DB_PORT:5433}
-      database: ${DB_NAME:myfinance}
-      user: ${DB_USERNAME:postgres}
-      password: ${DB_PASSWORD:postgres}
+      database: ${POSTGRES_DB:myfinance}
+      user: ${POSTGRES_USER:postgres}
+      password: ${POSTGRES_PASSWORD:postgres}
       table: embeddings
       dimension: 1536
       create-table: true

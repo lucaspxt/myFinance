@@ -532,7 +532,10 @@ export class ChatComponent implements OnInit, AfterViewChecked {
           if (this.currentOffset === 0) {
             this.modalTransactions = transactions;
           } else {
-            this.modalTransactions = [...this.modalTransactions, ...transactions];
+            // Append new transactions and remove duplicates based on ID
+            const existingIds = new Set(this.modalTransactions.map(t => t.id));
+            const newTransactions = transactions.filter(t => !existingIds.has(t.id));
+            this.modalTransactions = [...this.modalTransactions, ...newTransactions];
           }
           
           // Check if there are more transactions to load
@@ -560,11 +563,26 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     
     onTransactionsScroll(event: Event): void {
       const element = event.target as HTMLElement;
+      
+      // Close dropdown when scrolling to avoid misalignment
+      if (this.openMenuId !== null) {
+        this.closeMenu();
+      }
+      
       const scrollPosition = element.scrollTop + element.clientHeight;
       const scrollHeight = element.scrollHeight;
       
+      // Only trigger infinite scroll if there's actual scrollable content
+      // and user has scrolled at least 50px (prevents dropdown from triggering it)
+      const hasScrollableContent = scrollHeight > element.clientHeight + 50;
+      const hasScrolledEnough = element.scrollTop > 0;
+      
       // Load more when scrolled to 80% of the list
-      if (scrollPosition >= scrollHeight * 0.8 && !this.isLoadingMore && this.hasMoreTransactions) {
+      if (hasScrollableContent && 
+          hasScrolledEnough && 
+          scrollPosition >= scrollHeight * 0.8 && 
+          !this.isLoadingMore && 
+          this.hasMoreTransactions) {
         this.loadMoreTransactions();
       }
     }
@@ -583,6 +601,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     
     onYearFilterChange(): void {
       this.resetPaginationAndLoadTransactions();
+    }
+    
+    switchToChatView(): void {
+      if (this.activeView !== 'chat') {
+        this.activeView = 'chat';
+        // Scroll to bottom when switching to chat view
+        this.scrollToBottom = true;
+      }
     }
     
     switchToTransactionsView(): void {
@@ -641,15 +667,59 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   // Toggle dropdown menu for a transaction
   toggleMenu(transactionId: number, event: Event): void {
     event.stopPropagation();
-    this.openMenuId = this.openMenuId === transactionId ? null : transactionId;
+    const wasOpen = this.openMenuId === transactionId;
+    this.openMenuId = wasOpen ? null : transactionId;
+    
+    if (!wasOpen) {
+      // Position dropdown using fixed positioning to escape overflow containers
+      setTimeout(() => {
+        const button = (event.target as HTMLElement).closest('.menu-button') as HTMLElement;
+        const dropdown = document.querySelector('.dropdown-menu') as HTMLElement;
+        
+        if (button && dropdown) {
+          const buttonRect = button.getBoundingClientRect();
+          const dropdownRect = dropdown.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          
+          // Calculate if there's space below
+          const spaceBelow = viewportHeight - buttonRect.bottom;
+          const spaceAbove = buttonRect.top;
+          const dropdownHeight = dropdownRect.height || 100; // fallback estimate
+          
+          // Position horizontally (align to right of button)
+          dropdown.style.left = `${buttonRect.right - 150}px`; // 150px is min-width
+          
+          // Position vertically (below or above based on space)
+          if (spaceBelow >= dropdownHeight || spaceBelow >= spaceAbove) {
+            // Open downwards
+            dropdown.style.top = `${buttonRect.bottom + 4}px`;
+            dropdown.style.bottom = 'auto';
+            dropdown.classList.remove('dropdown-up');
+          } else {
+            // Open upwards
+            dropdown.style.top = 'auto';
+            dropdown.style.bottom = `${viewportHeight - buttonRect.top + 4}px`;
+            dropdown.classList.add('dropdown-up');
+          }
+        }
+      }, 0);
+    }
   }
 
-  // Close menu when clicking outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     if (!target.closest('.transaction-menu')) {
-      this.openMenuId = null;
+      this.closeMenu();
+    }
+  }
+
+  @HostListener('window:scroll')
+  @HostListener('window:resize')
+  onWindowChange(): void {
+    // Close dropdown on scroll/resize to avoid misalignment
+    if (this.openMenuId !== null) {
+      this.closeMenu();
     }
   }
 
@@ -777,7 +847,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  // Helper to format date for input field (YYYY-MM-DD)
   formatDateForInput(dateString: string): string {
     const date = new Date(dateString);
     const year = date.getUTCFullYear();
@@ -786,10 +855,14 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     return `${year}-${month}-${day}`;
   }
 
-    /** Extract a 2-letter language code from the first path segment of a URL. */
-    private extractLangFromUrl(url: string): string | null {
-      if (!url) return null;
-      const m = url.match(/\/([a-z]{2})(?:\/|$)/i);
-      return m ? m[1].toLowerCase() : null;
-    }
+  trackByTransactionId(index: number, transaction: Transaction): number {
+    return transaction.id;
+  }
+
+  /** Extract a 2-letter language code from the first path segment of a URL. */
+  private extractLangFromUrl(url: string): string | null {
+    if (!url) return null;
+    const m = url.match(/\/([a-z]{2})(?:\/|$)/i);
+    return m ? m[1].toLowerCase() : null;
+  }
 }

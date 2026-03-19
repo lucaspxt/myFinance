@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ViewContainerRef, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewContainerRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SocialLinksComponent } from '../social-links/social-links.component';
 import { RepeatButtonComponent } from '../repeat-button/repeat-button.component';
@@ -14,6 +14,8 @@ export interface MessageData {
   component?: any;
   // Optional inputs to pass into the dynamic component
   componentInputs?: { [key: string]: any };
+  // Flag para controlar se a animação já foi exibida (persiste entre recriações do componente)
+  hasAnimated?: boolean;
 }
 
 @Component({
@@ -25,19 +27,34 @@ export interface MessageData {
 })
 export class MessageComponent implements OnInit {
   @Input() message!: MessageData;
+  
   // expose to template for static rendering fallback
   public SocialLinksComponentRef = SocialLinksComponent;
   public RepeatButtonComponentRef = RepeatButtonComponent;
   
   displayText: string = '';
   typingComplete: boolean = false;
+  hasStartedTyping: boolean = false;
   @ViewChild('dynamicHost', { read: ViewContainerRef, static: false }) dynamicHost?: ViewContainerRef;
   private createdComponentRef: any;
   
   ngOnInit() {
-    // Mostrar texto completo imediatamente (sem efeito de digitação)
-    this.displayText = this.message.text;
-    this.typingComplete = true;
+    // Se é mensagem do usuário, mostrar completa
+    if (this.message.isUser) {
+      this.displayText = this.message.text;
+      this.typingComplete = true;
+      this.hasStartedTyping = true;
+    } else if (!this.message.hasAnimated) {
+      // Se é mensagem do bot e ainda não foi animada, iniciar efeito
+      this.message.hasAnimated = true;
+      this.hasStartedTyping = true;
+      this.startTypingEffect();
+    } else {
+      // Mensagem do bot já foi animada, mostrar completa
+      this.displayText = this.message.text;
+      this.typingComplete = true;
+      this.hasStartedTyping = true;
+    }
   }
 
   ngAfterViewInit() {
@@ -67,33 +84,26 @@ export class MessageComponent implements OnInit {
   
   startTypingEffect() {
     this.typingComplete = false;
-
-    // Reinicia o texto mostrado
     this.displayText = '';
 
-    // Calcula o intervalo baseado na velocidade e no tamanho da mensagem
     const textLength = this.message.text.length;
-    const totalDuration = Math.min(1000, Math.max(500, textLength * 50)); // Entre 1 e 2 segundos, mais lento
-    const interval = totalDuration / textLength;
-
+    // Velocidade mais rápida: 10ms por caractere
+    const charDelay = 10;
     let currentIndex = 0;
 
-    // Função para adicionar um caractere por vez
     const typeNextChar = () => {
       if (currentIndex < this.message.text.length) {
-        // Adiciona o próximo caractere
         this.displayText += this.message.text.charAt(currentIndex);
         currentIndex++;
-
-        // Agenda o próximo caractere
-        setTimeout(typeNextChar, interval);
+        
+        setTimeout(typeNextChar, charDelay);
       } else {
         this.typingComplete = true;
       }
     };
 
-    // Inicia a digitação
-    setTimeout(typeNextChar, 300); // Pequeno delay inicial, mais lento
+    // Pequeno delay antes de começar
+    setTimeout(typeNextChar, 50);
   }
   
   // Method to convert basic Markdown to HTML

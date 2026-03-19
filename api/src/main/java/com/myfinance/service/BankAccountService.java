@@ -37,21 +37,30 @@ public class BankAccountService {
     }
 
     public BankAccountDTO get(Long id) {
+        Long userId = userService.getCurrentUserId();
         BankAccount bankAccount = bankAccountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("BankAccount not found with id: " + id));
+        if (!bankAccount.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Access denied to this bank account");
+        }
         return bankAccountMapper.toDTO(bankAccount);
     }
 
     public List<BankAccountDTO> getAll() {
-        return bankAccountRepository.findAll().stream()
+        Long userId = userService.getCurrentUserId();
+        return bankAccountRepository.findByUserId(userId).stream()
                 .map(bankAccountMapper::toDTO)
                 .toList();
     }
 
     @Transactional
     public BankAccountDTO update(Long id, String name, boolean defaultAccount, boolean archived) {
+        Long userId = userService.getCurrentUserId();
         BankAccount bankAccount = bankAccountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("BankAccount not found with id: " + id));
+        if (!bankAccount.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Access denied to this bank account");
+        }
         if (defaultAccount && !bankAccount.isDefaultAccount()) {
             clearDefaultAccount(bankAccount.getUser().getId());
         }
@@ -62,8 +71,12 @@ public class BankAccountService {
     }
 
     public void delete(Long id) {
+        Long userId = userService.getCurrentUserId();
         BankAccount bankAccount = bankAccountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("BankAccount not found with id: " + id));
+        if (!bankAccount.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Access denied to this bank account");
+        }
         bankAccountRepository.delete(bankAccount);
     }
 

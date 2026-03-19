@@ -43,6 +43,10 @@
   line-height: 1.5;
   word-wrap: break-word;
   
+  .message-typing-wrapper {
+    display: inline;
+  }
+  
   p {
     margin-bottom: 0.8rem;
     

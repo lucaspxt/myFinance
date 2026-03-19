@@ -1,4 +1,5 @@
 // Export all services for easy imports
+export * from './auth.service';
 export * from './bank-account.service';
 export * from './balance.service';
 export * from './balance-refresh.service';

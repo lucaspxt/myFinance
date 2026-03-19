@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy, ElementRef, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AppService, AppStatus } from '../../../services/app.service';
 import { LanguageService, SupportedLanguages } from '../../../services/i18n/language.service';
 import { BalanceService, TotalBalanceDTO } from '../../../services/balance.service';
 import { BalanceRefreshService } from '../../../services/balance-refresh.service';
 import { CurrencyFormatPipe } from '../../../shared/pipes/currency-format.pipe';
+import { AuthService } from '../../../services/auth.service';
 
 import { Subject, fromEvent, takeUntil } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
@@ -28,6 +29,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public totalBalance: TotalBalanceDTO | null = null;
   public balanceLoading: boolean = true;
   public balanceError: boolean = false;
+  public userName: string | null = null;
 
   protected homeLink: string = '/';
 
@@ -36,10 +38,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private languageService: LanguageService,
     private balanceService: BalanceService,
     private balanceRefreshService: BalanceRefreshService,
-    private el: ElementRef
+    private el: ElementRef,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.userName = this.authService.getUserName();
+
     this.appService.appStatus$
     .pipe(takeUntil(this.destroy$))
     .subscribe(status => {
@@ -109,6 +115,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   this.languageService.setLanguage(lang as SupportedLanguages);
   // close menu after selecting a language
   this.menuOpen = false;
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+    this.menuOpen = false;
   }
 
   ngOnDestroy(): void {

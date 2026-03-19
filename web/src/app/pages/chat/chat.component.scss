@@ -21,6 +21,56 @@
   }
 }
 
+// Typing indicator animation
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--white);
+  border-radius: 1rem;
+  max-width: 70px;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.typing-dots {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  justify-content: center;
+  
+  .dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    animation: typing-bounce 1.4s infinite ease-in-out;
+    
+    &:nth-child(1) {
+      animation-delay: 0s;
+    }
+    
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+
 .chat-container {
   display: flex;
   flex-direction: column;
@@ -239,6 +289,7 @@
   padding: 1rem 3rem;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  scroll-behavior: smooth;
 
   &.with-suggested-questions {
     display: flex;
@@ -297,13 +348,14 @@
   }
 
   .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 100px;
     width: 3rem;
     height: 3rem;
     background-color: var(--primary-color);
     color: var(--white);
-    padding-left: 0.65em;
-    padding-top: 0.65rem;
 
     i {
       font-size: 1.15rem;
@@ -348,7 +400,7 @@
     background-color: var(--background-gray);
     border: 1px solid var(--border-color);
     border-radius: 0.75rem;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -469,6 +521,8 @@
   background: var(--background-gray);
   display: flex;
   flex-direction: column;
+  max-height: calc(100vh - 16rem);
+  overflow-y: auto;
 }
 
 .modal-footer {
@@ -565,7 +619,6 @@
   flex-direction: column;
   gap: 0.5rem;
   overflow-y: auto;
-  max-height: calc(100vh - 400px);
 }
 
 .loading-more {
@@ -1081,12 +1134,11 @@
   }
 
   .transaction-list {
-    padding: 1.5rem;
-    padding-bottom: 120px;
+    padding: 1.5rem !important;
   }
 
   .skeleton-transaction-list {
-    padding: 1.5rem;
+    padding: 1.5rem !important;
   }
 
   .modal-empty {

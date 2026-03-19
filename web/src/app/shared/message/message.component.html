@@ -6,8 +6,8 @@
     <div class="message-text">
       <!-- Mensagens do sistema com efeito de digitação -->
       <div *ngIf="!message.isUser">
-        <div *ngIf="message.type !== 'component'">
-          <div [innerHTML]="convertMarkdownToHtml(displayText)"></div>
+        <div *ngIf="message.type !== 'component'" class="message-typing-wrapper">
+          <span [innerHTML]="convertMarkdownToHtml(displayText)"></span>
         </div>
 
         <!-- Render a dynamic standalone component when message.type === 'component' -->

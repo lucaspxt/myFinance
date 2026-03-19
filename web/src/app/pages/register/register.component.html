@@ -1,0 +1,63 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <img src="logo-white.png" alt="MyFinance" class="auth-logo-img">
+    </div>
+    <h2 class="auth-title">{{ 'AUTH.REGISTER.TITLE' | translate }}</h2>
+
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="auth-form">
+      <div class="form-group">
+        <label for="name">{{ 'AUTH.REGISTER.NAME' | translate }}</label>
+        <input
+          id="name"
+          type="text"
+          class="form-control"
+          [(ngModel)]="name"
+          name="name"
+          required
+          [placeholder]="'AUTH.REGISTER.NAME_PLACEHOLDER' | translate"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="email">{{ 'AUTH.REGISTER.EMAIL' | translate }}</label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          [(ngModel)]="email"
+          name="email"
+          required
+          [placeholder]="'AUTH.REGISTER.EMAIL_PLACEHOLDER' | translate"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">{{ 'AUTH.REGISTER.PASSWORD' | translate }}</label>
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          [(ngModel)]="password"
+          name="password"
+          required
+          [placeholder]="'AUTH.REGISTER.PASSWORD_PLACEHOLDER' | translate"
+        >
+      </div>
+
+      <div *ngIf="errorKey" class="alert alert-danger">
+        {{ errorKey | translate }}
+      </div>
+
+      <button type="submit" class="btn btn-primary auth-btn" [disabled]="isLoading || !name || !email || !password">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+        {{ isLoading ? ('AUTH.REGISTER.LOADING' | translate) : ('AUTH.REGISTER.SUBMIT' | translate) }}
+      </button>
+    </form>
+
+    <p class="auth-link auth-footer">
+      {{ 'AUTH.REGISTER.HAS_ACCOUNT' | translate }}
+      <a routerLink="/login">{{ 'AUTH.REGISTER.LOGIN_LINK' | translate }}</a>
+    </p>
+  </div>
+</div>

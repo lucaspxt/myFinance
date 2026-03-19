@@ -6,7 +6,8 @@
     "VISIT_SITE": "visitar site",
     "TOTAL_BALANCE": "Saldo geral",
     "MENU": {
-      "HOME": "Início"
+      "HOME": "Início",
+      "LOGOUT": "Sair"
     }
   },
   "CHAT": {
@@ -100,5 +101,34 @@
     "DESCRIPTION": "Usamos cookies e tecnologias semelhantes para fornecer, analisar e melhorar nossos serviços. Ao clicar em Aceitar você consente o uso de cookies.",
     "ACCEPT": "Aceitar",
     "DECLINE": "Recusar"
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Entrar",
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "voce@exemplo.com",
+      "PASSWORD": "Senha",
+      "PASSWORD_PLACEHOLDER": "Sua senha",
+      "SUBMIT": "Entrar",
+      "LOADING": "Entrando...",
+      "ERROR": "Email ou senha inválidos. Tente novamente.",
+      "NO_ACCOUNT": "Não tem uma conta?",
+      "REGISTER_LINK": "Criar conta"
+    },
+    "REGISTER": {
+      "TITLE": "Criar Conta",
+      "NAME": "Nome",
+      "NAME_PLACEHOLDER": "Seu nome",
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "voce@exemplo.com",
+      "PASSWORD": "Senha",
+      "PASSWORD_PLACEHOLDER": "Escolha uma senha",
+      "SUBMIT": "Criar Conta",
+      "LOADING": "Criando conta...",
+      "ERROR": "Falha ao criar conta. Tente novamente.",
+      "ERROR_EMAIL_EXISTS": "Este email já está cadastrado. Tente entrar.",
+      "HAS_ACCOUNT": "Já tem uma conta?",
+      "LOGIN_LINK": "Entrar"
+    }
   }
 }

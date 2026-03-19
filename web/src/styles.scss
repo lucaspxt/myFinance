@@ -109,6 +109,13 @@ main {
   }
 }
 
+.btn-primary {
+  &:hover {
+    background: var(--black) !important;
+    font-weight: bold;
+  }
+}
+
 .container-box {
   border-radius: 1rem;
   background: var(--background-gray);

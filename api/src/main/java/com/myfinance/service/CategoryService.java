@@ -26,8 +26,12 @@ public class CategoryService {
     }
 
     public CategoryDTO get(Long id) {
+        Long userId = userService.getCurrentUserId();
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+        if (!userId.equals(category.getUserId())) {
+            throw new RuntimeException("Access denied to this category");
+        }
         return categoryMapper.toDTO(category);
     }
 

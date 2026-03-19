@@ -6,7 +6,7 @@
 
 ![MyFinanceTransactions](myfinance2.png)
 
-**Advanced Transaction Management** - Browse all your financial records with powerful filtering options by category, bank account, month, and year. View detailed transaction history with inline editing and deletion capabilities.
+**Advanced Transaction Management** - Browse all your financial records with powerful filtering options by category, bank account, month, and year. View detailed transaction history with inline editing and deletion capabilities. All these operations can also be performed through the AI chat using natural language commands.
 
 ![MyFinanceTransactions](myfinance3.png)
 

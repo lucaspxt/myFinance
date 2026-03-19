@@ -563,6 +563,12 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     
     onTransactionsScroll(event: Event): void {
       const element = event.target as HTMLElement;
+      
+      // Close dropdown when scrolling to avoid misalignment
+      if (this.openMenuId !== null) {
+        this.closeMenu();
+      }
+      
       const scrollPosition = element.scrollTop + element.clientHeight;
       const scrollHeight = element.scrollHeight;
       
@@ -661,19 +667,43 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   // Toggle dropdown menu for a transaction
   toggleMenu(transactionId: number, event: Event): void {
     event.stopPropagation();
-    this.openMenuId = this.openMenuId === transactionId ? null : transactionId;
+    const wasOpen = this.openMenuId === transactionId;
+    this.openMenuId = wasOpen ? null : transactionId;
     
-    // Toggle overflow on transaction list to prevent dropdown clipping
-    setTimeout(() => {
-      const transactionsList = document.querySelector('.transaction-list');
-      if (transactionsList) {
-        if (this.openMenuId !== null) {
-          transactionsList.classList.add('dropdown-open');
-        } else {
-          transactionsList.classList.remove('dropdown-open');
+    if (!wasOpen) {
+      // Position dropdown using fixed positioning to escape overflow containers
+      setTimeout(() => {
+        const button = (event.target as HTMLElement).closest('.menu-button') as HTMLElement;
+        const dropdown = document.querySelector('.dropdown-menu') as HTMLElement;
+        
+        if (button && dropdown) {
+          const buttonRect = button.getBoundingClientRect();
+          const dropdownRect = dropdown.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          
+          // Calculate if there's space below
+          const spaceBelow = viewportHeight - buttonRect.bottom;
+          const spaceAbove = buttonRect.top;
+          const dropdownHeight = dropdownRect.height || 100; // fallback estimate
+          
+          // Position horizontally (align to right of button)
+          dropdown.style.left = `${buttonRect.right - 150}px`; // 150px is min-width
+          
+          // Position vertically (below or above based on space)
+          if (spaceBelow >= dropdownHeight || spaceBelow >= spaceAbove) {
+            // Open downwards
+            dropdown.style.top = `${buttonRect.bottom + 4}px`;
+            dropdown.style.bottom = 'auto';
+            dropdown.classList.remove('dropdown-up');
+          } else {
+            // Open upwards
+            dropdown.style.top = 'auto';
+            dropdown.style.bottom = `${viewportHeight - buttonRect.top + 4}px`;
+            dropdown.classList.add('dropdown-up');
+          }
         }
-      }
-    }, 0);
+      }, 0);
+    }
   }
 
   @HostListener('document:click', ['$event'])
@@ -684,14 +714,17 @@ export class ChatComponent implements OnInit, AfterViewChecked {
     }
   }
 
+  @HostListener('window:scroll')
+  @HostListener('window:resize')
+  onWindowChange(): void {
+    // Close dropdown on scroll/resize to avoid misalignment
+    if (this.openMenuId !== null) {
+      this.closeMenu();
+    }
+  }
+
   closeMenu(): void {
     this.openMenuId = null;
-    
-    // Remove overflow adjustment
-    const transactionsList = document.querySelector('.transaction-list');
-    if (transactionsList) {
-      transactionsList.classList.remove('dropdown-open');
-    }
   }
 
   // Open edit modal
@@ -812,16 +845,6 @@ export class ChatComponent implements OnInit, AfterViewChecked {
         alert(errorMessage);
       }
     });
-  }
-
-  shouldOpenUpwards(index: number): boolean {
-    // If 3 or fewer items, always open downwards (there's space)
-    if (this.modalTransactions.length <= 3) {
-      return false;
-    }
-    
-    // For lists with more items, open upwards for the last 2 items
-    return index >= this.modalTransactions.length - 2;
   }
 
   formatDateForInput(dateString: string): string {

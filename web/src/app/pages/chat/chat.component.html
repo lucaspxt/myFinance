@@ -207,7 +207,6 @@
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                             <div class="dropdown-menu" 
-                                                 [class.dropdown-up]="shouldOpenUpwards(i)"
                                                  *ngIf="openMenuId === transaction.id" 
                                                  (click)="$event.stopPropagation()">
                                                 <button class="dropdown-item" (click)="openEditModal(transaction, $event)">
@@ -287,8 +286,6 @@
                                 <i class="fas fa-ellipsis-v"></i>
                             </button>
                             <div class="dropdown-menu" 
-                                 [class.dropdown-up]="shouldOpenUpwards(i)"
-                                 *ngIf="openMenuId === transaction.id" 
                                  (click)="$event.stopPropagation()">
                                 <button class="dropdown-item" (click)="openEditModal(transaction, $event)">
                                     <i class="fas fa-edit"></i> {{ 'CHAT.ACTIONS.EDIT' | translate }}
